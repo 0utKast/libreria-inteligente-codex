@@ -7,6 +7,7 @@ import pytest
 async def test_analyze_with_gemini_success(monkeypatch):
     # Preparar entorno para que AI_ENABLED sea True al importar el módulo
     monkeypatch.setenv("GEMINI_API_KEY", "k")
+    monkeypatch.setenv("DISABLE_AI", "0")
 
     import backend.main as main
     importlib.reload(main)
@@ -31,6 +32,7 @@ async def test_analyze_with_gemini_success(monkeypatch):
 @pytest.mark.asyncio
 async def test_analyze_with_gemini_error_path(monkeypatch):
     monkeypatch.setenv("GEMINI_API_KEY", "k")
+    monkeypatch.setenv("DISABLE_AI", "0")
 
     import backend.main as main
     importlib.reload(main)
@@ -50,4 +52,3 @@ async def test_analyze_with_gemini_error_path(monkeypatch):
         "author": "Error de IA",
         "category": "Error de IA",
     }
-
