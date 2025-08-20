@@ -34,7 +34,9 @@ models.Base.metadata.create_all(bind=database.engine)
 async def analyze_with_gemini(text: str) -> dict:
     if os.getenv("DISABLE_AI") == "1" or not AI_ENABLED:
         return {"title": "Desconocido", "author": "Desconocido", "category": "Desconocido"}
-    model = genai.GenerativeModel('gemini-1.5-flash-latest')
+    # Permite configurar el modelo por variable de entorno; por defecto 2.5 (sin alias -latest)
+    model_name = os.getenv("GEMINI_MODEL_MAIN", "gemini-2.5-flash")
+    model = genai.GenerativeModel(model_name)
     prompt = f"""
     Eres un bibliotecario experto. Analiza el siguiente texto extraído de las primeras páginas de un libro.
     Tu tarea es identificar el título, el autor y la categoría principal del libro.
@@ -59,7 +61,7 @@ async def analyze_with_gemini(text: str) -> dict:
             print(f"DEBUG: Gemini raw response on error: {response.text}")
         return {"title": "Error de IA", "author": "Error de IA", "category": "Error de IA"}
 
-def process_pdf(file_path: str, static_dir: str) -> dict:
+def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     doc = fitz.open(file_path)
     text = ""
     for i in range(min(len(doc), 5)): text += doc.load_page(i).get_text("text", sort=True)
@@ -70,14 +72,14 @@ def process_pdf(file_path: str, static_dir: str) -> dict:
             pix = fitz.Pixmap(doc, xref)
             if pix.width > 300 and pix.height > 300:
                 cover_filename = f"cover_{os.path.basename(file_path)}.png"
-                cover_full_path = os.path.join(static_dir, cover_filename)
+                cover_full_path = os.path.join(covers_dir_fs, cover_filename)
                 pix.save(cover_full_path)
-                cover_path = f"{static_dir}/{cover_filename}"
+                cover_path = f"{covers_url_prefix}/{cover_filename}"
                 break
         if cover_path: break
     return {"text": text, "cover_image_url": cover_path}
 
-def process_epub(file_path: str, static_dir: str) -> dict:
+def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     """ Lógica de procesamiento de EPUB muy mejorada con fallbacks para la portada. """
     book = epub.read_epub(file_path)
     text = ""
@@ -107,21 +109,30 @@ def process_epub(file_path: str, static_dir: str) -> dict:
     # Si encontramos una portada por cualquiera de los métodos
     if cover_item:
         cover_filename = f"cover_{os.path.basename(file_path)}_{cover_item.get_name()}".replace('/', '_').replace('\\', '_')
-        cover_full_path = os.path.join(static_dir, cover_filename)
+        cover_full_path = os.path.join(covers_dir_fs, cover_filename)
         with open(cover_full_path, 'wb') as f: f.write(cover_item.get_content())
-        cover_path = f"{static_dir}/{cover_filename}"
+        cover_path = f"{covers_url_prefix}/{cover_filename}"
 
     return {"text": text, "cover_image_url": cover_path}
 
 # --- Configuración de la App FastAPI ---
 # Test comment
 app = FastAPI()
-STATIC_COVERS_DIR = "static/covers"
-os.makedirs(STATIC_COVERS_DIR, exist_ok=True)
-STATIC_TEMP_DIR = "temp_books"
-os.makedirs(STATIC_TEMP_DIR, exist_ok=True)
-app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/temp_books", StaticFiles(directory=STATIC_TEMP_DIR), name="temp_books")
+
+# Rutas robustas basadas en este archivo
+STATIC_DIR_FS = (base_dir / "static").resolve()
+STATIC_COVERS_DIR_FS = (STATIC_DIR_FS / "covers").resolve()
+TEMP_BOOKS_DIR_FS = (base_dir / "temp_books").resolve()
+BOOKS_DIR_FS = (base_dir / "books").resolve()
+
+STATIC_COVERS_URL_PREFIX = "static/covers"
+
+os.makedirs(STATIC_COVERS_DIR_FS, exist_ok=True)
+os.makedirs(TEMP_BOOKS_DIR_FS, exist_ok=True)
+os.makedirs(BOOKS_DIR_FS, exist_ok=True)
+
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR_FS)), name="static")
+app.mount("/temp_books", StaticFiles(directory=str(TEMP_BOOKS_DIR_FS)), name="temp_books")
 raw_origins = os.getenv("ALLOW_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
 allow_origins = [o.strip() for o in raw_origins if o.strip()]
 
@@ -150,8 +161,7 @@ def get_db():
 # --- Rutas de la API ---
 @app.post("/upload-book/", response_model=schemas.Book)
 async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = File(...)):
-    books_dir = "books"
-    os.makedirs(books_dir, exist_ok=True)
+    books_dir = str(BOOKS_DIR_FS)
     safe_name = os.path.basename(book_file.filename)
     file_path = os.path.abspath(os.path.join(books_dir, safe_name))
 
@@ -162,8 +172,10 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
 
     file_ext = os.path.splitext(book_file.filename)[1].lower()
     try:
-        if file_ext == ".pdf": book_data = process_pdf(file_path, STATIC_COVERS_DIR)
-        elif file_ext == ".epub": book_data = process_epub(file_path, STATIC_COVERS_DIR)
+        if file_ext == ".pdf":
+            book_data = process_pdf(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
+        elif file_ext == ".epub":
+            book_data = process_epub(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
         else: raise HTTPException(status_code=400, detail="Tipo de archivo no soportado.")
     except HTTPException as e:
         os.remove(file_path) # Limpiar el archivo subido si el procesamiento falla
@@ -338,7 +350,7 @@ async def convert_epub_to_pdf(file: UploadFile = File(...)):
 
         # Guardar el PDF en la carpeta temporal pública
         pdf_filename = f"{uuid.uuid4()}.pdf"
-        public_pdf_path = os.path.join(STATIC_TEMP_DIR, pdf_filename)
+        public_pdf_path = os.path.join(str(TEMP_BOOKS_DIR_FS), pdf_filename)
         with open(public_pdf_path, "wb") as f:
             f.write(pdf_bytes)
         

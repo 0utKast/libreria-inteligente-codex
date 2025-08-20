@@ -31,8 +31,9 @@ Cuerpo: {body}
 """
         print(f"DEBUG: Prompting Gemini with: {prompt}", file=sys.stderr, flush=True)
 
-        print("DEBUG: Calling client.models.generate_content...", file=sys.stderr, flush=True) # Changed print
-        response = client.models.generate_content(model='gemini-1.5-pro-latest', contents=prompt)
+        print("DEBUG: Calling client.models.generate_content...", file=sys.stderr, flush=True)
+        model_name = os.getenv("GEMINI_MODEL_AUTOMATIONS", "gemini-2.5-pro")
+        response = client.models.generate_content(model=model_name, contents=prompt)
 
         print("DEBUG: model.generate_content call completed.", file=sys.stderr, flush=True)
         print(f"DEBUG: Raw Gemini response: {response.text}", file=sys.stderr, flush=True)

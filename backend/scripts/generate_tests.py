@@ -108,7 +108,8 @@ def generate_test_file(file_path_str):
     print(f"Generating tests for {file_path.name}...")
     try:
         _ensure_ai_configured()
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model_name = os.getenv("GEMINI_MODEL_TESTS", "gemini-2.5-flash")
+        model = genai.GenerativeModel(model_name)
         response = model.generate_content(prompt)
         test_code = response.text
         # Robustly remove markdown code fences and strip whitespace

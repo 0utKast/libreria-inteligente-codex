@@ -14,8 +14,9 @@ _initialized = False
 _collection = None
 _ai_enabled = False
 
-EMBEDDING_MODEL = "models/text-embedding-004"
-GENERATION_MODEL = "models/gemini-1.5-flash"
+# Modelos configurables por entorno; por defecto 2.5 para generación
+EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "models/text-embedding-004")
+GENERATION_MODEL = os.getenv("GEMINI_GENERATION_MODEL", "models/gemini-2.5-flash")
 
 def _ensure_init():
     global _initialized, _collection, _ai_enabled

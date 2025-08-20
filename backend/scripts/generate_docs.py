@@ -120,8 +120,9 @@ if __name__ == "__main__":
     prompt = create_prompt(aggregated_content)
     print("Prompt generado. Enviando a la API de Gemini...")
 
-    # Call the Gemini API
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    # Call the Gemini API (modelo configurable por entorno)
+    model_name = os.getenv("GEMINI_MODEL_DOCS", "gemini-2.5-flash")
+    model = genai.GenerativeModel(model_name)
     response = model.generate_content(prompt)
 
     print("Respuesta recibida de Gemini. Escribiendo en el archivo de documentación...")

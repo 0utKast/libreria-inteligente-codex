@@ -21,7 +21,8 @@ Diff de la Pull Request:
 {pr_diff}
 ```
 """
-        response = client.models.generate_content(model='gemini-1.5-pro-latest', contents=prompt)
+        model_name = os.getenv("GEMINI_MODEL_AUTOMATIONS", "gemini-2.5-pro")
+        response = client.models.generate_content(model=model_name, contents=prompt)
         review_text = response.text
         print(json.dumps({"review": review_text}))
 

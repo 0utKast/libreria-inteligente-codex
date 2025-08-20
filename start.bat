@@ -13,10 +13,11 @@ if not exist .venv\Scripts\python.exe (
   python -m venv .venv
 )
 call .venv\Scripts\pip.exe install -r requirements.txt
-START "Backend" cmd /c ".venv\Scripts\python.exe -m uvicorn main:app --reload --port 8001 --host 0.0.0.0"
+cd ..
+START "Backend" cmd /c "backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --reload --port 8001 --host 0.0.0.0"
 
 rem --- Frontend ---
-cd ..\frontend
+cd frontend
 if not exist node_modules (
   echo Instalando dependencias de frontend...
   npm install
