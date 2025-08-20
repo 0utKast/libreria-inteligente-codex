@@ -26,6 +26,7 @@ __pycache__/
 /backend/temp_books/
 /backend/books/
 /backend/static/covers/
+/backend/rag_index/
 
 # Archivos del sistema operativo
 .DS_Store
@@ -33,3 +34,6 @@ Thumbs.db
 
 # Archivos de errores
 errores.txt
+
+# Lockfile de npm en la raíz (proyecto JS real está en /frontend)
+/package-lock.json
