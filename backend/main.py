@@ -124,9 +124,19 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/temp_books", StaticFiles(directory=STATIC_TEMP_DIR), name="temp_books")
 raw_origins = os.getenv("ALLOW_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
 allow_origins = [o.strip() for o in raw_origins if o.strip()]
+
+# Permitir orígenes de redes privadas sin necesidad de fijar IPs, soportando HTTP y HTTPS,
+# y una lista configurable de puertos de frontend.
+ports_csv = os.getenv("FRONTEND_PORTS", "3000,5173,8080")
+ports = [p.strip() for p in ports_csv.split(",") if p.strip()]
+ports_pattern = "|".join(ports) if ports else r"\d+"
+default_origin_regex = rf"^https?://(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+):({ports_pattern})$"
+allow_origin_regex = os.getenv("ALLOW_ORIGIN_REGEX", default_origin_regex)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,
+    allow_origin_regex=allow_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -199,6 +209,11 @@ def read_categories(db: Session = Depends(get_db)):
 
 @app.delete("/books/{book_id}")
 def delete_single_book(book_id: int, db: Session = Depends(get_db)):
+    # Limpiar índices RAG asociados al libro (usamos el ID de BD como book_id en RAG)
+    try:
+        rag.delete_book_from_rag(str(book_id))
+    except Exception as e:
+        print(f"Advertencia: fallo al limpiar RAG para book_id={book_id}: {e}")
     book = crud.delete_book(db, book_id=book_id)
     if not book:
         raise HTTPException(status_code=404, detail="Libro no encontrado.")
@@ -206,7 +221,14 @@ def delete_single_book(book_id: int, db: Session = Depends(get_db)):
 
 @app.delete("/categories/{category_name}")
 def delete_category_and_books(category_name: str, db: Session = Depends(get_db)):
+    # Obtener IDs antes de borrar para limpiar RAG
+    ids = [str(row.id) for row in db.query(models.Book).filter(models.Book.category == category_name).all()]
     deleted_count = crud.delete_books_by_category(db, category=category_name)
+    for bid in ids:
+        try:
+            rag.delete_book_from_rag(bid)
+        except Exception as e:
+            print(f"Advertencia: fallo al limpiar RAG para book_id={bid}: {e}")
     if deleted_count == 0:
         raise HTTPException(status_code=404, detail=f"Categoría '{category_name}' no encontrada o ya está vacía.")
     return {"message": f"Categoría '{category_name}' y sus {deleted_count} libros han sido eliminados."}
@@ -342,9 +364,120 @@ async def upload_book_for_rag(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Error al procesar el libro para RAG: {e}")
 
 @app.post("/rag/query/", response_model=schemas.RagQueryResponse)
-async def query_rag_endpoint(query_data: schemas.RagQuery):
+async def query_rag_endpoint(query_data: schemas.RagQuery, db: Session = Depends(get_db)):
     try:
-        response_text = await rag.query_rag(query_data.query, query_data.book_id)
+        mode = query_data.mode or "balanced"
+        # Metadatos del libro
+        book = db.query(models.Book).filter(models.Book.id == int(query_data.book_id)).first()
+        metadata = None
+        library_ctx = None
+        if book:
+            metadata = {"title": book.title, "author": book.author, "category": book.category}
+            if mode != "strict":
+                # Otras obras del mismo autor en la biblioteca
+                others = [b.title for b in db.query(models.Book).filter(models.Book.author == book.author, models.Book.id != book.id).limit(50).all()]
+                library_ctx = {"author_other_books": others}
+        response_text = await rag.query_rag(query_data.query, query_data.book_id, mode=mode, metadata=metadata, library=library_ctx)
         return {"response": response_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al consultar RAG: {e}")
+
+
+@app.post("/rag/index/{book_id}")
+async def index_existing_book_for_rag(book_id: int, force: bool = False, db: Session = Depends(get_db)):
+    """Indexa en RAG un libro ya existente en BD usando su file_path.
+
+    Usa el ID de BD como book_id en RAG. Si `force` es True, reindexa (borra y vuelve a indexar).
+    """
+    book = db.query(models.Book).filter(models.Book.id == book_id).first()
+    if not book:
+        raise HTTPException(status_code=404, detail="Libro no encontrado.")
+    if not os.path.exists(book.file_path):
+        raise HTTPException(status_code=404, detail="Archivo no encontrado en el disco.")
+    try:
+        await rag.process_book_for_rag(book.file_path, str(book.id), force_reindex=force)
+        return {"message": "Libro indexado en RAG", "book_id": str(book.id), "force": force}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al indexar en RAG: {e}")
+
+
+@app.get("/rag/status/{book_id}")
+def rag_status(book_id: int):
+    """Devuelve si el libro tiene índice RAG y el número de vectores."""
+    try:
+        count = rag.get_index_count(str(book_id))
+        return {"book_id": str(book_id), "indexed": count > 0, "vector_count": count}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener estado RAG: {e}")
+
+
+@app.post("/rag/reindex/category/{category_name}")
+async def rag_reindex_category(category_name: str, force: bool = True, db: Session = Depends(get_db)):
+    """(Re)indexa todos los libros de una categoría en RAG."""
+    books = db.query(models.Book).filter(models.Book.category == category_name).all()
+    if not books:
+        raise HTTPException(status_code=404, detail=f"Categoría '{category_name}' no encontrada o sin libros.")
+    processed, failed = 0, []
+    for b in books:
+        try:
+            await rag.process_book_for_rag(b.file_path, str(b.id), force_reindex=force)
+            processed += 1
+        except Exception as e:
+            failed.append({"book_id": b.id, "error": str(e)})
+    return {"category": category_name, "processed": processed, "failed": failed, "force": force}
+
+
+@app.post("/rag/reindex/all")
+async def rag_reindex_all(force: bool = True, db: Session = Depends(get_db)):
+    """(Re)indexa todos los libros de la biblioteca en RAG."""
+    books = db.query(models.Book).all()
+    processed, failed = 0, []
+    for b in books:
+        try:
+            await rag.process_book_for_rag(b.file_path, str(b.id), force_reindex=force)
+            processed += 1
+        except Exception as e:
+            failed.append({"book_id": b.id, "error": str(e)})
+    return {"processed": processed, "failed": failed, "total": len(books), "force": force}
+
+
+@app.get("/rag/estimate/book/{book_id}")
+def estimate_rag_for_book(book_id: int, per1k: float | None = None, max_tokens: int = 1000, db: Session = Depends(get_db)):
+    """Estimación de tokens/chunks y coste opcional para un libro."""
+    book = db.query(models.Book).filter(models.Book.id == book_id).first()
+    if not book:
+        raise HTTPException(status_code=404, detail="Libro no encontrado.")
+    try:
+        est = rag.estimate_embeddings_for_file(book.file_path, max_tokens=max_tokens)
+        cost = (est["tokens"] / 1000.0) * per1k if per1k else None
+        return {"book_id": str(book.id), **est, "per1k": per1k, "estimated_cost": cost}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en estimación: {e}")
+
+
+@app.get("/rag/estimate/category/{category_name}")
+def estimate_rag_for_category(category_name: str, per1k: float | None = None, max_tokens: int = 1000, db: Session = Depends(get_db)):
+    books = db.query(models.Book).filter(models.Book.category == category_name).all()
+    if not books:
+        raise HTTPException(status_code=404, detail=f"Categoría '{category_name}' no encontrada o sin libros.")
+    try:
+        file_paths = [b.file_path for b in books]
+        est = rag.estimate_embeddings_for_files(file_paths, max_tokens=max_tokens)
+        cost = (est["tokens"] / 1000.0) * per1k if per1k else None
+        return {"category": category_name, **est, "per1k": per1k, "estimated_cost": cost}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en estimación: {e}")
+
+
+@app.get("/rag/estimate/all")
+def estimate_rag_for_all(per1k: float | None = None, max_tokens: int = 1000, db: Session = Depends(get_db)):
+    books = db.query(models.Book).all()
+    if not books:
+        return {"tokens": 0, "chunks": 0, "files": 0, "per1k": per1k, "estimated_cost": 0}
+    try:
+        file_paths = [b.file_path for b in books]
+        est = rag.estimate_embeddings_for_files(file_paths, max_tokens=max_tokens)
+        cost = (est["tokens"] / 1000.0) * per1k if per1k else None
+        return {**est, "per1k": per1k, "estimated_cost": cost}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en estimación: {e}")
