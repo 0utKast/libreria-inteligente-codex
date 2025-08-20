@@ -138,7 +138,7 @@ PY
         echo "### Node Coverage" >> $GITHUB_STEP_SUMMARY
         if [ -f coverage/coverage-summary.json ]; then
           PCT=$(node -e "const s=require('./coverage/coverage-summary.json'); console.log(s.total.lines.pct)")
-          echo "Total: ${PCT}%
+          echo "Total: ${PCT}%" >> $GITHUB_STEP_SUMMARY
         else
           echo "No coverage file found."
         fi
