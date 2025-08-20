@@ -162,7 +162,9 @@ git push -u origin main
 ### 4) Variables de entorno y configuración
 - En la raíz, crea `.env` (puedes copiar de `.env.example`):
   - `GEMINI_API_KEY`: clave IA.
-  - `ALLOW_ORIGINS`: CSV de orígenes (ej. `http://localhost:3000,http://<tu-ip>:3000`).
+  - `ALLOW_ORIGINS`: CSV de orígenes exactos (ej. `http://localhost:3000`).
+  - `FRONTEND_PORTS`: CSV de puertos del frontend (por defecto `3000,5173,8080`).
+  - `ALLOW_ORIGIN_REGEX`: regex opcional de orígenes. Por defecto habilita HTTP y HTTPS para `localhost`, `127.0.0.1` y rangos privados (10.x, 192.168.x, 172.16–31) en los puertos de `FRONTEND_PORTS`. Esto permite acceder desde cualquier dispositivo de tu red sin fijar IPs.
   - `CHROMA_PATH`: ruta para persistir el índice (por defecto `./rag_index`).
   - Opcional: `DISABLE_AI=1` en CI/tests.
 - Frontend (CRA) usa `REACT_APP_API_URL`:
@@ -176,6 +178,32 @@ git push -u origin main
 ### 6) Notas de CI de la variante
 - Los tests en CI se ejecutan con `DISABLE_AI=1` para evitar llamadas reales a Gemini.
 - La generación automática de tests ignora archivos de test existentes y no sobreescribe.
+
+## 🔎 RAG: indexado, consulta y limpieza
+
+- Indexar libro existente (usa el ID de BD como `book_id` en RAG):
+  - `POST /rag/index/{book_id}?force=false` → procesa el `file_path` del libro y genera/actualiza su índice.
+  - Usa `force=true` para reindexar (borra y vuelve a indexar).
+- Consultar:
+  - `POST /rag/query/` con body `{ "query": "...", "book_id": "<id>" }`.
+- Limpieza automática:
+  - Al borrar un libro (`DELETE /books/{id}`) o una categoría (`DELETE /categories/{name}`), el backend elimina también los vectores de RAG asociados.
+
+- Estado RAG por libro:
+  - `GET /rag/status/{book_id}` → devuelve `{ indexed: boolean, vector_count: number }`.
+
+- (Re)indexación por lotes:
+  - `POST /rag/reindex/category/{category_name}?force=true|false` → procesa todos los libros de una categoría.
+  - `POST /rag/reindex/all?force=true|false` → procesa todos los libros de la biblioteca.
+
+### Estimar coste/tokens antes de indexar
+
+- Por libro: `GET /rag/estimate/book/{book_id}?per1k=<coste_por_1000>`
+- Por categoría: `GET /rag/estimate/category/{category_name}?per1k=<coste_por_1000>`
+- Total biblioteca: `GET /rag/estimate/all?per1k=<coste_por_1000>`
+
+Devuelve tokens totales estimados, número de chunks (tamaño base 1000 tokens) y coste estimado (`tokens/1000 * per1k`).
+Nota: el conteo usa `tiktoken` como aproximación a los tokens de Gemini, por lo que es una estimación.
 
 ## 📄 Licencia
 
