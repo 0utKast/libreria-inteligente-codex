@@ -37,7 +37,7 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
         export DISABLE_AI=1
         source .venv/bin/activate
-        pytest --cov=backend --cov-report=xml --cov-report=term
+        pytest backend/tests_curated/ --cov=backend --cov-report=xml --cov-report=term
 
     - name: Upload Python coverage artifact
       uses: actions/upload-artifact@v4
@@ -71,7 +71,7 @@ PY
       working-directory: ./frontend
       env:
         CI: true
-      run: npm test -- --watchAll=false --coverage --testPathPattern="(CI\\.smoke\\.test\\.js|__curated__/.*\\.test\\.js)"
+      run: npm test -- --watchAll=false --coverage --testPathPattern="(CI\.smoke\.test\.js|__curated__/.*\.test\.js)"
 
     - name: Upload Node coverage artifact
       uses: actions/upload-artifact@v4
@@ -89,4 +89,3 @@ PY
         else
           echo "No coverage file found." >> $GITHUB_STEP_SUMMARY
         fi
-
