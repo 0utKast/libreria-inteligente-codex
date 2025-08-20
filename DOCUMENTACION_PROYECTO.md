@@ -2,239 +2,336 @@
 
 ## 1. Descripción General del Proyecto
 
-"Mi Librería Inteligente" es una aplicación web que permite a los usuarios gestionar su colección de libros digitales (PDF y EPUB).  La aplicación facilita la carga de libros, su organización por categorías y autores, la búsqueda de libros por título o autor, y la descarga de los mismos.  Además, integra un sistema de Recuperación de Información basada en Conocimiento (RAG) que permite al usuario realizar consultas sobre el contenido de sus libros usando un modelo de lenguaje grande (Gemini).
+"Mi Librería Inteligente" es una aplicación web que permite a los usuarios gestionar su colección de libros digitalmente.  La aplicación ofrece funcionalidades para subir libros (PDF y EPUB), buscar libros por título, autor o categoría, visualizarlos en una biblioteca, convertir EPUB a PDF y una funcionalidad de RAG (Retrieval Augmented Generation) para obtener respuestas a preguntas sobre el contenido de los libros usando un modelo de IA.
 
-La arquitectura de la aplicación se basa en un frontend desarrollado con React y un backend construido con FastAPI (Python).  La persistencia de datos se realiza mediante una base de datos SQLite. El sistema RAG utiliza ChromaDB para la indexación de embeddings generados por Gemini.
+La arquitectura de la aplicación se basa en un frontend desarrollado en React, un backend en FastAPI (Python) y una base de datos SQLite. El frontend se encarga de la interfaz de usuario, la interacción con el usuario y la comunicación con el backend mediante API REST. El backend procesa las solicitudes del frontend, interactúa con la base de datos y realiza las tareas de procesamiento de archivos y consulta a la IA. La base de datos almacena la información de los libros, incluyendo metadatos y la ruta de los archivos.  El sistema RAG utiliza ChromaDB para el almacenamiento de embeddings y Google Gemini para la generación de embeddings y respuestas.
 
 
 ## 2. Estructura del Proyecto
 
 El proyecto se divide en dos partes principales: `backend/` y `frontend/`.
 
-*   **`backend/`:** Contiene el código del backend de la aplicación, escrito en Python usando el framework FastAPI.  Incluye subcarpetas para la base de datos (`alembic/`), modelos (`models.py`), rutas (`main.py`), lógica de negocio (`crud.py`), esquemas Pydantic (`schemas.py`), utilidades (`utils.py`), lógica RAG (`rag.py`) y tests (`tests/`).
-
-*   **`frontend/src`:** Contiene el código del frontend de la aplicación, desarrollado en React.  Incluye componentes para la vista principal (`App.js`), la biblioteca (`LibraryView.js`), la carga de libros (`UploadView.js`), las categorías (`CategoriesView.js`), las herramientas (`ToolsView.js`), la vista del lector (`ReaderView.js`) y la interacción con el sistema RAG (`RagView.js`). También incluye un `ErrorBoundary.js` para manejo de errores UI y el archivo de configuración `config.js`.
+*   **`backend/`:** Contiene el código del backend de la aplicación, escrito en Python usando el framework FastAPI.  Se estructura de la siguiente manera:
+    *   **`alembic/`:**  Contiene las migraciones de la base de datos.
+    *   **`database.py`:** Configura la conexión a la base de datos SQLite.
+    *   **`crud.py`:** Contiene las funciones CRUD (Create, Read, Update, Delete) para la interacción con la base de datos.
+    *   **`main.py`:** Define las rutas y la lógica principal de la API FastAPI.
+    *   **`models.py`:** Define el modelo de datos `Book` para la base de datos.
+    *   **`rag.py`:** Implementa la funcionalidad de RAG (Retrieval Augmented Generation).
+    *   **`schemas.py`:** Define los esquemas Pydantic para la validación de datos.
+    *   **`tests/`:** Contiene las pruebas unitarias para el backend.
+    *   **`utils.py`:** Funciones auxiliares, incluyendo la configuración de la API key de Google Gemini.
+*   **`frontend/src/`:** Contiene el código del frontend de la aplicación, escrito en React.  Se estructura en componentes individuales para cada vista.
+    *   **`App.js`:** Componente principal de la aplicación React.
+    *   **`CategoriesView.js`:**  Vista para mostrar las categorías de libros.
+    *   **`ErrorBoundary.js`:** Componente para manejar errores en la interfaz de usuario.
+    *   **`Header.js`:** Componente de cabecera de la aplicación.
+    *   **`LibraryView.js`:** Vista principal para mostrar la biblioteca de libros.
+    *   **`RagView.js`:** Vista para la interacción con el sistema RAG.
+    *   **`ReaderView.js`:** Vista para leer libros EPUB.
+    *   **`ToolsView.js`:** Vista para las herramientas de la aplicación.
+    *   **`UploadView.js`:** Vista para la subida de nuevos libros.
+    *   **`config.js`:** Archivo de configuración para la URL de la API.
+*   **`frontend/public/`:** Archivos estáticos del frontend (index.html, etc.).
 
 
 ## 3. Análisis Detallado del Backend (Python/FastAPI)
 
 ### `backend/main.py`
 
-*   **Propósito:** Define las rutas y la lógica de la API FastAPI.  Gestiona la subida, búsqueda, eliminación y descarga de libros, además de la integración con el sistema RAG y las herramientas.
+**Propósito:** Define las rutas y la lógica principal de la API FastAPI.  Gestiona la subida de libros, la consulta a la base de datos, el análisis con Gemini, la conversión de EPUB a PDF y los endpoints para el RAG.
 
-*   **Funciones/Clases principales:**
+**Funciones/Clases principales:**
 
-    *   `upload_book`: Recibe un archivo de libro (`UploadFile`), lo procesa (extrayendo texto y portada si es posible), lo analiza con Gemini para obtener metadatos, y lo crea en la base de datos mediante `crud.create_book`. Retorna un objeto `schemas.Book`.
-    *   `read_books`: Obtiene una lista de libros de la base de datos filtrando opcionalmente por categoría, búsqueda general y autor mediante `crud.get_books`. Retorna una lista de objetos `schemas.Book`.
-    *   `get_books_count`: Obtiene el número total de libros en la base de datos utilizando `crud.get_books_count`. Retorna un entero.
-    *   `search_books`: Busca libros por un título parcial utilizando `crud.get_books_by_partial_title`. Permite paginación. Retorna una lista de objetos `schemas.Book`.
-    *   `read_categories`: Obtiene una lista de categorías únicas de la base de datos utilizando `crud.get_categories`. Retorna una lista de strings.
-    *   `delete_single_book`: Elimina un libro de la base de datos y sus archivos asociados utilizando `crud.delete_book`. Limpia los índices RAG asociados. Retorna un diccionario con un mensaje de confirmación.
-    *   `delete_category_and_books`: Elimina todos los libros de una categoría dada, incluyendo sus archivos y índices RAG asociados mediante `crud.delete_books_by_category`. Retorna un diccionario con un mensaje de confirmación.
-    *   `download_book`: Descarga un libro de la base de datos. Retorna una respuesta `FileResponse`.
-    *   `convert_epub_to_pdf`: Convierte un archivo EPUB a PDF usando `weasyprint`. Guarda el PDF generado en una ubicación temporal pública y retorna un `ConversionResponse` con la URL de descarga.
-    *   `upload_book_for_rag`: Sube un libro para ser procesado por el sistema RAG, utilizando `rag.process_book_for_rag`. Retorna un `RagUploadResponse`.
-    *   `query_rag_endpoint`: Consulta el sistema RAG usando `rag.query_rag`.  Obtiene metadatos y contexto de otros libros del autor de la biblioteca. Retorna un `RagQueryResponse`.
-    *   `index_existing_book_for_rag`: Indexa un libro existente en la base de datos en RAG.  Permite reindexar (forzar reindexación). Retorna un diccionario de confirmación.
-    *   `rag_status`: Devuelve el estado de indexación RAG para un libro dado, utilizando `rag.get_index_count`.  Retorna un diccionario con el estado.
-    *   `rag_reindex_category`: (Re)indexa todos los libros de una categoría específica en RAG.
-    *   `rag_reindex_all`: (Re)indexa todos los libros de la biblioteca en RAG.
-    *   `estimate_rag_for_book`, `estimate_rag_for_category`, `estimate_rag_for_all`: Estiman el tamaño (tokens) y número de chunks, y coste opcional para indexar un libro, categoría o toda la biblioteca, utilizando `rag.estimate_embeddings_for_file` y `rag.estimate_embeddings_for_files`.
+*   `analyze_with_gemini(text: str) -> dict:` Analiza un texto dado usando Google Gemini para extraer el título, autor y categoría del libro. Retorna un diccionario con los resultados.  Maneja excepciones de la API de Gemini.
+*   `process_pdf(file_path: str, static_dir: str) -> dict:` Procesa un archivo PDF para extraer texto y obtener una portada. Retorna un diccionario con el texto y la URL de la portada.
+*   `process_epub(file_path: str, static_dir: str) -> dict:` Procesa un archivo EPUB para extraer texto y obtener una portada. Retorna un diccionario con el texto y la URL de la portada.  Maneja errores de extracción de texto.
+*   `upload_book(...)`: Endpoint FastAPI para subir un libro. Valida el tipo de archivo, procesa el libro usando `process_pdf` o `process_epub`, analiza el texto con `analyze_with_gemini` y crea una nueva entrada en la base de datos mediante `crud.create_book`. Retorna un objeto `schemas.Book`.
+*   `read_books(...)`: Endpoint FastAPI para obtener una lista de libros, con opciones de filtrado.
+*   `get_books_count(...)`: Endpoint FastAPI para obtener el número total de libros.
+*   `search_books(...)`: Endpoint FastAPI para buscar libros por título parcial, con paginación.
+*   `read_categories(...)`: Endpoint FastAPI para obtener una lista de todas las categorías.
+*   `delete_single_book(...)`: Endpoint FastAPI para eliminar un libro por su ID.
+*   `delete_category_and_books(...)`: Endpoint FastAPI para eliminar una categoría y todos sus libros.
+*   `download_book(...)`: Endpoint FastAPI para descargar un libro por su ID.
+*   `convert_epub_to_pdf(...)`: Endpoint FastAPI para convertir un archivo EPUB a PDF.
+*   `upload_book_for_rag(...)`: Endpoint FastAPI para subir un libro y procesarlo para RAG.
+*   `query_rag_endpoint(...)`: Endpoint FastAPI para consultar el sistema RAG.
+*   `index_existing_book_for_rag(...)`: Endpoint FastAPI para indexar un libro existente en RAG.
+*   `rag_status(...)`: Endpoint FastAPI para obtener el estado del índice RAG de un libro.
+*   `rag_reindex_category(...)`: Endpoint FastAPI para reindexar todos los libros de una categoría en RAG.
+*   `rag_reindex_all(...)`: Endpoint FastAPI para reindexar todos los libros en RAG.
+*   `estimate_rag_for_book(...)`: Endpoint FastAPI para estimar el coste y número de embeddings para un libro.
+*   `estimate_rag_for_category(...)`: Endpoint FastAPI para estimar el coste y número de embeddings para una categoría.
+*   `estimate_rag_for_all(...)`: Endpoint FastAPI para estimar el coste y número de embeddings para todos los libros.
 
 
 ### `backend/crud.py`
 
-*   **Propósito:** Define las funciones CRUD (Create, Read, Update, Delete) para interactuar con la base de datos.
+**Propósito:** Contiene las funciones CRUD (Create, Read, Update, Delete) para la interacción con la base de datos.
 
-*   **Funciones principales:**  Cada función recibe una sesión de SQLAlchemy (`db: Session`) como primer parámetro y opera sobre la tabla `books`.
+**Funciones principales:** (Documentación abreviada para concisión)
 
-    *   `get_book_by_path`: Busca un libro por su `file_path`.
-    *   `get_book_by_title`: Busca un libro por su título exacto.
-    *   `get_books_by_partial_title`: Busca libros por un título parcial (case-insensitive), con paginación.
-    *   `get_books`: Obtiene una lista de libros, con opciones de filtrado.
-    *   `get_categories`: Obtiene una lista de categorías únicas.
-    *   `create_book`: Crea un nuevo libro en la base de datos.
-    *   `delete_book`: Elimina un libro de la base de datos y sus archivos asociados.
-    *   `delete_books_by_category`: Elimina todos los libros de una categoría dada.
-    *   `get_books_count`: Obtiene el conteo total de libros.
-
-
-### `backend/database.py`
-
-*   **Propósito:** Configura la conexión a la base de datos SQLite.
-
-*   **Elementos principales:** Define `engine` y `SessionLocal` para interactuar con la base de datos.
-
-
-### `backend/utils.py`
-
-*   **Propósito:** Contiene funciones utilitarias.
-
-*   **Funciones principales:**
-
-    *   `configure_genai`: Configura la API key de Google Gemini, leyendo de las variables de entorno.
+*   `get_book_by_path(db: Session, file_path: str)`: Obtiene un libro por su ruta de archivo.
+*   `get_book_by_title(db: Session, title: str)`: Obtiene un libro por su título.
+*   `get_books_by_partial_title(db: Session, title: str, skip: int = 0, limit: int = 100)`: Busca libros por un título parcial (case-insensitive), con paginación.
+*   `get_books(db: Session, category: str | None = None, search: str | None = None, author: str | None = None)`: Obtiene libros con opciones de filtrado.
+*   `get_categories(db: Session) -> list[str]` : Obtiene una lista de categorías únicas.
+*   `create_book(db: Session, title: str, author: str, category: str, cover_image_url: str, file_path: str)`: Crea un nuevo libro.
+*   `delete_book(db: Session, book_id: int)`: Elimina un libro y sus archivos.
+*   `delete_books_by_category(db: Session, category: str)`: Elimina libros de una categoría y sus archivos.
+*   `get_books_count(db: Session) -> int`: Cuenta el número de libros.
 
 
 ### `backend/models.py`
 
-*   **Propósito:** Define el modelo de datos `Book` para la base de datos.
+**Propósito:** Define el modelo de datos `Book` para la base de datos.
 
-*   **Clase principal:**
+**Clase principal:**
 
-    *   `Book`: Define la estructura de la tabla `books` en la base de datos, con columnas para `id`, `title`, `author`, `category`, `cover_image_url`, y `file_path`.
+*   `Book(Base)`: Modelo SQLAlchemy que representa un libro.  Contiene atributos para el `id`, `title`, `author`, `category`, `cover_image_url` y `file_path`.
 
 
 ### `backend/rag.py`
 
-*   **Propósito:** Contiene la lógica para el sistema RAG.
+**Propósito:** Implementa la funcionalidad de RAG (Retrieval Augmented Generation).
 
-*   **Funciones principales:**
+**Funciones principales:** (Documentación abreviada)
 
-    *   `get_embedding`: Genera un embedding para un texto dado usando la API de embeddings de Gemini. Si `DISABLE_AI` está en el entorno, devuelve un embedding dummy.
-    *   `extract_text_from_pdf`: Extrae texto de un archivo PDF usando PyPDF2.
-    *   `extract_text_from_epub`: Extrae texto de un archivo EPUB usando ebooklib y BeautifulSoup.
-    *   `extract_text`: Función unificada para extraer texto de archivos PDF y EPUB.
-    *   `chunk_text`: Divide un texto en chunks más pequeños basados en el conteo de tokens.
-    *   `_has_index_for_book`: Verifica si ya existe un índice para un libro en ChromaDB.
-    *   `delete_book_from_rag`: Elimina el índice de un libro de ChromaDB.
-    *   `get_index_count`: Cuenta los vectores de un libro en ChromaDB.
-    *   `has_index`: Devuelve True si un libro está indexado en RAG.
-    *   `process_book_for_rag`: Procesa un libro para el sistema RAG (extrae texto, lo divide en chunks, genera embeddings y los guarda en ChromaDB).
-    *   `estimate_embeddings_for_file`: Estima el número de tokens y chunks para un archivo.
-    *   `estimate_embeddings_for_files`: Estima el número de tokens y chunks para una lista de archivos.
-    *   `query_rag`: Consulta el sistema RAG para obtener una respuesta a una pregunta dada, usando un prompt que incluye el contexto del libro, metadatos y contexto opcional de otros libros del autor.
+*   `get_embedding(text: str, task_type: str = "RETRIEVAL_DOCUMENT")`: Genera un embedding para un texto dado usando Google Gemini.
+*   `extract_text_from_pdf(file_path: str) -> str`: Extrae texto de un archivo PDF.
+*   `extract_text_from_epub(file_path: str) -> str`: Extrae texto de un archivo EPUB.
+*   `extract_text(file_path: str) -> str`: Función unificada para extraer texto de PDF o EPUB.
+*   `chunk_text(text: str, max_tokens: int = 1000) -> list[str]`: Divide el texto en chunks.
+*   `_has_index_for_book(book_id: str) -> bool`: Comprueba si un libro tiene un índice en ChromaDB.
+*   `delete_book_from_rag(book_id: str)`: Elimina el índice RAG de un libro.
+*   `get_index_count(book_id: str) -> int`: Obtiene el número de vectores para un libro.
+*   `has_index(book_id: str) -> bool`: Función pública para comprobar si un libro tiene índice RAG.
+*   `process_book_for_rag(file_path: str, book_id: str, force_reindex: bool = False)`: Procesa un libro para RAG: extrae texto, lo divide en chunks, genera embeddings y los almacena en ChromaDB.
+*   `estimate_embeddings_for_file(file_path: str, max_tokens: int = 1000) -> dict`: Estima el número de tokens y chunks para un archivo.
+*   `estimate_embeddings_for_files(file_paths: list[str], max_tokens: int = 1000) -> dict`: Estimación de tokens y chunks para múltiples archivos.
+*   `query_rag(query: str, book_id: str, mode: str = "balanced", metadata: dict | None = None, library: dict | None = None)`: Consulta el sistema RAG.
 
 
 ### `backend/schemas.py`
 
-*   **Propósito:** Define los esquemas Pydantic para la serialización y validación de datos.
+**Propósito:** Define los esquemas Pydantic para la validación de datos.
 
-*   **Clases principales:**
+**Clases principales:**
 
-    *   `BookBase`: Esquema base para los datos de un libro.
-    *   `Book`: Esquema para los datos de un libro incluyendo el ID.
-    *   `ConversionResponse`: Esquema para la respuesta de la conversión EPUB a PDF.
-    *   `RagUploadResponse`: Esquema para la respuesta de la subida de libro a RAG.
-    *   `RagQuery`: Esquema para la consulta al sistema RAG.
-    *   `RagQueryResponse`: Esquema para la respuesta del sistema RAG.
+*   `BookBase(BaseModel)`: Esquema base para un libro.
+*   `Book(BookBase)`: Esquema para un libro incluyendo el ID.
+*   `ConversionResponse(BaseModel)`: Esquema para la respuesta de conversión EPUB a PDF.
+*   `RagUploadResponse(BaseModel)`: Esquema para la respuesta de subida a RAG.
+*   `RagQuery(BaseModel)`: Esquema para la consulta a RAG.
+*   `RagQueryResponse(BaseModel)`: Esquema para la respuesta de RAG.
 
 
-### `backend/alembic/versions/1a2b3c4d5e6f_create_books_table.py`
+### `backend/utils.py`
 
-*   **Propósito:** Script Alembic para crear la tabla `books` en la base de datos.
+**Propósito:** Contiene funciones auxiliares, incluyendo la configuración de la API key de Google Gemini.
+
+**Función principal:**
+
+*   `configure_genai()`: Configura la API key de Google Gemini leyendo la variable de entorno `GOOGLE_API_KEY` o `GEMINI_API_KEY`.  Lanza una excepción si la API key no se encuentra.
+
+
+### `backend/database.py`
+
+**Propósito:** Configura la conexión a la base de datos SQLite.
+
+**Elementos principales:**
+
+*   `SQLALCHEMY_DATABASE_URL`: Cadena de conexión a la base de datos.
+*   `engine`: Objeto `create_engine` de SQLAlchemy.
+*   `SessionLocal`:  Factory para crear sesiones SQLAlchemy.
+*   `Base`: Clase base de SQLAlchemy.
 
 
 ## 4. Análisis Detallado del Frontend (React)
 
-### `frontend/src/Header.js`
-
-*   **Propósito:** Componente que representa el encabezado de la aplicación.
-
-*   **Estado:** `menuOpen` (booleano), `bookCount` (entero), `errorMessage` (string).
-*   **Efectos:** Obtiene el conteo de libros del backend y actualiza `bookCount`.  Maneja errores.  Refresca el conteo periódicamente.
-*   **Interacción con el usuario:** Menú hamburguesa para abrir/cerrar la navegación.
-*   **Interacción con el backend:** Obtiene el conteo de libros desde `/books/count`.
-
-
 ### `frontend/src/App.js`
 
-*   **Propósito:** Componente principal de la aplicación, que configura las rutas.
+**Propósito:** Componente principal de la aplicación React.  Renderiza la cabecera y las rutas de la aplicación.
 
+**Estado:** No tiene estado propio.
 
-### `frontend/src/ToolsView.js`
+**Propiedades:** No tiene propiedades.
 
-*   **Propósito:** Componente que muestra las herramientas disponibles.
-*   **Interacción con el usuario:** Permitir subir archivos por input o arrastrarlos a la zona de drop.
-*   **Interacción con el backend:** Envia una petición POST a `/tools/convert-epub-to-pdf` para convertir un archivo EPUB a PDF.
-*   **Funciones:** `handleFileChange`, `handleDrop`, `handleDragOver`, `handleConvert`.
+**Efectos secundarios:** No tiene efectos secundarios.
 
-
-### `frontend/src/UploadView.js`
-
-*   **Propósito:** Componente para subir archivos de libros.
-
-*   **Estado:** `filesToUpload` (array de objetos), `isUploading` (booleano).
-*   **Efectos:** No se utilizan efectos secundarios.
-*   **Interacción con el usuario:** Permite seleccionar múltiples archivos (PDF o EPUB) para su subida.
-*   **Interacción con el backend:** Envía una petición POST a `/upload-book/` para cada archivo.  Actualiza el estado de cada archivo (`pending`, `uploading`, `success`, `error`).
-
-
-### `frontend/src/ReaderView.js`
-
-*   **Propósito:** Componente para leer libros EPUB usando la librería ReactReader.
-
-*   **Estado:** `location` (string), `epubData` (arrayBuffer), `isLoading` (booleano), `error` (string).
-*   **Efectos:** Obtiene los datos del libro del backend.
-*   **Interacción con el usuario:** Permite la navegación dentro del libro EPUB.
-*   **Interacción con el backend:** Obtiene el libro desde `/books/download/:bookId`.
-
-
-### `frontend/src/ErrorBoundary.js`
-
-*   **Propósito:** Componente para capturar errores en la interfaz de usuario.
-
-
-### `frontend/src/RagView.js`
-
-*   **Propósito:** Componente para interactuar con el sistema RAG.
-*   **Interacción con el usuario:** Introducir consultas de texto, seleccionar libro de la biblioteca, elegir modo de respuesta.
-*   **Interacción con el backend:** Envía consultas a `/rag/query/` mediante peticiones POST.  Obtiene estado RAG de `/rag/status/:bookId` y realiza peticiones POST a `/rag/index/:bookId` para indexar.
-*   **Funciones:** `handleQuerySubmit`, `checkLibraryStatus`, `indexLibraryBook`, `focusChatInput`.
-*   **Estado:**  `message`, `isLoading`, `bookId`, `chatHistory`, `currentQuery`, `libraryBooks`, `selectedLibraryId`, `libStatus`, `actionsBusy`, `refreshing`, `searchTerm`, `searching`, `searchResults`, `resultsOpen`, `mode`, `selectedBook`.
+**Interacción con el backend:** No tiene interacciones directas con el backend.
 
 
 ### `frontend/src/LibraryView.js`
 
-*   **Propósito:** Componente que muestra la lista de libros.
+**Propósito:** Muestra la biblioteca de libros, permitiendo la búsqueda y paginación.
 
-*   **Estado:** `books` (array de objetos), `searchTerm` (string), `error` (string), `loading` (booleano), `isMobile` (booleano).
-*   **Efectos:** Obtiene la lista de libros del backend, con filtrado opcional por categoría y búsqueda.  Maneja errores y carga inicial.
-*   **Interacción con el usuario:** Permite la búsqueda de libros, visualizar detalle de autores y categorías, y eliminar libros.
-*   **Interacción con el backend:** Obtiene los libros desde `/books/`, usando parámetros de consulta (`category`, `search`, `author`). Envía peticiones DELETE a `/books/:bookId` para eliminar libros.
-*   **Funciones:** `fetchBooks`, `handleAuthorClick`, `handleCategoryClick`, `handleDeleteBook`.
+**Estado:**
+
+*   `books`: Array de objetos que representan los libros.
+*   `searchTerm`: Término de búsqueda del usuario.
+*   `error`: Mensaje de error.
+*   `loading`: Indica si se están cargando los datos.
+
+**Propiedades:** No tiene propiedades.
+
+**Efectos secundarios:**  Usa `useEffect` para obtener los libros del backend mediante `fetchBooks`.
+
+**Interacción con el backend:**  Se comunica con el backend a través del endpoint `/books/`, usando parámetros de consulta para la búsqueda y paginación.  También usa un endpoint DELETE para eliminar libros.
 
 
-### `frontend/src/config.js`
+### `frontend/src/UploadView.js`
 
-*   **Propósito:** Archivo de configuración para la URL de la API.
+**Propósito:** Permite a los usuarios subir libros (PDF o EPUB).
+
+**Estado:**
+
+*   `filesToUpload`: Array de objetos que representan los archivos a subir. Cada objeto incluye el archivo, el estado de subida y un mensaje.
+*   `isUploading`: Booleano que indica si se está subiendo un archivo.
+
+**Propiedades:** No tiene propiedades.
+
+**Efectos secundarios:** No tiene efectos secundarios significativos.
+
+**Interacción con el backend:** Se comunica con el backend a través del endpoint `/upload-book/` para subir cada archivo. Actualiza el estado de cada archivo individualmente.
+
+
+### `frontend/src/ReaderView.js`
+
+**Propósito:** Permite leer libros EPUB usando `react-reader`.
+
+**Estado:**
+
+*   `location`: Ubicación actual en el libro.
+*   `epubData`: Datos del libro EPUB obtenidos del backend.
+*   `isLoading`: Indica si se está cargando el libro.
+*   `error`: Mensaje de error.
+
+**Propiedades:** No tiene propiedades.
+
+**Efectos secundarios:**  Usa `useEffect` para obtener los datos del libro EPUB del backend.
+
+**Interacción con el backend:** Se comunica con el backend a través del endpoint `/books/download/:bookId` para descargar el archivo EPUB.
+
+
+### `frontend/src/ToolsView.js`
+
+**Propósito:**  Proporciona herramientas, actualmente un convertidor de EPUB a PDF.
+
+**Estado:**
+
+* `selectedFile`: Archivo EPUB seleccionado por el usuario.
+* `message`: Mensaje al usuario (éxito, error, estado de conversión).
+* `isLoading`: Indica si la conversión está en proceso.
+
+**Propiedades:** No tiene propiedades.
+
+**Efectos secundarios:** No hay efectos secundarios significativos.
+
+**Interacción con el backend:** Utiliza el endpoint `/tools/convert-epub-to-pdf` para la conversión.
 
 
 ### `frontend/src/CategoriesView.js`
 
-*   **Propósito:** Componente que muestra la lista de categorías.
+**Propósito:** Muestra una lista de categorías de libros.
 
-*   **Estado:** `categories` (array de strings), `error` (string), `loading` (booleano).
-*   **Efectos:** Obtiene la lista de categorías del backend.
-*   **Interacción con el usuario:** Navegación a la vista principal con filtro de categoría.
-*   **Interacción con el backend:** Obtiene las categorías desde `/categories/`.
+**Estado:**
+
+*   `categories`: Array de categorías obtenidas del backend.
+*   `error`: Mensaje de error.
+*   `loading`: Booleano que indica si se están cargando las categorías.
+
+**Propiedades:** No tiene propiedades.
+
+**Efectos secundarios:** Usa `useEffect` para obtener las categorías del backend mediante `/categories/`.
+
+**Interacción con el backend:** Se comunica con el backend mediante el endpoint `/categories/`.
+
+
+### `frontend/src/RagView.js`
+
+**Propósito:** Permite al usuario consultar un modelo de IA sobre libros usando RAG.
+
+**Estado:**
+
+*   `message`: Mensajes al usuario.
+*   `isLoading`: Indica si se está procesando una consulta.
+*   `bookId`: ID del libro seleccionado para la conversación.
+*   `chatHistory`: Historial de la conversación.
+*   `currentQuery`: Consulta actual del usuario.
+*   `libraryBooks`:  Libros disponibles en la biblioteca para seleccionar.
+*   `selectedLibraryId`: ID del libro seleccionado de la lista.
+*   `libStatus`: Estado del índice RAG del libro seleccionado.
+*   `actionsBusy`: Indica si hay alguna acción pesada en ejecución (indexación, etc.)
+*   `refreshing`: Indica si se está actualizando el estado de RAG.
+*   `searchTerm`: Término de búsqueda para la selección de libro.
+*   `searching`: Indica si se está buscando un libro.
+*   `searchResults`: Resultados de la búsqueda.
+*   `resultsOpen`: Indica si se muestran los resultados de búsqueda.
+*   `mode`: Modo de respuesta de RAG (`strict`, `balanced`, `open`).
+*   `selectedBook`: Datos del libro seleccionado.
+
+**Propiedades:** No tiene propiedades.
+
+**Efectos secundarios:** Usa varios `useEffect` para gestionar la carga de libros, la búsqueda, el auto-scroll y el estado del índice RAG.
+
+**Interacción con el backend:** Se comunica con el backend a través de los endpoints `/rag/query/`, `/rag/status/:book_id` y `/rag/index/:book_id`.
+
+
+### `frontend/src/Header.js`
+
+**Propósito:** Componente de cabecera de la aplicación.
+
+**Estado:**
+
+* `menuOpen`: Indica si el menú está abierto.
+* `bookCount`: Número de libros en la biblioteca.
+* `errorMessage`: Mensaje de error al obtener el contador de libros.
+
+**Propiedades:** No tiene propiedades.
+
+**Efectos secundarios:** Usa `useEffect` para obtener el número de libros del backend (`/books/count`) y actualiza el contador cada minuto.
+
+**Interacción con el backend:** Obtiene el conteo de libros del endpoint `/books/count`.
+
+
+### `frontend/src/ErrorBoundary.js`
+
+**Propósito:** Componente React para gestionar errores en la UI.  Muestra un mensaje de error si ocurre una excepción en uno de sus componentes hijos.
 
 
 ## 5. Flujo de Datos y API
 
-El flujo de datos comienza cuando el usuario sube un libro en `UploadView.js`. El frontend envía una petición POST a `/upload-book/` en el backend (`main.py`).  El backend procesa el libro, extrae texto y metadatos (si es posible), y lo guarda en la base de datos.  La respuesta contiene los datos del libro recién creado.
+El flujo de datos comienza cuando el usuario sube un libro a través de `UploadView.js`. Este componente envía el archivo al backend a través del endpoint `/upload-book/`. El backend procesa el archivo (extracción de texto, detección de portada), realiza un análisis con Gemini y guarda la información en la base de datos. La información del libro se retorna al frontend y se actualiza la interfaz.
 
-La vista de la biblioteca (`LibraryView.js`) obtiene los libros del backend a través de la ruta `/books/`. Esta ruta soporta parámetros de consulta para la búsqueda y filtrado (categoría, búsqueda general, autor).
+Para leer el libro EPUB, `LibraryView.js` redirige al usuario a `ReaderView.js`, que obtiene los datos del libro (el contenido del archivo) del backend a través de `/books/download/:bookId` usando `ReactReader`.
 
-Para la descarga de un libro, se utiliza la ruta `/books/download/:bookId`. La ruta `/categories/` proporciona la lista de categorías disponibles.
+La vista `LibraryView.js` obtiene los datos de los libros del endpoint `/books/` con los parámetros de filtrado necesarios.
 
-El sistema RAG permite la indexación de libros mediante las rutas `/rag/upload-book/` (para libros nuevos) y `/rag/index/:bookId` (para libros existentes). Las consultas al sistema RAG se realizan a través de la ruta `/rag/query/`. La ruta `/rag/status/:bookId` proporciona información sobre el estado de indexación de un libro.
+La vista `CategoriesView.js` obtiene las categorías disponibles del endpoint `/categories/`.
 
-**Principales Endpoints de la API:**
+La vista `ToolsView.js` utiliza el endpoint `/tools/convert-epub-to-pdf` para convertir un EPUB a PDF.
 
-*   `/upload-book/` (POST): Sube un nuevo libro.
-*   `/books/` (GET): Obtiene una lista de libros (soporta parámetros de búsqueda y filtrado).
-*   `/books/count` (GET): Obtiene el número de libros.
-*   `/categories/` (GET): Obtiene la lista de categorías.
-*   `/books/:bookId` (DELETE): Elimina un libro.
-*   `/books/download/:bookId` (GET): Descarga un libro.
-*   `/tools/convert-epub-to-pdf` (POST): Convierte un EPUB a PDF.
-*   `/rag/upload-book/` (POST): Sube un libro para el sistema RAG.
-*   `/rag/query/` (POST): Realiza una consulta al sistema RAG.
-*   `/rag/index/:bookId` (POST): Indexa un libro existente en RAG.
-*   `/rag/status/:bookId` (GET): Obtiene el estado RAG de un libro.
-*   `/rag/reindex/category/:category_name` (POST): Reindexa una categoría en RAG.
-*   `/rag/reindex/all` (POST): Reindexa toda la biblioteca en RAG.
-*   `/rag/estimate/book/:book_id` (GET): Estimación tokens/chunks y coste opcional para un libro.
-*   `/rag/estimate/category/:category_name` (GET): Estimación tokens/chunks y coste opcional para una categoría.
-*   `/rag/estimate/all` (GET): Estimación tokens/chunks y coste opcional para toda la biblioteca.
+La vista `RagView.js` interactúa con los endpoints `/rag/query/` para las consultas al modelo de lenguaje, `/rag/status/:book_id` para comprobar el estado RAG de un libro y `/rag/index/:book_id` para (re)indexar libros.
+
+**Endpoints de la API:**
+
+*   `/upload-book/`: POST - Sube un libro.
+*   `/books/`: GET - Obtiene libros (con opciones de filtrado).
+*   `/books/count`: GET - Obtiene el número de libros.
+*   `/books/search/`: GET - Busca libros por título parcial.
+*   `/categories/`: GET - Obtiene categorías.
+*   `/books/:book_id`: DELETE - Elimina un libro.
+*   `/books/download/:book_id`: GET - Descarga un libro.
+*   `/tools/convert-epub-to-pdf`: POST - Convierte EPUB a PDF.
+*   `/rag/upload-book/`: POST - Sube un libro para RAG.
+*   `/rag/query/`: POST - Consulta RAG.
+*   `/rag/index/:book_id`: POST - Indexa un libro en RAG.
+*   `/rag/status/:book_id`: GET - Estado del índice RAG.
+*   `/rag/reindex/category/:category_name`: POST - Reindexa una categoría en RAG.
+*   `/rag/reindex/all`: POST - Reindexa todos los libros en RAG.
+*   `/rag/estimate/book/:book_id`: GET - Estimación de coste y número de embeddings para un libro.
+*   `/rag/estimate/category/:category_name`: GET - Estimación de coste y número de embeddings para una categoría.
+*   `/rag/estimate/all`: GET - Estimación de coste y número de embeddings para todos los libros.
 
