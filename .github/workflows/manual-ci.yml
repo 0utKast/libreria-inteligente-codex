@@ -1,75 +1,25 @@
-name: CI
+name: Manual CI
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch or tag to test'
+        required: false
+        default: 'main'
 
 jobs:
-  generate-tests:
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    concurrency:
-      group: ci-generate-${{ github.ref }}
-      cancel-in-progress: true
-
-    steps:
-      - name: Checkout del código de la PR
-        uses: actions/checkout@v4
-
-      - name: Obtener archivos modificados
-        id: changed_files
-        uses: tj-actions/changed-files@v44
-        with:
-          files: |
-            backend/**/*.py
-            !backend/tests/**
-            frontend/src/**/*.js
-            !frontend/src/**/*.test.js
-          files_ignore: |
-            **/*.md
-            **/*.txt
-
-      - name: Configurar Python
-        if: steps.changed_files.outputs.any_changed == 'true'
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Instalar dependencias de Python
-        if: steps.changed_files.outputs.any_changed == 'true'
-        run: pip install -r backend/requirements.txt
-
-      - name: Generar Tests con Gemini
-        if: steps.changed_files.outputs.any_changed == 'true'
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          echo "Archivos modificados para procesar:"
-          echo "${{ steps.changed_files.outputs.all_changed_files }}"
-          python backend/scripts/generate_tests.py ${{ steps.changed_files.outputs.all_changed_files }}
-
-      - name: Resumen de archivos procesados (sin push)
-        if: steps.changed_files.outputs.any_changed == 'true'
-        run: |
-          echo "### Tests autogenerados" >> $GITHUB_STEP_SUMMARY
-          echo "Archivos procesados por el generador (no se commitean):" >> $GITHUB_STEP_SUMMARY
-          echo "\n\n\`\`\`\n${{ steps.changed_files.outputs.all_changed_files }}\n\`\`\`" >> $GITHUB_STEP_SUMMARY
-
   test:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ci-test-${{ github.ref }}
-      cancel-in-progress: true
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       DISABLE_AI: "1"
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v3
+    - name: Check out code (ref input)
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.ref }}
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -87,7 +37,6 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
         export DISABLE_AI=1
         source .venv/bin/activate
-        # Ejecutar suite curada con cobertura
         pytest --cov=backend --cov-report=xml --cov-report=term
 
     - name: Upload Python coverage artifact
@@ -108,7 +57,6 @@ print(f"Total: {pct:.1f}%")
 PY
         )
         echo "$PY_OUT" >> $GITHUB_STEP_SUMMARY
-        
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -141,3 +89,4 @@ PY
         else
           echo "No coverage file found." >> $GITHUB_STEP_SUMMARY
         fi
+
