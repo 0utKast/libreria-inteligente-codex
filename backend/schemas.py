@@ -23,6 +23,7 @@ class RagUploadResponse(BaseModel):
 class RagQuery(BaseModel):
     query: str
     book_id: str
+    mode: str | None = None  # 'strict' | 'balanced' | 'open'
 
 class RagQueryResponse(BaseModel):
     response: str
