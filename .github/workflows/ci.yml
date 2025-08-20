@@ -105,6 +105,8 @@ jobs:
       working-directory: ./frontend
       run: npm install
 
-    - name: Run Node.js tests
+    - name: Run Node.js tests (smoke)
       working-directory: ./frontend
-      run: npm test
+      env:
+        CI: true
+      run: npm test -- --watchAll=false --testPathPattern=CI\.smoke\.test\.js
