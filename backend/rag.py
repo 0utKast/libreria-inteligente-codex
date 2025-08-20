@@ -23,9 +23,13 @@ def _ensure_init():
         return
     load_dotenv()
     api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
-    _ai_enabled = bool(api_key)
-    if _ai_enabled:
-        genai.configure(api_key=api_key)
+    # Do not configure genai if AI is disabled for tests
+    if os.getenv("DISABLE_AI") == "1":
+        _ai_enabled = False
+    else:
+        _ai_enabled = bool(api_key)
+        if _ai_enabled:
+            genai.configure(api_key=api_key)
     # Persist Chroma index to disk
     client = chromadb.PersistentClient(path=str(os.getenv("CHROMA_PATH", "./rag_index")))
     _collection = client.get_or_create_collection(name="book_rag_collection")
