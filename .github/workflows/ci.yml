@@ -101,12 +101,14 @@ jobs:
       run: |
         source .venv/bin/activate
         echo "### Python Coverage" >> $GITHUB_STEP_SUMMARY
-        python - << 'PY'
-        import xml.etree.ElementTree as ET
-        root = ET.parse('coverage.xml').getroot()
-        pct = float(root.attrib.get('line-rate', '0')) * 100.0
-        print(f"Total: {pct:.1f}%")
-        PY
+        PY_OUT=$(python - << 'PY'
+import xml.etree.ElementTree as ET
+root = ET.parse('coverage.xml').getroot()
+pct = float(root.attrib.get('line-rate', '0')) * 100.0
+print(f"Total: {pct:.1f}%")
+PY
+        )
+        echo "$PY_OUT" >> $GITHUB_STEP_SUMMARY
         
 
     - name: Set up Node.js
@@ -134,4 +136,9 @@ jobs:
       working-directory: ./frontend
       run: |
         echo "### Node Coverage" >> $GITHUB_STEP_SUMMARY
-        node -e "const s=require('./coverage/coverage-summary.json'); const t=s.total; const pct=t.lines.pct; console.log('Total: '+pct+'%');"
+        if [ -f coverage/coverage-summary.json ]; then
+          PCT=$(node -e "const s=require('./coverage/coverage-summary.json'); console.log(s.total.lines.pct)")
+          echo "Total: ${PCT}%" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "No coverage file found." >> $GITHUB_STEP_SUMMARY
+        fi
