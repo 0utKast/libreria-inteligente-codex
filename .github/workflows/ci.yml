@@ -1,3 +1,4 @@
+# Forzando la reevaluación del archivo por parte de Git
 name: CI
 
 on:
@@ -137,7 +138,7 @@ PY
         echo "### Node Coverage" >> $GITHUB_STEP_SUMMARY
         if [ -f coverage/coverage-summary.json ]; then
           PCT=$(node -e "const s=require('./coverage/coverage-summary.json'); console.log(s.total.lines.pct)")
-          echo "Total: ${PCT}%" >> $GITHUB_STEP_SUMMARY
+          echo "Total: ${PCT}%
         else
-          echo "No coverage file found." >> $GITHUB_STEP_SUMMARY
+          echo "No coverage file found."
         fi
