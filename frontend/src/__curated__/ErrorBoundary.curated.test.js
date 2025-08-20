@@ -10,6 +10,6 @@ test('ErrorBoundary shows fallback and message', () => {
     </ErrorBoundary>
   );
   expect(screen.getByText('Ocurrió un error en la interfaz')).toBeInTheDocument();
-  expect(screen.getByText('Custom error')).toBeInTheDocument();
+  // El mensaje se renderiza como "Error: Custom error" por ser un objeto Error
+  expect(screen.getByText(/Custom error/)).toBeInTheDocument();
 });
-
