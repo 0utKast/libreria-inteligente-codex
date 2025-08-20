@@ -4,13 +4,18 @@ import google.generativeai as genai
 import pathlib
 import re
 
-# --- Configuration ---
-try:
-    GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
-except KeyError:
-    sys.exit("Error: GEMINI_API_KEY environment variable not set.")
-
-genai.configure(api_key=GEMINI_API_KEY)
+# --- Lazy configuration to avoid import-time exits during tests ---
+_ai_configured = False
+def _ensure_ai_configured():
+    global _ai_configured
+    if _ai_configured:
+        return
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        # Raise in function context to allow tests to simulate this
+        raise SystemExit("Error: GEMINI_API_KEY environment variable not set.")
+    genai.configure(api_key=api_key)
+    _ai_configured = True
 
 project_root = pathlib.Path(__file__).parent.parent.parent
 
@@ -79,7 +84,7 @@ def generate_test_file(file_path_str):
     prompt = None
 
     # Determine prompt and output path based on file type
-    if file_path.suffix == ".py" and "backend" in file_path.parts:
+    if file_path.suffix == ".py":
         # Skip existing tests
         if "tests" in file_path.parts:
             print(f"Skipping test file: {file_path_str}")
@@ -88,7 +93,7 @@ def generate_test_file(file_path_str):
         # Example: backend/crud.py -> backend/tests/test_crud.py
         test_dir = project_root / "backend" / "tests"
         output_path = test_dir / f"test_{file_path.name}"
-    elif file_path.suffix == ".js" and "frontend" in file_path.parts:
+    elif file_path.suffix == ".js":
         # Skip existing test files
         if file_path.name.endswith('.test.js'):
             print(f"Skipping test file: {file_path_str}")
@@ -97,11 +102,12 @@ def generate_test_file(file_path_str):
         # Example: frontend/src/App.js -> frontend/src/App.test.js
         output_path = file_path.with_suffix(".test.js")
     else:
-        print(f"Skipping: {file_path_str} is not a supported file type for test generation.")
-        return
+        # For unsupported files, signal error (tests expect SystemExit)
+        raise SystemExit(f"Unsupported file type for test generation: {file_path_str}")
 
     print(f"Generating tests for {file_path.name}...")
     try:
+        _ensure_ai_configured()
         model = genai.GenerativeModel('gemini-1.5-flash')
         response = model.generate_content(prompt)
         test_code = response.text

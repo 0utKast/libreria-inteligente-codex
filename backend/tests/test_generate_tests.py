@@ -76,4 +76,12 @@ def test_generate_test_file_api_error(monkeypatch):
 #Import function from original file.  Requires restructuring to allow this.
 from backend.scripts.generate_tests import generate_test_file
 
-**Nota:** Este código de prueba requiere que el archivo `generate_tests.py` esté en el directorio `backend/scripts/`  y que se pueda importar.  La solución utiliza `unittest.mock.patch` para simular la llamada a la API de Google Gemini, evitando dependencias externas durante la ejecución de las pruebas.  Los mocks devuelven respuestas de prueba, que deberian ser reemplazadas por casos de prueba reales.  Además se ha añadido manejo de excepciones para mejorar la robustez de las pruebas. Recuerda instalar las dependencias necesarias: `pytest`.  Crea los archivos dummy `test_file_with_happy_path.py` y `test_file_with_errors.py` en el directorio raíz para ejecutar las pruebas.
+# Nota: Este código de prueba requiere que el archivo `generate_tests.py` esté en
+# el directorio `backend/scripts/` y que se pueda importar. La solución utiliza
+# `unittest.mock.patch` para simular la llamada a la API de Google Gemini, evitando
+# dependencias externas durante la ejecución de las pruebas. Los mocks devuelven
+# respuestas de prueba que deberían ser reemplazadas por casos de prueba reales.
+# Además, se ha añadido manejo de excepciones para mejorar la robustez de las pruebas.
+# Recuerda instalar las dependencias necesarias: `pytest`.
+# Crea los archivos dummy `test_file_with_happy_path.py` y `test_file_with_errors.py`
+# en el directorio raíz para ejecutar las pruebas.
