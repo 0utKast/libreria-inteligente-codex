@@ -50,11 +50,11 @@ jobs:
         source .venv/bin/activate
         echo "### Python Coverage" >> $GITHUB_STEP_SUMMARY
         PY_OUT=$(python - << 'PY'
-import xml.etree.ElementTree as ET
-root = ET.parse('coverage.xml').getroot()
-pct = float(root.attrib.get('line-rate', '0')) * 100.0
-print(f"Total: {pct:.1f}%")
-PY
+          import xml.etree.ElementTree as ET
+          root = ET.parse('coverage.xml').getroot()
+          pct = float(root.attrib.get('line-rate', '0')) * 100.0
+          print(f"Total: {pct:.1f}%")
+        PY
         )
         echo "$PY_OUT" >> $GITHUB_STEP_SUMMARY
 
