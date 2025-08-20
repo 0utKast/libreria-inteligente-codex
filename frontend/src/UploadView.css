@@ -1,0 +1,107 @@
+.upload-view-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.upload-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #282c34;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.drop-zone {
+  border: 2px dashed #61dafb;
+  border-radius: 8px;
+  padding: 40px;
+  margin-bottom: 20px;
+  color: #ccc;
+}
+
+#file-input {
+  display: none;
+}
+
+.file-label {
+  background-color: #61dafb;
+  color: #20232a;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.upload-button, .library-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.upload-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.upload-button:hover:not(:disabled) {
+  background-color: #45a049;
+}
+
+.library-button {
+    background-color: #61dafb;
+    color: #20232a;
+    margin-left: 15px;
+}
+
+.library-button:hover {
+    background-color: #3aa8c8;
+}
+
+.file-list {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.file-item {
+  background-color: #3a3f4a;
+  border-left: 5px solid #61dafb; /* Blue for pending */
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-item.uploading {
+  border-left-color: #f2c94c; /* Yellow for uploading */
+}
+
+.file-item.success {
+  border-left-color: #4CAF50; /* Green for success */
+}
+
+.file-item.error {
+  border-left-color: #ff6b6b; /* Red for error */
+}
+
+.file-name {
+  color: #e6e6e6;
+  font-weight: bold;
+}
+
+.file-status {
+  color: #ccc;
+  font-style: italic;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,63 @@
+name: 'Gemini AI: PR Review'
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: pip install google-genai --no-cache-dir --force-reinstall
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+
+      - name: Call Gemini for PR Review
+        id: gemini_review
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          PR_DIFF=$(gh pr diff $PR_NUMBER --repo ${{ github.repository }})
+          GEMINI_RESPONSE=$(echo "${PR_DIFF}" | python backend/scripts/review_pr.py)
+          echo "Raw Gemini Response: ${GEMINI_RESPONSE}"
+
+          JSON_OUTPUT=$(echo "${GEMINI_RESPONSE}" | jq -c .)
+
+          if [ -z "$JSON_OUTPUT" ] || echo "$JSON_OUTPUT" | jq -e '.error' >/dev/null; then
+            echo "Error: Gemini did not return valid JSON or returned an error." >&2
+            echo "$GEMINI_RESPONSE" >&2
+            exit 1
+          fi
+
+          REVIEW_OUTPUT=$(echo "${JSON_OUTPUT}" | jq -r '.review')
+          REVIEW_FILE=$(mktemp)
+          echo "${REVIEW_OUTPUT}" > "$REVIEW_FILE"
+          echo "review_file=$REVIEW_FILE" >> $GITHUB_OUTPUT
+
+      - name: Post PR Review Comment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REVIEW_FILE="${{ steps.gemini_review.outputs.review_file }}"
+          gh pr comment $PR_NUMBER --body-file "$REVIEW_FILE" --repo ${{ github.repository }}
+
+      - name: Cleanup temporary files
+        if: always()
+        run: |
+          rm -f "${{ steps.gemini_review.outputs.review_file }}"

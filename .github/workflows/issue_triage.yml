@@ -1,0 +1,99 @@
+name: Intelligent Issue Triage
+
+on:
+  issues:
+    types: [opened, reopened]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write # Permite que el workflow escriba en las issues (ej. añadir etiquetas)
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x' # Usa la versión de Python que prefieras, 3.x es una buena opción general
+
+    - name: Install Gemini CLI
+      run: pip install gemini-cli
+
+    - name: Install jq
+      run: sudo apt-get install -y jq
+
+    - name: Get Issue Details
+      id: get_issue
+      run: |
+        ISSUE_TITLE="${{ github.event.issue.title }}"
+        ISSUE_BODY="${{ github.event.issue.body }}"
+        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        echo "Issue Title: $ISSUE_TITLE"
+        echo "Issue Body: $ISSUE_BODY"
+        echo "Issue Number: $ISSUE_NUMBER"
+        echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
+        echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+        echo "issue_body<<EOF" >> $GITHUB_OUTPUT
+        echo "$ISSUE_BODY" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Call Gemini for Triage (Python SDK)
+      id: gemini_triage
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        ISSUE_TITLE="${{ steps.get_issue.outputs.issue_title }}"
+        ISSUE_BODY="${{ steps.get_issue.outputs.issue_body }}"
+
+        # Llama al script de Python para clasificar la incidencia
+        GEMINI_RESPONSE=$(python backend/scripts/classify_issue.py "${ISSUE_TITLE}" "${ISSUE_BODY}")
+        echo "Raw Gemini Response: ${GEMINI_RESPONSE}"
+
+        # Extrae el contenido JSON de la respuesta de Gemini
+        JSON_OUTPUT=$(echo "${GEMINI_RESPONSE}" | jq -c .)
+
+        if [ -z "$JSON_OUTPUT" ] || echo "$JSON_OUTPUT" | jq -e '.error' >/dev/null; then
+          echo "Error: Gemini did not return valid JSON or returned an error." >&2
+          echo "$GEMINI_RESPONSE" >&2
+          exit 1
+        fi
+
+        SUGGESTED_LABEL=$(echo "${JSON_OUTPUT}" | jq -r '.label')
+        SUGGESTED_PRIORITY=$(echo "${JSON_OUTPUT}" | jq -r '.priority')
+
+        echo "Suggested Label: ${SUGGESTED_LABEL}"
+        echo "Suggested Priority: ${SUGGESTED_PRIORITY}"
+
+        echo "suggested_label=${SUGGESTED_LABEL}" >> $GITHUB_OUTPUT
+        echo "suggested_priority=${SUGGESTED_PRIORITY}" >> $GITHUB_OUTPUT
+
+
+    - name: Ensure Priority Labels Exist
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh label create 'priority: low' --color 0E8A16 --description 'Low priority issue' || true
+        gh label create 'priority: medium' --color FBCA04 --description 'Medium priority issue' || true
+        gh label create 'priority: high' --color D93F0B --description 'High priority issue' || true
+        gh label create 'priority: critical' --color B60205 --description 'Critical priority issue' || true
+
+    - name: Update Issue with Triage Results
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token proporcionado automáticamente por GitHub Actions
+      run: |
+        ISSUE_NUMBER="${{ steps.get_issue.outputs.issue_number }}"
+        SUGGESTED_LABEL="${{ steps.gemini_triage.outputs.suggested_label }}"
+        SUGGESTED_PRIORITY="${{ steps.gemini_triage.outputs.suggested_priority }}"
+
+        echo "Adding label '$SUGGESTED_LABEL' to issue #$ISSUE_NUMBER"
+        gh issue edit $ISSUE_NUMBER --add-label "$SUGGESTED_LABEL" --repo ${{ github.repository }}
+
+        # Sugerencia: Añadir también la prioridad como una etiqueta para mejor filtrado
+        echo "Adding priority label 'priority: $SUGGESTED_PRIORITY' to issue #$ISSUE_NUMBER"
+        gh issue edit $ISSUE_NUMBER --add-label "priority: $SUGGESTED_PRIORITY" --repo ${{ github.repository }}
+
+        echo "Adding comment with suggested priority '$SUGGESTED_PRIORITY' to issue #$ISSUE_NUMBER" 
+        gh issue comment $ISSUE_NUMBER --body "Gemini Triage Suggestion: Priority: $SUGGESTED_PRIORITY" --repo ${{ github.repository }}

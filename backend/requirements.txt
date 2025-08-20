@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+python-multipart
+ebooklib
+PyMuPDF
+google-generativeai
+python-dotenv
+beautifulsoup4
+sqlalchemy
+alembic
+WeasyPrint
+chromadb
+pypdf
+tiktoken
+pytest
+PyPDF2
