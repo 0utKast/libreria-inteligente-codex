@@ -4,10 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
-      - 'feature/**'
   workflow_dispatch:
 
 jobs:
@@ -16,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    concurrency:
+      group: ci-generate-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout del código de la PR
@@ -62,6 +61,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ci-test-${{ github.ref }}
+      cancel-in-progress: true
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       DISABLE_AI: "1"
