@@ -110,8 +110,8 @@ jobs:
       working-directory: ./frontend
       run: npm install
 
-    - name: Run Node.js tests (smoke)
+    - name: Run Node.js tests (curated + smoke)
       working-directory: ./frontend
       env:
         CI: true
-      run: npm test -- --watchAll=false --testPathPattern=CI\.smoke\.test\.js
+      run: npm test -- --watchAll=false --testPathPattern="(CI\\.smoke\\.test\\.js|__curated__/.*\\.test\\.js)"
