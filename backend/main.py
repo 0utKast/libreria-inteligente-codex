@@ -16,8 +16,8 @@ from dotenv import load_dotenv
 import json
 from typing import List
 
-import crud, models, database, schemas
-import rag # Import the new RAG module
+from . import crud, models, database, schemas
+from . import rag  # Import the new RAG module
 import uuid # For generating unique book IDs
 
 # --- Configuración Inicial ---

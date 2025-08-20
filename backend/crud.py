@@ -1,7 +1,7 @@
 # Test comment to trigger workflow
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, or_
-import models
+from . import models
 import os
 
 def get_book_by_path(db: Session, file_path: str):

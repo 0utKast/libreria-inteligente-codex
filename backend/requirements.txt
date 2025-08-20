@@ -13,5 +13,6 @@ chromadb
 pypdf
 tiktoken
 pytest
+pytest-cov
 pytest-asyncio
 PyPDF2
