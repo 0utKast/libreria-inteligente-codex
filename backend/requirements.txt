@@ -16,3 +16,4 @@ pytest
 pytest-cov
 pytest-asyncio
 PyPDF2
+ruff
