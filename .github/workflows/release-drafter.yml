@@ -1,0 +1,63 @@
+
+name: Draft Release Notes
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  create-release-draft:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to create releases
+      pull-requests: read # Needed to get commit messages
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history to find previous tags
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install google-generativeai
+
+      - name: Get previous tag
+        id: previoustag
+        run: |
+          # Get the latest tag, which is the current one
+          current_tag=${{ github.ref_name }}
+          echo "Current tag: $current_tag"
+
+          # Get the tag before the current one
+          previous_tag=$(git describe --tags --abbrev=0 "$current_tag^" 2>/dev/null || git rev-list --max-parents=0 HEAD)
+          echo "Previous tag: $previous_tag"
+
+          echo "previous_tag=$previous_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes
+        id: releasenotes
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          notes=$(python backend/scripts/generate_release_notes.py ${{ steps.previoustag.outputs.previous_tag }} ${{ github.ref_name }})
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$notes" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Draft Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: 'Release ${{ github.ref_name }}'
+          body: ${{ steps.releasenotes.outputs.notes }}
+          draft: true
+          prerelease: false
