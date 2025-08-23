@@ -1,4 +1,5 @@
 name: CI Principal
+run-name: "CI Principal • PR #${{ github.event.pull_request.number || 'manual' }}"
 
 on:
   pull_request:
@@ -7,7 +8,7 @@ on:
 
 jobs:
   generate-tests:
-    if: "${{ github.event_name == 'pull_request' }}"
+    if: ${{ github.event_name == 'pull_request' && vars.ENABLE_CI_TESTS == 'true' }}
     runs-on: ubuntu-latest
     permissions: 
       contents: read
@@ -60,6 +61,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && vars.ENABLE_CI_TESTS == 'true' }}
     concurrency:
       group: ci-test-${{ github.ref }}
       cancel-in-progress: true
@@ -69,7 +71,7 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -85,7 +87,7 @@ jobs:
     - name: Run Python tests (curated)
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
-        exportDisable_AI=1
+        export DISABLE_AI=1
         source .venv/bin/activate
         # Ejecutar suite curada con cobertura
         pytest backend/tests_curated/ --cov=backend --cov-report=xml --cov-report=term
@@ -110,7 +112,7 @@ PY
         echo "$PY_OUT" >> $GITHUB_STEP_SUMMARY
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
 
@@ -122,7 +124,7 @@ PY
       working-directory: ./frontend
       env:
         CI: true
-      run: npm test -- --watchAll=false --coverage --testPathPattern="(CI.smoke.test.js|__curated__/.*.test.js)"
+      run: npm test -- --watchAll=false --coverage --testPathPattern="(CI\.smoke\.test\.js|__curated__/.*\.test\.js)"
 
     - name: Upload Node coverage artifact
       uses: actions/upload-artifact@v4
