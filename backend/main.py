@@ -175,7 +175,8 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
     if crud.get_book_by_path(db, file_path):
         raise HTTPException(status_code=409, detail="Este libro ya ha sido añadido.")
 
-    with open(file_path, "wb") as buffer: shutil.copyfileobj(book_file.file, buffer)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(book_file.file, buffer)
 
     file_ext = os.path.splitext(book_file.filename)[1].lower()
     try:
@@ -183,7 +184,8 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
             book_data = process_pdf(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
         elif file_ext == ".epub":
             book_data = process_epub(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
-        else: raise HTTPException(status_code=400, detail="Tipo de archivo no soportado.")
+        else:
+            raise HTTPException(status_code=400, detail="Tipo de archivo no soportado.")
     except HTTPException as e:
         os.remove(file_path) # Limpiar el archivo subido si el procesamiento falla
         raise e
@@ -371,7 +373,7 @@ async def convert_epub_to_pdf(file: UploadFile = File(...)):
 @app.post("/rag/upload-book/", response_model=schemas.RagUploadResponse)
 async def upload_book_for_rag(file: UploadFile = File(...)):
     book_id = str(uuid.uuid4())
-    file_location = os.path.join(STATIC_TEMP_DIR, f"{book_id}_{file.filename}")
+    file_location = os.path.join(str(TEMP_BOOKS_DIR_FS), f"{book_id}_{file.filename}")
     with open(file_location, "wb") as f:
         f.write(await file.read())
     

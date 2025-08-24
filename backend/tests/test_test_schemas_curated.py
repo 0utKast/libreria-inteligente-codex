@@ -1,6 +1,6 @@
 import pytest
 from backend.schemas import Book, BookBase, ConversionResponse, RagUploadResponse, RagQuery, RagQueryResponse
-from typing import Union
+
 from pydantic import ValidationError
 
 

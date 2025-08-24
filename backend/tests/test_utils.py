@@ -1,6 +1,6 @@
 import os
 import pytest
-import google.generativeai as genai
+
 from unittest.mock import patch
 from backend.utils import configure_genai
 
