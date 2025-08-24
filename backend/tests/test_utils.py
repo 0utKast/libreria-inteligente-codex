@@ -1,9 +1,9 @@
 import os
 import pytest
 import google.generativeai as genai
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from backend.utils import configure_genai
-from dotenv import load_dotenv
+
 
 
 @patch.dict(os.environ, {}, clear=True)  # Limpia el entorno antes de cada prueba

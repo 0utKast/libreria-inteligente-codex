@@ -88,7 +88,8 @@ def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> 
     for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
         soup = BeautifulSoup(item.get_content(), 'html.parser')
         text += soup.get_text(separator=' ') + "\n"
-        if len(text) > 4500: break
+        if len(text) > 4500:
+            break
     
     if len(text.strip()) < 100:
         raise HTTPException(status_code=422, detail="No se pudo extraer suficiente texto del EPUB para su análisis.")
@@ -112,7 +113,8 @@ def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> 
     if cover_item:
         cover_filename = f"cover_{os.path.basename(file_path)}_{cover_item.get_name()}".replace('/', '_').replace('\\', '_')
         cover_full_path = os.path.join(covers_dir_fs, cover_filename)
-        with open(cover_full_path, 'wb') as f: f.write(cover_item.get_content())
+        with open(cover_full_path, 'wb') as f:
+            f.write(cover_item.get_content())
         cover_path = f"{covers_url_prefix}/{cover_filename}"
 
     return {"text": text, "cover_image_url": cover_path}
@@ -157,8 +159,10 @@ app.add_middleware(
 
 def get_db():
     db = database.SessionLocal()
-    try: yield db
-    finally: db.close()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # --- Rutas de la API ---
 
