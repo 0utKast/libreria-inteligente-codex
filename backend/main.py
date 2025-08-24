@@ -64,7 +64,7 @@ async def analyze_with_gemini(text: str) -> dict:
 def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     doc = fitz.open(file_path)
     text = ""
-        for i in range(min(len(doc), 5)):
+    for i in range(min(len(doc), 5)):
         text += doc.load_page(i).get_text("text", sort=True)
     cover_path = None
     for i in range(len(doc)):
@@ -77,7 +77,8 @@ def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> d
                 pix.save(cover_full_path)
                 cover_path = f"{covers_url_prefix}/{cover_filename}"
                 break
-        if cover_path: break
+        if cover_path:
+            break
     return {"text": text, "cover_image_url": cover_path}
 
 def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
@@ -160,7 +161,7 @@ def get_db():
     finally: db.close()
 
 # --- Rutas de la API ---
-# Comentario de prueba para la demo de PR-Review
+
 @app.post("/upload-book/", response_model=schemas.Book)
 async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = File(...)):
     books_dir = str(BOOKS_DIR_FS)

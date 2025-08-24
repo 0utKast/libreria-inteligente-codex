@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-import types
+
 
 from backend import main as app_module
 
