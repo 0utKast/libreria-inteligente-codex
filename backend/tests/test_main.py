@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 from fastapi import UploadFile, HTTPException
 from backend.main import (
-    app,
+    
     analyze_with_gemini,
     process_pdf,
     process_epub,
@@ -19,8 +19,8 @@ from backend.main import (
     query_rag_endpoint,
 )
 from io import BytesIO
-import json
-import os
+
+
 
 
 @pytest.fixture

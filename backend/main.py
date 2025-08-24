@@ -1,7 +1,7 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Response
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import shutil
 import os
@@ -64,7 +64,8 @@ async def analyze_with_gemini(text: str) -> dict:
 def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     doc = fitz.open(file_path)
     text = ""
-    for i in range(min(len(doc), 5)): text += doc.load_page(i).get_text("text", sort=True)
+    for i in range(min(len(doc), 5)):
+        text += doc.load_page(i).get_text("text", sort=True)
     cover_path = None
     for i in range(len(doc)):
         for img in doc.get_page_images(i):
@@ -76,7 +77,8 @@ def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> d
                 pix.save(cover_full_path)
                 cover_path = f"{covers_url_prefix}/{cover_filename}"
                 break
-        if cover_path: break
+        if cover_path:
+            break
     return {"text": text, "cover_image_url": cover_path}
 
 def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
@@ -86,7 +88,8 @@ def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> 
     for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
         soup = BeautifulSoup(item.get_content(), 'html.parser')
         text += soup.get_text(separator=' ') + "\n"
-        if len(text) > 4500: break
+        if len(text) > 4500:
+            break
     
     if len(text.strip()) < 100:
         raise HTTPException(status_code=422, detail="No se pudo extraer suficiente texto del EPUB para su análisis.")
@@ -110,7 +113,8 @@ def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> 
     if cover_item:
         cover_filename = f"cover_{os.path.basename(file_path)}_{cover_item.get_name()}".replace('/', '_').replace('\\', '_')
         cover_full_path = os.path.join(covers_dir_fs, cover_filename)
-        with open(cover_full_path, 'wb') as f: f.write(cover_item.get_content())
+        with open(cover_full_path, 'wb') as f:
+            f.write(cover_item.get_content())
         cover_path = f"{covers_url_prefix}/{cover_filename}"
 
     return {"text": text, "cover_image_url": cover_path}
@@ -155,10 +159,13 @@ app.add_middleware(
 
 def get_db():
     db = database.SessionLocal()
-    try: yield db
-    finally: db.close()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # --- Rutas de la API ---
+
 @app.post("/upload-book/", response_model=schemas.Book)
 async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = File(...)):
     books_dir = str(BOOKS_DIR_FS)
@@ -168,7 +175,8 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
     if crud.get_book_by_path(db, file_path):
         raise HTTPException(status_code=409, detail="Este libro ya ha sido añadido.")
 
-    with open(file_path, "wb") as buffer: shutil.copyfileobj(book_file.file, buffer)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(book_file.file, buffer)
 
     file_ext = os.path.splitext(book_file.filename)[1].lower()
     try:
@@ -176,7 +184,8 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
             book_data = process_pdf(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
         elif file_ext == ".epub":
             book_data = process_epub(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
-        else: raise HTTPException(status_code=400, detail="Tipo de archivo no soportado.")
+        else:
+            raise HTTPException(status_code=400, detail="Tipo de archivo no soportado.")
     except HTTPException as e:
         os.remove(file_path) # Limpiar el archivo subido si el procesamiento falla
         raise e
@@ -364,7 +373,7 @@ async def convert_epub_to_pdf(file: UploadFile = File(...)):
 @app.post("/rag/upload-book/", response_model=schemas.RagUploadResponse)
 async def upload_book_for_rag(file: UploadFile = File(...)):
     book_id = str(uuid.uuid4())
-    file_location = os.path.join(STATIC_TEMP_DIR, f"{book_id}_{file.filename}")
+    file_location = os.path.join(str(TEMP_BOOKS_DIR_FS), f"{book_id}_{file.filename}")
     with open(file_location, "wb") as f:
         f.write(await file.read())
     

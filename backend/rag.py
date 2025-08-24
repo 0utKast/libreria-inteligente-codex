@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import chromadb
 from PyPDF2 import PdfReader
 import ebooklib
-from ebooklib import epub
+
 from bs4 import BeautifulSoup
 import tiktoken
 import math
