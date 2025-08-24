@@ -16,7 +16,7 @@ from backend.rag import (
     estimate_embeddings_for_files,
     query_rag,
 )
-import chromadb
+
 
 # Mock external dependencies
 @patch("backend.rag.genai")
@@ -78,11 +78,11 @@ def test_chunk_text_empty():
 @patch("backend.rag._collection")
 def test_has_index_for_book(mock_collection):
     mock_collection.get.return_value = {"ids": ["id1"]}
-    assert _has_index_for_book("test_book_id") == True
+    assert _has_index_for_book("test_book_id")
     mock_collection.get.return_value = {"ids": []}
-    assert _has_index_for_book("test_book_id") == False
+    assert not _has_index_for_book("test_book_id")
     mock_collection.get.side_effect = Exception("Test Exception")
-    assert _has_index_for_book("test_book_id") == False
+    assert not _has_index_for_book("test_book_id")
 
 
 @patch("backend.rag._collection")

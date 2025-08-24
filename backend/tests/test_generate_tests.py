@@ -4,6 +4,7 @@ import pathlib
 
 import pytest
 from unittest.mock import patch, MagicMock
+from backend.scripts.generate_tests import generate_test_file
 
 # Mock the google.generativeai module
 class MockGenerativeModel:
@@ -74,7 +75,6 @@ def test_generate_test_file_api_error(monkeypatch):
         generate_test_file("test_file.py")
 
 #Import function from original file.  Requires restructuring to allow this.
-from backend.scripts.generate_tests import generate_test_file
 
 # Nota: Este código de prueba requiere que el archivo `generate_tests.py` esté en
 # el directorio `backend/scripts/` y que se pueda importar. La solución utiliza

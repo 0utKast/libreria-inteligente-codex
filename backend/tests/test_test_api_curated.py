@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 import pytest
-import types
+
 from unittest.mock import patch
 
 from backend import main as app_module
