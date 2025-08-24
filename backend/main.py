@@ -159,6 +159,7 @@ def get_db():
     finally: db.close()
 
 # --- Rutas de la API ---
+# Comentario de prueba para la demo de PR-Review
 @app.post("/upload-book/", response_model=schemas.Book)
 async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = File(...)):
     books_dir = str(BOOKS_DIR_FS)
