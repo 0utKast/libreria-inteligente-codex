@@ -1,4 +1,4 @@
-import pytest
+
 from unittest.mock import Mock
 import crud
 import models
