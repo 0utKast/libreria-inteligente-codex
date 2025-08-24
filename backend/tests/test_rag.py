@@ -10,7 +10,7 @@ from backend.rag import (
     _has_index_for_book,
     delete_book_from_rag,
     get_index_count,
-    has_index,
+    
     process_book_for_rag,
     estimate_embeddings_for_file,
     estimate_embeddings_for_files,

@@ -31,9 +31,9 @@ def test_book_creation_empty_fields(MockBase):
 
 @patch('backend.models.Base')
 def test_book_creation_invalid_file_path(MockBase):
-    with pytest.raises(Exception) as e:  # Expecting an exception due to unique constraint violation (simulated)
-        book1 = Book(title="Book1", author="Author1", category="Category1", file_path="/path/to/file.pdf")
-        book2 = Book(title="Book2", author="Author2", category="Category2", file_path="/path/to/file.pdf")
+    with pytest.raises(Exception):  # Expecting an exception due to unique constraint violation (simulated)
+        Book(title="Book1", author="Author1", category="Category1", file_path="/path/to/file.pdf")
+        Book(title="Book2", author="Author2", category="Category2", file_path="/path/to/file.pdf")
 
 @patch('backend.models.Base')
 def test_book_creation_null_values(MockBase):
