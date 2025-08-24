@@ -1,7 +1,7 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Response
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import shutil
 import os
@@ -64,7 +64,8 @@ async def analyze_with_gemini(text: str) -> dict:
 def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     doc = fitz.open(file_path)
     text = ""
-    for i in range(min(len(doc), 5)): text += doc.load_page(i).get_text("text", sort=True)
+        for i in range(min(len(doc), 5)):
+        text += doc.load_page(i).get_text("text", sort=True)
     cover_path = None
     for i in range(len(doc)):
         for img in doc.get_page_images(i):
