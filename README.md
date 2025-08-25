@@ -30,6 +30,8 @@ Mi Librería Inteligente es una aplicación web que utiliza la IA multimodal de 
 
 This is a small change for the documentation PR example.
 
+Testing release drafter action.
+
 Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 
 ### Prerrequisitos
