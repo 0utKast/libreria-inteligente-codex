@@ -45,6 +45,8 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           notes=$(python backend/scripts/generate_release_notes.py ${{ steps.previoustag.outputs.previous_tag }} ${{ github.ref_name }})
+          echo "Debug: Notes output from script:"
+          echo "$notes"
           echo "notes=$notes" >> $GITHUB_OUTPUT
 
       - name: Create Draft Release
