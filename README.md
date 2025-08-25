@@ -26,7 +26,9 @@ Mi Librería Inteligente es una aplicación web que utiliza la IA multimodal de 
 - **Base de Datos:** SQLite
 - **Manejo de Libros:** PyMuPDF (para PDF), EbookLib (para EPUB)
 
-## 🚀 Instalación y Puesta en Marcha
+## Building and Running
+
+This is a small change for the documentation PR example.
 
 Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 
