@@ -39,7 +39,7 @@ jobs:
           previous_tag=$(git describe --tags --abbrev=0 "$current_tag^" 2>/dev/null || git rev-list --max-parents=0 HEAD)
           echo "Previous tag: $previous_tag"
 
-          echo "previous_tag=$previous_tag" >> "$GITHUB_OUTPUT"
+                    echo "previous_tag=$previous_tag" >> $GITHUB_OUTPUT 
 
       - name: Generate release notes
         id: releasenotes
@@ -47,9 +47,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           notes=$(python backend/scripts/generate_release_notes.py ${{ steps.previoustag.outputs.previous_tag }} ${{ github.ref_name }})
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "$notes" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "notes=$notes" >> $GITHUB_OUTPUT
 
       - name: Create Draft Release
         uses: actions/create-release@v1
