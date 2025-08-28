@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import API_URL from './config';
 import './LibraryView.css';
+import EditBookModal from './EditBookModal'; // Importar el modal
 
 // Hook personalizado para debounce
 const useDebounce = (value, delay) => {
@@ -42,6 +43,7 @@ function LibraryView() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false); // New state for mobile detection
+  const [editingBook, setEditingBook] = useState(null); // State for the book being edited
 
   // Effect to detect mobile
   useEffect(() => {
@@ -116,6 +118,20 @@ function LibraryView() {
     }
   };
 
+  const handleEditClick = (book) => {
+    setEditingBook(book);
+  };
+
+  const handleCloseModal = () => {
+    setEditingBook(null);
+  };
+
+  const handleBookUpdated = (updatedBook) => {
+    setBooks(prevBooks => 
+      prevBooks.map(b => b.id === updatedBook.id ? updatedBook : b)
+    );
+  };
+
   return (
     <div className="library-container">
       <h2>Mi Biblioteca</h2>
@@ -137,7 +153,10 @@ function LibraryView() {
       <div className="book-grid">
         {books.map((book) => (
           <div key={book.id} className="book-card">
-            <button onClick={() => handleDeleteBook(book.id)} className="delete-book-btn" title="Eliminar libro">×</button>
+            <div className="book-card-buttons">
+              <button onClick={() => handleEditClick(book)} className="edit-book-btn" title="Editar libro">✎</button>
+              <button onClick={() => handleDeleteBook(book.id)} className="delete-book-btn" title="Eliminar libro">×</button>
+            </div>
             <BookCover
               src={book.cover_image_url ? `${API_URL}/${book.cover_image_url}` : ''}
               alt={`Portada de ${book.title}`}
@@ -187,6 +206,15 @@ function LibraryView() {
           </div>
         ))}
       </div>
+
+      {editingBook && (
+        <EditBookModal 
+          book={editingBook} 
+          onClose={handleCloseModal} 
+          onBookUpdated={handleBookUpdated} 
+        />
+      )}
+
     </div>
   );
 }

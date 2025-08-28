@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_URL from './config';
 import './UploadView.css';
@@ -7,6 +7,7 @@ function UploadView() {
   const [filesToUpload, setFilesToUpload] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
+  const fileInputRef = useRef(null); // Ref para el input de archivo
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -75,8 +76,15 @@ function UploadView() {
     }
     setIsUploading(false);
   };
+
+  const handleReset = () => {
+    setFilesToUpload([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
   
-  const allDone = filesToUpload.every(f => f.status === 'success' || f.status === 'error');
+  const allDone = !isUploading && filesToUpload.length > 0 && filesToUpload.every(f => f.status === 'success' || f.status === 'error');
 
   return (
     <div className="upload-view-container" onDrop={handleDrop} onDragOver={handleDragOver}>
@@ -88,6 +96,7 @@ function UploadView() {
           <input 
             type="file" 
             id="file-input" 
+            ref={fileInputRef} // Añadir la ref
             onChange={handleFileChange} 
             accept=".pdf,.epub" 
             multiple 
@@ -106,14 +115,25 @@ function UploadView() {
           </div>
         )}
 
-        <button onClick={handleUpload} className="upload-button" disabled={isUploading || filesToUpload.length === 0}>
-          {isUploading ? 'Procesando...' : `Subir ${filesToUpload.length} Archivo(s)`}
-        </button>
+        {!allDone && (
+          <button 
+            onClick={handleUpload} 
+            className="upload-button" 
+            disabled={isUploading || filesToUpload.filter(f => f.status === 'pending').length === 0}
+          >
+            {isUploading ? 'Procesando...' : `Subir ${filesToUpload.filter(f => f.status === 'pending').length} Archivo(s)`}
+          </button>
+        )}
 
-        {allDone && filesToUpload.length > 0 && (
-           <button onClick={() => navigate('/')} className="library-button">
-             Ir a la Biblioteca
-           </button>
+        {allDone && (
+          <div className="completion-actions">
+            <button onClick={() => navigate('/')} className="library-button">
+              Ir a la Biblioteca
+            </button>
+            <button onClick={handleReset} className="reset-button">
+              Añadir más libros
+            </button>
+          </div>
         )}
       </div>
     </div>

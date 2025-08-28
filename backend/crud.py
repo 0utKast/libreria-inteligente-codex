@@ -87,3 +87,16 @@ def delete_books_by_category(db: Session, category: str):
 def get_books_count(db: Session) -> int:
     """Obtiene el número total de libros en la base de datos."""
     return db.query(models.Book).count()
+
+def update_book(db: Session, book_id: int, title: str, author: str, cover_image_url: str | None):
+    """Actualiza los datos de un libro por su ID."""
+    book = db.query(models.Book).filter(models.Book.id == book_id).first()
+    if book:
+        book.title = title
+        book.author = author
+        if cover_image_url:
+            # Si hay una nueva imagen, se actualiza la ruta
+            book.cover_image_url = cover_image_url
+        db.commit()
+        db.refresh(book)
+    return book

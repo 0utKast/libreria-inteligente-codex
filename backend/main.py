@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 import google.generativeai as genai
 from dotenv import load_dotenv
 import json
-from typing import List
+from typing import List, Optional
 
 from . import crud, models, database, schemas
 from . import rag  # Import the new RAG module
@@ -212,6 +212,54 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
 @app.get("/books/", response_model=List[schemas.Book])
 def read_books(category: str | None = None, search: str | None = None, author: str | None = None, db: Session = Depends(get_db)):
     return crud.get_books(db, category=category, search=search, author=author)
+
+@app.put("/books/{book_id}", response_model=schemas.Book)
+async def update_book_details(
+    book_id: int,
+    db: Session = Depends(get_db),
+    title: str = Form(...),
+    author: str = Form(...),
+    cover_image: Optional[UploadFile] = File(None)
+):
+    """
+    Actualiza los detalles de un libro, incluyendo título, autor y portada.
+    """
+    db_book = db.query(models.Book).filter(models.Book.id == book_id).first()
+    if not db_book:
+        raise HTTPException(status_code=404, detail="Libro no encontrado")
+
+    new_cover_path = db_book.cover_image_url
+
+    if cover_image:
+        # Hay una nueva imagen, hay que guardarla
+        if db_book.cover_image_url:
+            old_cover_full_path = STATIC_DIR_FS / db_book.cover_image_url
+            if os.path.exists(old_cover_full_path):
+                os.remove(old_cover_full_path)
+
+        # Generar un nombre de archivo único para la nueva portada
+        file_ext = Path(cover_image.filename).suffix
+        new_cover_filename = f"cover_{book_id}_{uuid.uuid4()}{file_ext}"
+        new_cover_full_path = STATIC_COVERS_DIR_FS / new_cover_filename
+        
+        with open(new_cover_full_path, "wb") as buffer:
+            shutil.copyfileobj(cover_image.file, buffer)
+        
+        new_cover_path = f"{STATIC_COVERS_URL_PREFIX}/{new_cover_filename}"
+
+    updated_book = crud.update_book(
+        db=db,
+        book_id=book_id,
+        title=title,
+        author=author,
+        cover_image_url=new_cover_path
+    )
+
+    if not updated_book:
+        # Esto no debería ocurrir si la comprobación inicial pasó, pero por si acaso
+        raise HTTPException(status_code=404, detail="Libro no encontrado al intentar actualizar")
+
+    return updated_book
 
 @app.get("/books/count", response_model=int)
 def get_books_count(db: Session = Depends(get_db)):
