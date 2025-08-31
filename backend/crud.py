@@ -4,6 +4,10 @@ from sqlalchemy import desc, or_
 from . import models
 import os
 
+def get_book(db: Session, book_id: int):
+    """Obtiene un libro por su ID."""
+    return db.query(models.Book).filter(models.Book.id == book_id).first()
+
 def get_book_by_path(db: Session, file_path: str):
     """Obtiene un libro por su ruta de archivo."""
     return db.query(models.Book).filter(models.Book.file_path == file_path).first()

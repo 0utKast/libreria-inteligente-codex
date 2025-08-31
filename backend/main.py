@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 import json
 from typing import List, Optional
 
-from . import crud, models, database, schemas
+from . import crud, models, database, schemas, utils
 from . import rag  # Import the new RAG module
 import uuid # For generating unique book IDs
 
@@ -165,6 +165,105 @@ def get_db():
         db.close()
 
 # --- Rutas de la API ---
+
+@app.post("/api/books/{book_id}/convert", response_model=schemas.Book)
+async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
+    """
+    Convierte un libro EPUB existente a PDF y lo añade a la biblioteca como un nuevo libro.
+    """
+    # 1. Obtener el libro original
+    original_book = crud.get_book(db, book_id=book_id)
+    if not original_book:
+        raise HTTPException(status_code=404, detail="Libro original no encontrado.")
+
+    # 2. Validar que es un EPUB
+    if not original_book.file_path.lower().endswith('.epub'):
+        raise HTTPException(status_code=400, detail="La conversión solo es posible para libros en formato EPUB.")
+
+    # 3. Leer el contenido del archivo EPUB
+    try:
+        with open(original_book.file_path, "rb") as f:
+            epub_content = f.read()
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Archivo EPUB no encontrado en el disco.")
+
+    # 4. Convertir a PDF
+    try:
+        pdf_bytes = utils.convert_epub_bytes_to_pdf_bytes(epub_content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error durante la conversión a PDF: {e}")
+
+    # 5. Guardar el nuevo archivo PDF
+    base_filename = os.path.splitext(os.path.basename(original_book.file_path))[0]
+    new_filename = f"{base_filename}.pdf"
+    new_filepath = os.path.join(str(BOOKS_DIR_FS), new_filename)
+
+    # Asegurarse de que el nombre de archivo no exista ya
+    counter = 1
+    while os.path.exists(new_filepath):
+        new_filename = f"{base_filename}_{counter}.pdf"
+        new_filepath = os.path.join(str(BOOKS_DIR_FS), new_filename)
+        counter += 1
+    
+    with open(new_filepath, "wb") as f:
+        f.write(pdf_bytes)
+
+    # 6. Procesar el nuevo PDF para añadirlo a la biblioteca (lógica de /upload-book)
+    try:
+        book_data = process_pdf(new_filepath, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
+        gemini_result = await analyze_with_gemini(book_data["text"])
+
+        title = gemini_result.get("title", "Desconocido")
+        author = gemini_result.get("author", "Desconocido")
+
+        if title == "Desconocido" and author == "Desconocido":
+            os.remove(new_filepath)
+            raise HTTPException(status_code=422, detail="La IA no pudo identificar metadatos del PDF convertido.")
+
+        return crud.create_book(
+            db=db,
+            title=title,
+            author=author,
+            category=gemini_result.get("category", original_book.category), # Usar categoría original como fallback
+            cover_image_url=book_data.get("cover_image_url"),
+            file_path=new_filepath
+        )
+    except Exception as e:
+        # Si algo falla, limpiar el PDF creado
+        if os.path.exists(new_filepath):
+            os.remove(new_filepath)
+        # Re-lanzar la excepción para que FastAPI la maneje
+        raise HTTPException(status_code=500, detail=f"Error al procesar el nuevo PDF: {e}")
+
+
+@app.post("/tools/convert-epub-to-pdf")
+async def convert_epub_to_pdf_tool(file: UploadFile = File(...)):
+    """
+    Convierte un archivo EPUB subido a PDF y devuelve un enlace de descarga temporal.
+    """
+    if not file.filename.lower().endswith('.epub'):
+        raise HTTPException(status_code=400, detail="El archivo debe ser un EPUB.")
+
+    try:
+        epub_content = await file.read()
+        pdf_bytes = utils.convert_epub_bytes_to_pdf_bytes(epub_content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error durante la conversión: {e}")
+
+    # Guardar el PDF en un directorio temporal
+    base_filename = os.path.splitext(file.filename)[0]
+    # Usar un UUID para evitar colisiones y añadir seguridad
+    unique_id = uuid.uuid4()
+    new_filename = f"{base_filename}_{unique_id}.pdf"
+    temp_pdf_path = os.path.join(str(TEMP_BOOKS_DIR_FS), new_filename)
+
+    with open(temp_pdf_path, "wb") as f:
+        f.write(pdf_bytes)
+
+    # Devolver la URL para descargar el archivo
+    download_url = f"/temp_books/{new_filename}"
+    return {"download_url": download_url}
+
 
 @app.post("/upload-book/", response_model=schemas.Book)
 async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = File(...)):
@@ -327,96 +426,6 @@ def download_book(book_id: int, db: Session = Depends(get_db)):
             media_type='application/epub+zip',
             content_disposition_type='attachment'
         )
-
-@app.post("/tools/convert-epub-to-pdf", response_model=schemas.ConversionResponse)
-async def convert_epub_to_pdf(file: UploadFile = File(...)):
-
-    if not file.filename.lower().endswith('.epub'):
-        raise HTTPException(status_code=400, detail="El archivo debe ser un EPUB.")
-
-    epub_content = await file.read()
-
-    try:
-        import tempfile
-        import zipfile
-        import pathlib
-        from weasyprint import HTML, CSS
-        from bs4 import BeautifulSoup
-        import uuid
-
-        with tempfile.TemporaryDirectory() as temp_dir:
-            # 1. Extraer el EPUB a una carpeta temporal
-            with zipfile.ZipFile(io.BytesIO(epub_content), 'r') as zip_ref:
-                zip_ref.extractall(temp_dir)
-
-            # 2. Encontrar el archivo .opf (el "manifiesto" del libro)
-            opf_path = next(pathlib.Path(temp_dir).rglob('*.opf'), None)
-            if not opf_path:
-                raise Exception("No se pudo encontrar el archivo .opf en el EPUB.")
-            content_root = opf_path.parent
-
-            # 3. Leer y analizar el manifiesto .opf en modo binario para autodetectar codificación
-            with open(opf_path, 'rb') as f:
-                opf_soup = BeautifulSoup(f, 'lxml-xml')
-
-            # 4. Crear una página de portada si se encuentra
-            html_docs = []
-            cover_meta = opf_soup.find('meta', {'name': 'cover'})
-            if cover_meta:
-                cover_id = cover_meta.get('content')
-                cover_item = opf_soup.find('item', {'id': cover_id})
-                if cover_item:
-                    cover_href = cover_item.get('href')
-                    cover_path = content_root / cover_href
-                    if cover_path.exists():
-                        cover_html_string = f"<html><body style='text-align: center; margin: 0; padding: 0;'><img src='{cover_path.as_uri()}' style='width: 100%; height: 100%; object-fit: contain;'/></body></html>"
-                        html_docs.append(HTML(string=cover_html_string))
-
-            # 5. Encontrar y leer todos los archivos CSS
-            stylesheets = []
-            css_items = opf_soup.find_all('item', {'media-type': 'text/css'})
-            for css_item in css_items:
-                css_href = css_item.get('href')
-                if css_href:
-                    css_path = content_root / css_href
-                    if css_path.exists():
-                        stylesheets.append(CSS(filename=css_path))
-
-            # 6. Encontrar el orden de lectura (spine) y añadir los capítulos
-            spine_ids = [item.get('idref') for item in opf_soup.find('spine').find_all('itemref')]
-            html_paths_map = {item['id']: item['href'] for item in opf_soup.find_all('item', {'media-type': 'application/xhtml+xml'})}
-            
-            for chapter_id in spine_ids:
-                href = html_paths_map.get(chapter_id)
-                if href:
-                    chapter_path = content_root / href
-                    if chapter_path.exists():
-                        # LA SOLUCIÓN: Pasar filename y encoding directamente a WeasyPrint
-                        html_docs.append(HTML(filename=chapter_path, encoding='utf-8'))
-
-            if not html_docs:
-                raise Exception("No se encontró contenido HTML en el EPUB.")
-
-            # 7. Renderizar y unir todos los documentos
-            first_doc = html_docs[0].render(stylesheets= stylesheets)
-            all_pages = [p for doc in html_docs[1:] for p in doc.render(stylesheets= stylesheets).pages]
-            
-            pdf_bytes_io = io.BytesIO()
-            first_doc.copy(all_pages).write_pdf(target=pdf_bytes_io)
-            pdf_bytes = pdf_bytes_io.getvalue()
-
-        # Guardar el PDF en la carpeta temporal pública
-        pdf_filename = f"{uuid.uuid4()}.pdf"
-        public_pdf_path = os.path.join(str(TEMP_BOOKS_DIR_FS), pdf_filename)
-        with open(public_pdf_path, "wb") as f:
-            f.write(pdf_bytes)
-        
-        # Devolver la URL de descarga en un JSON
-        return {"download_url": f"/temp_books/{pdf_filename}"}
-    except Exception as e:
-        error_message = f"Error durante la conversión: {type(e).__name__}: {e}"
-        print(error_message)
-        raise HTTPException(status_code=500, detail=error_message)
 
 @app.post("/rag/upload-book/", response_model=schemas.RagUploadResponse)
 async def upload_book_for_rag(file: UploadFile = File(...)):
