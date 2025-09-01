@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import API_URL from './config';
 import './LibraryView.css';
@@ -19,7 +19,7 @@ const useDebounce = (value, delay) => {
 };
 
 // Componente para la portada (con fallback a genérica)
-const BookCover = ({ src, alt, title }) => {
+const BookCover = React.memo(({ src, alt, title }) => {
   const [hasError, setHasError] = useState(false);
   useEffect(() => { setHasError(false); }, [src]);
   const handleError = () => { setHasError(true); };
@@ -33,13 +33,100 @@ const BookCover = ({ src, alt, title }) => {
     );
   }
   return <img src={src} alt={alt} className="book-cover" onError={handleError} />;
-};
+});
+
+const BookCard = React.memo(({ book, isMobile, handleAuthorClick, handleCategoryClick, handleDeleteBook, handleConvertToPdf, handleEditClick, convertingId, books }) => {
+    // Lógica para decidir si el botón de conversión debe mostrarse
+    const isEpub = book.file_path.toLowerCase().endsWith('.epub');
+    let showConvertButton = false;
+    if (isEpub) {
+      const lastDotIndex = book.file_path.lastIndexOf('.');
+      const basePath = (lastDotIndex === -1) ? book.file_path : book.file_path.substring(0, lastDotIndex);
+      const expectedPdfPath = `${basePath}.pdf`;
+      
+      // NORMALIZACIÓN: Reemplazar \ por / para una comparación consistente
+      const normalizedExpectedPath = expectedPdfPath.replace(/\\/g, '/').toLowerCase();
+
+      const pdfVersionExists = books.some(b => {
+          const normalizedBookPath = b.file_path.replace(/\\/g, '/').toLowerCase();
+          return normalizedBookPath === normalizedExpectedPath;
+      });
+      
+      showConvertButton = !pdfVersionExists;
+    }
+
+    return (
+        <div className="book-card">
+            <div className="book-card-buttons">
+            {showConvertButton && (
+                <button 
+                onClick={() => handleConvertToPdf(book.id)} 
+                className="convert-book-btn" 
+                title="Convertir a PDF"
+                disabled={convertingId === book.id}
+                >
+                {convertingId === book.id ? '...' : 'PDF'}
+                </button>
+            )}
+            <button onClick={() => handleEditClick(book)} className="edit-book-btn" title="Editar libro">✎</button>
+            <button onClick={() => handleDeleteBook(book.id)} className="delete-book-btn" title="Eliminar libro">×</button>
+            </div>
+            <BookCover
+            src={book.cover_image_url ? `${API_URL}/${book.cover_image_url}` : ''}
+            alt={`Portada de ${book.title}`}
+            title={book.title}
+            />
+            <div className="book-card-info">
+            <h3>{book.title}</h3>
+            <p className="clickable-text" onClick={() => handleAuthorClick(book.author)}>{book.author}</p>
+            <span className="clickable-text" onClick={() => handleCategoryClick(book.category)}>{book.category}</span>
+            </div>
+            {book.file_path.toLowerCase().endsWith('.pdf') ? (
+            <>
+                <a
+                href={`${API_URL}/books/download/${book.id}`}
+                className="download-button"
+                target="_blank"
+                rel="noopener noreferrer"
+                >
+                Abrir PDF
+                </a>
+                {isMobile && (
+                <a
+                    href={`${API_URL}/books/download/${book.id}`}
+                    className="download-button"
+                    download // This attribute suggests download
+                >
+                    Descargar PDF
+                </a>
+                )}
+            </>
+            ) : (
+            <>
+                <Link to={`/leer/${book.id}`} className="download-button">
+                Leer EPUB
+                </Link>
+                {isMobile && (
+                <a
+                    href={`${API_URL}/books/download/${book.id}`}
+                    className="download-button"
+                    download // This attribute suggests download
+                >
+                    Descargar EPUB
+                </a>
+                )}
+            </>
+            )}
+        </div>
+    );
+});
+
 
 function LibraryView() {
   const [books, setBooks] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -55,14 +142,14 @@ function LibraryView() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleAuthorClick = (author) => {
+  const handleAuthorClick = useCallback((author) => {
     setSearchTerm('');
     setSearchParams({ author: author });
-  };
+  }, [setSearchParams]);
 
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = useCallback((category) => {
     setSearchParams({ category: category });
-  };
+  }, [setSearchParams]);
 
   const fetchBooks = useCallback(async () => {
     setLoading(true);
@@ -99,7 +186,7 @@ function LibraryView() {
     fetchBooks();
   }, [fetchBooks]);
 
-  const handleDeleteBook = async (bookId) => {
+  const handleDeleteBook = useCallback(async (bookId) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este libro?')) {
       try {
         const response = await fetch(`${API_URL}/books/${bookId}`, { method: 'DELETE' });
@@ -112,9 +199,9 @@ function LibraryView() {
         alert('Error de conexión al intentar eliminar el libro.');
       }
     }
-  };
+  }, []);
 
-  const handleConvertToPdf = async (bookId) => {
+  const handleConvertToPdf = useCallback(async (bookId) => {
     if (window.confirm('¿Quieres convertir este EPUB a PDF? Esta acción añadirá un nuevo libro a tu biblioteca.')) {
       setConvertingId(bookId);
       try {
@@ -133,21 +220,41 @@ function LibraryView() {
         setConvertingId(null);
       }
     }
-  };
+  }, []);
 
-  const handleEditClick = (book) => {
+  const handleEditClick = useCallback((book) => {
     setEditingBook(book);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setEditingBook(null);
-  };
+  }, []);
 
-  const handleBookUpdated = (updatedBook) => {
+  const handleBookUpdated = useCallback((updatedBook) => {
     setBooks(prevBooks => 
       prevBooks.map(b => b.id === updatedBook.id ? updatedBook : b)
     );
-  };
+  }, []);
+
+  const bookGrid = useMemo(() => (
+    <div className="book-grid">
+        {books.map((book) => (
+            <BookCard
+                key={book.id}
+                book={book}
+                isMobile={isMobile}
+                handleAuthorClick={handleAuthorClick}
+                handleCategoryClick={handleCategoryClick}
+                handleDeleteBook={handleDeleteBook}
+                handleConvertToPdf={handleConvertToPdf}
+                handleEditClick={handleEditClick}
+                convertingId={convertingId}
+                books={books}
+            />
+        ))}
+    </div>
+  ), [books, isMobile, handleAuthorClick, handleCategoryClick, handleDeleteBook, handleConvertToPdf, handleEditClick, convertingId]);
+
 
   return (
     <div className="library-container">
@@ -167,104 +274,7 @@ function LibraryView() {
       {loading && <p>Cargando libros...</p>}
       {!loading && books.length === 0 && !error && <p>No se encontraron libros que coincidan con tu búsqueda.</p>}
 
-      <div className="book-grid">
-        {books.map((book) => {
-          // Lógica para decidir si el botón de conversión debe mostrarse
-          const isEpub = book.file_path.toLowerCase().endsWith('.epub');
-          let showConvertButton = false;
-          if (isEpub) {
-            console.log(`--- Debugging EPUB: ${book.title} ---`);
-            const lastDotIndex = book.file_path.lastIndexOf('.');
-            const basePath = (lastDotIndex === -1) ? book.file_path : book.file_path.substring(0, lastDotIndex);
-            const expectedPdfPath = `${basePath}.pdf`;
-            
-            // NORMALIZACIÓN: Reemplazar \ por / para una comparación consistente
-            const normalizedExpectedPath = expectedPdfPath.replace(/\\/g, '/').toLowerCase();
-            console.log(`[EPUB] Expected Normalized Path: ${normalizedExpectedPath}`);
-
-            const pdfVersionExists = books.some(b => {
-                const normalizedBookPath = b.file_path.replace(/\\/g, '/').toLowerCase();
-                if (normalizedBookPath.endsWith('.pdf')) {
-                    console.log(`[PDF Check] Comparing: ${normalizedBookPath} WITH ${normalizedExpectedPath}`);
-                    if (normalizedBookPath === normalizedExpectedPath) {
-                        console.log(`[PDF Check] Found a match! Hiding button.`);
-                        return true;
-                    }
-                }
-                return false;
-            });
-            
-            showConvertButton = !pdfVersionExists;
-            console.log(`>>> Show Convert Button for ${book.title}? ${showConvertButton}`);
-            console.log(`------------------------------------`);
-          }
-
-          return (
-            <div key={book.id} className="book-card">
-              <div className="book-card-buttons">
-                {showConvertButton && (
-                  <button 
-                    onClick={() => handleConvertToPdf(book.id)} 
-                    className="convert-book-btn" 
-                    title="Convertir a PDF"
-                    disabled={convertingId === book.id}
-                  >
-                    {convertingId === book.id ? '...' : 'PDF'}
-                  </button>
-                )}
-                <button onClick={() => handleEditClick(book)} className="edit-book-btn" title="Editar libro">✎</button>
-                <button onClick={() => handleDeleteBook(book.id)} className="delete-book-btn" title="Eliminar libro">×</button>
-              </div>
-              <BookCover
-                src={book.cover_image_url ? `${API_URL}/${book.cover_image_url}` : ''}
-                alt={`Portada de ${book.title}`}
-                title={book.title}
-              />
-              <div className="book-card-info">
-                <h3>{book.title}</h3>
-                <p className="clickable-text" onClick={() => handleAuthorClick(book.author)}>{book.author}</p>
-                <span className="clickable-text" onClick={() => handleCategoryClick(book.category)}>{book.category}</span>
-              </div>
-              {book.file_path.toLowerCase().endsWith('.pdf') ? (
-                <>
-                  <a
-                    href={`${API_URL}/books/download/${book.id}`}
-                    className="download-button"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Abrir PDF
-                  </a>
-                  {isMobile && (
-                    <a
-                      href={`${API_URL}/books/download/${book.id}`}
-                      className="download-button"
-                      download // This attribute suggests download
-                    >
-                      Descargar PDF
-                    </a>
-                  )}
-                </>
-              ) : (
-                <>
-                  <Link to={`/leer/${book.id}`} className="download-button">
-                    Leer EPUB
-                  </Link>
-                  {isMobile && (
-                    <a
-                      href={`${API_URL}/books/download/${book.id}`}
-                      className="download-button"
-                      download // This attribute suggests download
-                    >
-                      Descargar EPUB
-                    </a>
-                  )}
-                </>
-              )}
-            </div>
-          );
-        })}
-      </div>
+      {bookGrid}
 
       {editingBook && (
         <EditBookModal 
