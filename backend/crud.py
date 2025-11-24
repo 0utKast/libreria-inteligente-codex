@@ -20,8 +20,8 @@ def get_books_by_partial_title(db: Session, title: str, skip: int = 0, limit: in
     """Busca libros por un título parcial (case-insensitive)."""
     return db.query(models.Book).filter(models.Book.title.ilike(f"%{title}%")).offset(skip).limit(limit).all()
 
-def get_books(db: Session, category: str | None = None, search: str | None = None, author: str | None = None):
-    """Obtiene una lista de libros, con opciones de filtrado por categoría, búsqueda general y autor."""
+def get_books(db: Session, category: str | None = None, search: str | None = None, author: str | None = None, skip: int = 0, limit: int = 20):
+    """Obtiene una lista paginada de libros, con opciones de filtrado."""
     query = db.query(models.Book)
     if category:
         query = query.filter(models.Book.category == category)
@@ -36,7 +36,7 @@ def get_books(db: Session, category: str | None = None, search: str | None = Non
                 models.Book.category.ilike(search_term)
             )
         )
-    return query.order_by(desc(models.Book.id)).all()
+    return query.order_by(desc(models.Book.id)).offset(skip).limit(limit).all()
 
 def get_categories(db: Session) -> list[str]:
     """Obtiene una lista de todas las categorías de libros únicas."""

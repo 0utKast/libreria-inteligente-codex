@@ -21,6 +21,7 @@ cd frontend
 if not exist node_modules (
   echo Instalando dependencias de frontend...
   npm install
+  npm run build
 )
 START "Frontend" cmd /c "npm start"
 

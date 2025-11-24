@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 import shutil
 import os
 from pathlib import Path
+import asyncio
 import io
 import fitz
 import ebooklib
@@ -142,7 +143,7 @@ allow_origins = [o.strip() for o in raw_origins if o.strip()]
 
 # Permitir orígenes de redes privadas sin necesidad de fijar IPs, soportando HTTP y HTTPS,
 # y una lista configurable de puertos de frontend.
-ports_csv = os.getenv("FRONTEND_PORTS", "3000,5173,8080")
+ports_csv = os.getenv("FRONTEND_PORTS", "3000,3001,5173,8080")
 ports = [p.strip() for p in ports_csv.split(",") if p.strip()]
 ports_pattern = "|".join(ports) if ports else r"\d+"
 default_origin_regex = rf"^https?://(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+):({ports_pattern})$"
@@ -189,7 +190,7 @@ async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
 
     # 4. Convertir a PDF
     try:
-        pdf_bytes = utils.convert_epub_bytes_to_pdf_bytes(epub_content)
+        pdf_bytes = await asyncio.to_thread(utils.convert_epub_bytes_to_pdf_bytes, epub_content)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error durante la conversión a PDF: {e}")
 
@@ -246,7 +247,7 @@ async def convert_epub_to_pdf_tool(file: UploadFile = File(...)):
 
     try:
         epub_content = await file.read()
-        pdf_bytes = utils.convert_epub_bytes_to_pdf_bytes(epub_content)
+        pdf_bytes = await asyncio.to_thread(utils.convert_epub_bytes_to_pdf_bytes, epub_content)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error durante la conversión: {e}")
 
@@ -309,8 +310,8 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
     )
 
 @app.get("/books/", response_model=List[schemas.Book])
-def read_books(category: str | None = None, search: str | None = None, author: str | None = None, db: Session = Depends(get_db)):
-    return crud.get_books(db, category=category, search=search, author=author)
+def read_books(category: str | None = None, search: str | None = None, author: str | None = None, db: Session = Depends(get_db), skip: int = 0, limit: int = 20):
+    return crud.get_books(db, category=category, search=search, author=author, skip=skip, limit=limit)
 
 @app.put("/books/{book_id}", response_model=schemas.Book)
 async def update_book_details(
