@@ -101,10 +101,8 @@ async def analyze_with_gemini(text: str) -> dict:
 
 def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     import fitz
+    text = utils.extract_text_from_pdf(file_path, max_pages=5)
     doc = fitz.open(file_path)
-    text = ""
-    for i in range(min(len(doc), 5)):
-        text += doc.load_page(i).get_text("text", sort=True)
     cover_path = None
     for i in range(len(doc)):
         for img in doc.get_page_images(i):
@@ -122,16 +120,11 @@ def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> d
 
 def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     """ Lógica de procesamiento de EPUB muy mejorada con fallbacks para la portada. """
+    text = utils.extract_text_from_epub(file_path, max_chars=4500)
+    
     import ebooklib
     from ebooklib import epub
-    from bs4 import BeautifulSoup
     book = epub.read_epub(file_path)
-    text = ""
-    for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
-        soup = BeautifulSoup(item.get_content(), 'html.parser')
-        text += soup.get_text(separator=' ') + "\n"
-        if len(text) > 4500:
-            break
     
     if len(text.strip()) < 100:
         raise HTTPException(status_code=422, detail="No se pudo extraer suficiente texto del EPUB para su análisis.")
@@ -164,7 +157,7 @@ def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> 
 
 # --- Configuración de la App FastAPI ---
 # Test comment
-app = FastAPI(title="Mi Librería Inteligente Codex", version="0.3.0-alpha")
+app = FastAPI(title="Mi Librería Inteligente Codex", version="0.4.0-alpha")
 
 # Rutas robustas basadas en este archivo
 STATIC_DIR_FS = (base_dir / "static").resolve()
@@ -387,6 +380,34 @@ async def upload_book(background_tasks: BackgroundTasks, db: Session = Depends(g
 
     return new_book
 
+@app.get("/api/books/search/semantic", response_model=List[schemas.Book])
+async def semantic_search(q: str, db: Session = Depends(get_db)):
+    """Busca libros usando similitud semántica (IA) a través de RAG."""
+    if not AI_ENABLED:
+        raise HTTPException(status_code=400, detail="La búsqueda semántica requiere que la IA esté habilitada.")
+    
+    try:
+        from . import rag
+        semantic_results = await rag.query_semantic_books(q)
+        
+        # Obtener los objetos Book completos de la DB
+        books_map = {}
+        for res in semantic_results:
+            book = crud.get_book(db, book_id=res["book_id"])
+            if book:
+                books_map[book.id] = book
+        
+        # Mantener el orden de relevancia devuelto por RAG
+        ordered_books = []
+        for res in semantic_results:
+            if res["book_id"] in books_map:
+                ordered_books.append(books_map[res["book_id"]])
+                
+        return ordered_books
+    except Exception as e:
+        print(f"Error en búsqueda semántica: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/books/", response_model=List[schemas.Book])
 def read_books(category: str | None = None, search: str | None = None, author: str | None = None, db: Session = Depends(get_db), skip: int = 0, limit: int = 20):
     return crud.get_books(db, category=category, search=search, author=author, skip=skip, limit=limit)
@@ -576,6 +597,17 @@ def rag_status(book_id: int):
         raise HTTPException(status_code=500, detail=f"Error al obtener estado RAG: {e}")
 
 
+@app.get("/rag/stats")
+async def get_rag_stats():
+    """Obtiene estadísticas del índice RAG."""
+    try:
+        from . import rag
+        rag._ensure_init()
+        count = rag._collection.count()
+        return {"total_documents": count}
+    except Exception as e:
+        return {"total_documents": 0, "error": str(e)}
+
 @app.post("/rag/reindex/category/{category_name}")
 async def rag_reindex_category(category_name: str, force: bool = True, db: Session = Depends(get_db)):
     """(Re)indexa todos los libros de una categoría en RAG."""
@@ -594,18 +626,24 @@ async def rag_reindex_category(category_name: str, force: bool = True, db: Sessi
     return {"category": category_name, "processed": processed, "failed": failed, "force": force}
 
 
-@app.post("/rag/reindex/all")
-async def rag_reindex_all(force: bool = True, db: Session = Depends(get_db)):
-    """(Re)indexa todos los libros de la biblioteca en RAG."""
-    books = db.query(models.Book).all()
-    processed, failed = 0, []
+async def background_reindex_all(force: bool, db_session: Session):
+    """Tarea en segundo plano para reindexar toda la biblioteca."""
+    books = db_session.query(models.Book).all()
+    from . import rag
     for b in books:
         try:
-            await rag.process_book_for_rag(b.file_path, str(b.id), force_reindex=force)
-            processed += 1
+            abs_file_path = get_safe_path(b.file_path)
+            await rag.process_book_for_rag(abs_file_path, str(b.id), force_reindex=force)
         except Exception as e:
-            failed.append({"book_id": b.id, "error": str(e)})
-    return {"processed": processed, "failed": failed, "total": len(books), "force": force}
+            print(f"RAG: Fallo al reindexar libro {b.id}: {e}")
+
+@app.post("/rag/reindex/all")
+async def rag_reindex_all(background_tasks: BackgroundTasks, force: bool = True, db: Session = Depends(get_db)):
+    """(Re)indexa todos los libros de la biblioteca en RAG (en segundo plano)."""
+    # Necesitamos una sesión de DB que no se cierre al terminar la petición
+    # Pero FastAPI.BackgroundTasks maneja bien la inyección si pasamos el objeto
+    background_tasks.add_task(background_reindex_all, force, db)
+    return {"message": "Iniciado proceso de reindexado masivo en segundo plano.", "total_books": db.query(models.Book).count()}
 
 
 @app.get("/rag/estimate/book/{book_id}")

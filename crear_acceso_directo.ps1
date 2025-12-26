@@ -1,10 +1,15 @@
 $WshShell = New-Object -ComObject WScript.Shell
 $DesktopPath = [System.Environment]::GetFolderPath('Desktop')
 
-# Usamos un nombre sin tildes para el archivo .lnk internamente si la codificación falla, 
-# pero intentaremos el nombre correcto.
-$ShortcutName = "Mi Librería Inteligente.lnk"
-$Shortcut = $WshShell.CreateShortcut("$DesktopPath\$ShortcutName")
+# Caracter 'í' en Unicode para evitar problemas de codificación del script
+$iConTilde = [char]0xED
+$ShortcutName = "Mi Librer$($iConTilde)a Inteligente.lnk"
+$ShortcutPath = Join-Path $DesktopPath $ShortcutName
+
+# Eliminar versiones previas con fallos de codificación (buscando el patrón 'Ã')
+Get-ChildItem $DesktopPath -Filter "Mi Librer*.lnk" | Where-Object { $_.Name -match "Ã" -or $_.Name -match " -a" } | Remove-Item -ErrorAction SilentlyContinue
+
+$Shortcut = $WshShell.CreateShortcut($ShortcutPath)
 
 # Ruta absoluta al proyecto
 $ProjectRoot = "c:\proyectos_python\MisApps\libreria-inteligente-codex"
@@ -14,9 +19,8 @@ $Arguments = "/c `"$ProjectRoot\start.bat`""
 $Shortcut.TargetPath = $TargetPath
 $Shortcut.Arguments = $Arguments
 $Shortcut.WorkingDirectory = $ProjectRoot
-# Cambiamos a icono_L_azul.ico para mejor resolución
 $Shortcut.IconLocation = "$ProjectRoot\icono_L_azul.ico"
 $Shortcut.Description = "Iniciar Mi Librería Inteligente"
 $Shortcut.Save()
 
-Write-Host "Acceso directo actualizado con éxito en el Escritorio."
+Write-Host "Acceso directo '$ShortcutName' corregido y versiones anteriores eliminadas."

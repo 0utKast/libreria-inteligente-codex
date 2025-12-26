@@ -115,6 +115,12 @@ Error: Process completed with exit code 2.
 
 ## Recent Improvements (Dec 2025)
 
+### Semantic Search & IA Polish (0.4.0-alpha)
+*   **Semantic Search Engine**: Integrated RAG-based search allowing users to find books by thematic meaning and concept using ChromaDB embeddings.
+*   **PyMuPDF (fitz) Standardization**: Unified all text extraction logic into `fitz` for enhanced speed and better context quality for Gemini.
+*   **Background Massive Indexing**: Created a specialized background process for bulk library indexing with automatic UI detection and feedback.
+*   **UX Enhancements**: Replaced loading screens with Skeleton Loaders and added an "IA" toggle for hybrid search.
+
 ### Async & Responsiveness (0.3.0-alpha)
 *   **Fully Async RAG**: AI calls and embedding generation are now 100% non-blocking.
 *   **Background Processing**: Heavy indexing tasks moved to `FastAPI.BackgroundTasks`.

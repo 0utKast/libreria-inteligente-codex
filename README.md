@@ -1,4 +1,4 @@
-# 📚 Mi Librería Inteligente `v0.3.0-alpha`
+# 📚 Mi Librería Inteligente `v0.4.0-alpha`
 
 Mi Librería Inteligente es una aplicación web que utiliza la IA multimodal de Google Gemini para analizar y catalogar automáticamente tu colección de libros digitales (PDF y EPUB). Simplemente sube un libro, y la aplicación extraerá su portada, título, autor y le asignará una categoría, guardándolo todo en una base de datos local para que puedas explorar tu biblioteca fácilmente.
 
@@ -224,6 +224,13 @@ Devuelve tokens totales estimados, número de chunks (tamaño base 1000 tokens) 
 Nota: el conteo usa `tiktoken` como aproximación a los tokens de Gemini, por lo que es una estimación.
 
 ## 📜 Historial de Cambios (Changelog)
+
+### [0.4.0-alpha] - 2025-12-26
+#### 🔮 Búsqueda Semántica e Inteligencia
+- **Búsqueda IA Mapping**: Implementado motor de búsqueda semántica que utiliza embeddings de RAG para encontrar libros por conceptos y significado.
+- **Estandarización PyMuPDF (fitz)**: Migrada toda la extracción de texto a `fitz` para mayor velocidad y precisión.
+- **Background Reindexing**: Los procesos de indexación masiva ahora se ejecutan en segundo plano (`BackgroundTasks`) con detector automático en la UI.
+- **Skeleton Loaders**: Mejorada la experiencia de carga en la biblioteca con estados animados premium.
 
 ### [0.3.0-alpha] - 2025-12-26
 #### ✨ Mejoras Estratégicas

@@ -49,70 +49,70 @@ const BookCover = React.memo(({ src, alt, title }) => {
 });
 
 const BookCard = React.memo(({ book, isMobile, handleAuthorClick, handleCategoryClick, handleDeleteBook, handleConvertToPdf, handleEditClick, convertingId, showConvertButton }) => {
-    return (
-        <div className="book-card">
-            <div className="book-card-buttons">
-            {showConvertButton && (
-                <button 
-                onClick={() => handleConvertToPdf(book.id)} 
-                className="convert-book-btn" 
-                title="Convertir a PDF"
-                disabled={convertingId === book.id}
-                >
-                {convertingId === book.id ? '...' : 'PDF'}
-                </button>
-            )}
-            <button onClick={() => handleEditClick(book)} className="edit-book-btn" title="Editar libro">✎</button>
-            <button onClick={() => handleDeleteBook(book.id)} className="delete-book-btn" title="Eliminar libro">×</button>
-            </div>
-            <BookCover
-            src={book.cover_image_url ? `${API_URL}/${book.cover_image_url}` : ''}
-            alt={`Portada de ${book.title}`}
-            title={book.title}
-            />
-            <div className="book-card-info">
-            <h3>{book.title}</h3>
-            <p className="clickable-text" onClick={() => handleAuthorClick(book.author)}>{book.author}</p>
-            <span className="clickable-text" onClick={() => handleCategoryClick(book.category)}>{book.category}</span>
-            </div>
-            {book.file_path.toLowerCase().endsWith('.pdf') ? (
-            <>
-                <a
-                href={`${API_URL}/books/download/${book.id}`}
-                className="download-button"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                Abrir PDF
-                </a>
-                {isMobile && (
-                <a
-                    href={`${API_URL}/books/download/${book.id}`}
-                    className="download-button"
-                    download // This attribute suggests download
-                >
-                    Descargar PDF
-                </a>
-                )}
-            </>
-            ) : (
-            <>
-                <Link to={`/leer/${book.id}`} className="download-button">
-                Leer EPUB
-                </Link>
-                {isMobile && (
-                <a
-                    href={`${API_URL}/books/download/${book.id}`}
-                    className="download-button"
-                    download // This attribute suggests download
-                >
-                    Descargar EPUB
-                </a>
-                )}
-            </>
-            )}
-        </div>
-    );
+  return (
+    <div className="book-card">
+      <div className="book-card-buttons">
+        {showConvertButton && (
+          <button
+            onClick={() => handleConvertToPdf(book.id)}
+            className="convert-book-btn"
+            title="Convertir a PDF"
+            disabled={convertingId === book.id}
+          >
+            {convertingId === book.id ? '...' : 'PDF'}
+          </button>
+        )}
+        <button onClick={() => handleEditClick(book)} className="edit-book-btn" title="Editar libro">✎</button>
+        <button onClick={() => handleDeleteBook(book.id)} className="delete-book-btn" title="Eliminar libro">×</button>
+      </div>
+      <BookCover
+        src={book.cover_image_url ? `${API_URL}/${book.cover_image_url}` : ''}
+        alt={`Portada de ${book.title}`}
+        title={book.title}
+      />
+      <div className="book-card-info">
+        <h3>{book.title}</h3>
+        <p className="clickable-text" onClick={() => handleAuthorClick(book.author)}>{book.author}</p>
+        <span className="clickable-text" onClick={() => handleCategoryClick(book.category)}>{book.category}</span>
+      </div>
+      {book.file_path.toLowerCase().endsWith('.pdf') ? (
+        <>
+          <a
+            href={`${API_URL}/books/download/${book.id}`}
+            className="download-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Abrir PDF
+          </a>
+          {isMobile && (
+            <a
+              href={`${API_URL}/books/download/${book.id}`}
+              className="download-button"
+              download // This attribute suggests download
+            >
+              Descargar PDF
+            </a>
+          )}
+        </>
+      ) : (
+        <>
+          <Link to={`/leer/${book.id}`} className="download-button">
+            Leer EPUB
+          </Link>
+          {isMobile && (
+            <a
+              href={`${API_URL}/books/download/${book.id}`}
+              className="download-button"
+              download // This attribute suggests download
+            >
+              Descargar EPUB
+            </a>
+          )}
+        </>
+      )}
+    </div>
+  );
 });
 
 
@@ -126,6 +126,8 @@ function LibraryView() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [searchMode, setSearchMode] = useState('exact'); // 'exact' o 'semantic'
+  const [ragStats, setRagStats] = useState({ total_documents: 0 });
   const [editingBook, setEditingBook] = useState(null);
   const [convertingId, setConvertingId] = useState(null);
 
@@ -158,17 +160,32 @@ function LibraryView() {
     setSearchParams({ author: author });
   }, [setSearchParams]);
 
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${API_URL}/rag/stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setRagStats(data);
+        }
+      } catch (err) {
+        console.error('Error fetching RAG stats:', err);
+      }
+    };
+    fetchStats();
+  }, [searchMode]);
+
   const handleCategoryClick = useCallback((category) => {
     setSearchParams({ category: category });
   }, [setSearchParams]);
 
   // Effect to reset list when search/filters change
   useEffect(() => {
-      setBooks([]);
-      setPage(0);
-      setHasMore(true);
-      isFetchingRef.current = false;
-  }, [debouncedSearchTerm, searchParams]);
+    setBooks([]);
+    setPage(0);
+    setHasMore(true);
+    isFetchingRef.current = false;
+  }, [debouncedSearchTerm, searchParams, searchMode]);
 
   // Main effect for fetching books
   useEffect(() => {
@@ -180,17 +197,21 @@ function LibraryView() {
     const category = searchParams.get('category');
     const author = searchParams.get('author');
 
-    if (category) params.append('category', category);
-    if (author) {
-      params.append('author', author);
-    } else if (debouncedSearchTerm) {
-      params.append('search', debouncedSearchTerm);
+    let url;
+    if (searchMode === 'semantic' && debouncedSearchTerm) {
+      params.append('q', debouncedSearchTerm);
+      url = `${API_URL}/api/books/search/semantic?${params.toString()}`;
+    } else {
+      if (category) params.append('category', category);
+      if (author) {
+        params.append('author', author);
+      } else if (debouncedSearchTerm) {
+        params.append('search', debouncedSearchTerm);
+      }
+      params.append('skip', page * PAGE_SIZE);
+      params.append('limit', PAGE_SIZE);
+      url = `${API_URL}/books/?${params.toString()}`;
     }
-    
-    params.append('skip', page * PAGE_SIZE);
-    params.append('limit', PAGE_SIZE);
-
-    const url = `${API_URL}/books/?${params.toString()}`;
 
     let cancelled = false;
 
@@ -204,7 +225,7 @@ function LibraryView() {
           const data = await response.json();
           if (!cancelled) {
             setBooks(prevBooks => page === 0 ? data : [...prevBooks, ...data]);
-            setHasMore(data.length === PAGE_SIZE);
+            setHasMore(searchMode === 'semantic' ? false : data.length === PAGE_SIZE);
           }
         } else if (!cancelled) {
           setError('No se pudieron cargar los libros.');
@@ -224,10 +245,10 @@ function LibraryView() {
     fetchBooks();
 
     return () => {
-        cancelled = true;
+      cancelled = true;
     };
 
-  }, [page, debouncedSearchTerm, searchParams, hasMore]);
+  }, [page, debouncedSearchTerm, searchParams, hasMore, searchMode]);
 
 
   const handleDeleteBook = useCallback(async (bookId) => {
@@ -275,7 +296,7 @@ function LibraryView() {
   }, []);
 
   const handleBookUpdated = useCallback((updatedBook) => {
-    setBooks(prevBooks => 
+    setBooks(prevBooks =>
       prevBooks.map(b => b.id === updatedBook.id ? updatedBook : b)
     );
   }, []);
@@ -309,26 +330,41 @@ function LibraryView() {
     return map;
   }, [books]);
 
+  const handleReindex = async () => {
+    if (window.confirm('¿Quieres indexar toda la biblioteca para habilitar la búsqueda IA? Esto puede tardar varios minutos dependiendo del número de libros.')) {
+      try {
+        const response = await fetch(`${API_URL}/rag/reindex/all`, { method: 'POST' });
+        if (response.ok) {
+          alert('El indexado ha comenzado en segundo plano. Los libros irán apareciendo en la búsqueda IA a medida que se procesen.');
+        } else {
+          alert('No se pudo iniciar el reindexado.');
+        }
+      } catch (err) {
+        alert('Error de conexión.');
+      }
+    }
+  };
+
   const bookGrid = useMemo(() => (
     <div className="book-grid">
-        {books.map((book, index) => {
-            const ref = (books.length === index + 1) ? lastBookElementRef : null;
-            return (
-                <div ref={ref} key={book.id}>
-                    <BookCard
-                        book={book}
-                        isMobile={isMobile}
-                        handleAuthorClick={handleAuthorClick}
-                        handleCategoryClick={handleCategoryClick}
-                        handleDeleteBook={handleDeleteBook}
-                        handleConvertToPdf={handleConvertToPdf}
-                        handleEditClick={handleEditClick}
-                        convertingId={convertingId}
-                        showConvertButton={Boolean(convertibilityMap.get(book.id))}
-                    />
-                </div>
-            );
-        })}
+      {books.map((book, index) => {
+        const ref = (books.length === index + 1) ? lastBookElementRef : null;
+        return (
+          <div ref={ref} key={book.id}>
+            <BookCard
+              book={book}
+              isMobile={isMobile}
+              handleAuthorClick={handleAuthorClick}
+              handleCategoryClick={handleCategoryClick}
+              handleDeleteBook={handleDeleteBook}
+              handleConvertToPdf={handleConvertToPdf}
+              handleEditClick={handleEditClick}
+              convertingId={convertingId}
+              showConvertButton={Boolean(convertibilityMap.get(book.id))}
+            />
+          </div>
+        );
+      })}
     </div>
   ), [books, convertibilityMap, isMobile, handleAuthorClick, handleCategoryClick, handleDeleteBook, handleConvertToPdf, handleEditClick, convertingId, lastBookElementRef]);
 
@@ -338,29 +374,66 @@ function LibraryView() {
       <h2>Mi Biblioteca</h2>
 
       <div className="controls-container">
-        <input
-          type="text"
-          placeholder="Buscar por título, autor o categoría..."
-          className="search-bar"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder={searchMode === 'exact' ? "Buscar por título, autor o categoría..." : "Pregunta algo sobre tus libros o busca por temática..."}
+            className="search-bar"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="search-mode-selector">
+            <button
+              className={searchMode === 'exact' ? 'active' : ''}
+              onClick={() => setSearchMode('exact')}
+              title="Búsqueda por coincidencia exacta"
+            >
+              Exacta
+            </button>
+            <button
+              className={searchMode === 'semantic' ? 'active' : ''}
+              onClick={() => setSearchMode('semantic')}
+              title="Búsqueda inteligente por IA"
+            >
+              IA 🪄
+            </button>
+          </div>
+        </div>
       </div>
 
       {error && <p className="error-message">{error}</p>}
-      
+
+      {searchMode === 'semantic' && ragStats.total_documents === 0 && (
+        <div className="rag-warning">
+          <p>⚠️ <strong>Búsqueda IA no disponible:</strong> Tu biblioteca aún no ha sido indexada por la inteligencia artificial.</p>
+          <button onClick={handleReindex} className="index-btn">Indexar mi biblioteca ahora</button>
+        </div>
+      )}
+
       {bookGrid}
 
-      {loading && <p>Cargando más libros...</p>}
+      {loading && (
+        <div className="book-grid">
+          {[...Array(PAGE_SIZE)].map((_, i) => (
+            <div key={`sk-${i}`} className="skeleton skeleton-card" />
+          ))}
+        </div>
+      )}
       {!loading && !hasMore && books.length > 0 && <p className="end-of-results">Fin de los resultados</p>}
-      {!loading && books.length === 0 && !error && <p>No se encontraron libros que coincidan con tu búsqueda.</p>}
+      {!loading && books.length === 0 && !error && (
+        <p className="no-results">
+          {searchMode === 'semantic'
+            ? "La IA no ha encontrado libros con esa temática. Intenta con otra pregunta."
+            : "No se encontraron libros que coincidan con tu búsqueda."}
+        </p>
+      )}
 
 
       {editingBook && (
-        <EditBookModal 
-          book={editingBook} 
-          onClose={handleCloseModal} 
-          onBookUpdated={handleBookUpdated} 
+        <EditBookModal
+          book={editingBook}
+          onClose={handleCloseModal}
+          onBookUpdated={handleBookUpdated}
         />
       )}
 

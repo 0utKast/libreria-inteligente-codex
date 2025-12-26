@@ -3,10 +3,7 @@ import asyncio
 import google.generativeai as genai
 from dotenv import load_dotenv
 import chromadb
-from PyPDF2 import PdfReader
-import ebooklib
-
-from bs4 import BeautifulSoup
+from . import utils
 import tiktoken
 import math
 
@@ -55,31 +52,13 @@ async def get_embedding(text: str, task_type: str = "RETRIEVAL_DOCUMENT"):
     return response["embedding"]
 
 def extract_text_from_pdf(file_path: str) -> str:
-    """Extracts text from a PDF file."""
-    text = ""
-    try:
-        with open(file_path, "rb") as f:
-            reader = PdfReader(f)
-            for page in reader.pages:
-                text += page.extract_text() or ""
-    except Exception as e:
-        print(f"Error extracting text from PDF {file_path}: {e}")
-        return ""
-    return text
+    """Extracts text from a PDF file using standardized utils."""
+    # Para RAG extraemos todo el contenido posible
+    return utils.extract_text_from_pdf(file_path, max_pages=1000)
 
 def extract_text_from_epub(file_path: str) -> str:
-    """Extracts text from an EPUB file."""
-    text_content = []
-    try:
-        book = ebooklib.epub.read_epub(file_path)
-        for item in book.get_items():
-            if item.get_type() == ebooklib.ITEM_DOCUMENT:
-                soup = BeautifulSoup(item.get_content(), 'html.parser')
-                text_content.append(soup.get_text())
-    except Exception as e:
-        print(f"Error extracting text from EPUB {file_path}: {e}")
-        return ""
-    return "\n".join(text_content)
+    """Extracts text from an EPUB file using standardized utils."""
+    return utils.extract_text_from_epub(file_path, max_chars=1000000)
 
 def extract_text(file_path: str) -> str:
     """Unified text extraction for supported types."""
@@ -278,3 +257,48 @@ Respuesta:"""
     model = genai.GenerativeModel(GENERATION_MODEL)
     response = await model.generate_content_async(prompt)
     return response.text
+
+async def query_semantic_books(query: str, top_n_fragments: int = 20):
+    """
+    Busca libros cuya temática sea semánticamente similar a la consulta.
+    Devuelve una lista de (book_id, score) ordenados.
+    """
+    _ensure_init()
+    query_embedding = await get_embedding(query, task_type="RETRIEVAL_QUERY")
+    if not query_embedding:
+        return []
+
+    # Buscar fragmentos relevantes en toda la colección
+    results = _collection.query(
+        query_embeddings=[query_embedding],
+        n_results=top_n_fragments
+    )
+
+    # Agrupar por book_id y calcular relevancia
+    book_scores = {}
+    ids = results["ids"][0]
+    metadatas = results["metadatas"][0]
+    distances = results["distances"][0]
+
+    for i in range(len(ids)):
+        meta = metadatas[i]
+        dist = distances[i]
+        # book_id se guardó como string en metadata
+        b_id = meta.get("book_id")
+        
+        if b_id is None:
+            continue
+            
+        # Score inverso: ChromaDB usa L2 por defecto, menor distancia -> mayor score
+        score = 1.0 / (1.0 + dist)
+        
+        # Guardamos el score más alto o acumulamos
+        if b_id not in book_scores:
+            book_scores[b_id] = 0.0
+        book_scores[b_id] += score
+
+    # Ordenar por score descendente
+    sorted_results = [{"book_id": int(bid), "score": s} for bid, s in book_scores.items()]
+    sorted_results.sort(key=lambda x: x["score"], reverse=True)
+    
+    return sorted_results

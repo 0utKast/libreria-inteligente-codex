@@ -113,6 +113,37 @@ def convert_epub_bytes_to_pdf_bytes(epub_content: bytes) -> bytes:
         # En caso de un error de conversión, lo relanzamos para que el endpoint lo maneje
         raise RuntimeError(f"Error durante la conversión de EPUB a PDF: {e}") from e
 
+def extract_text_from_pdf(file_path: str, max_pages: int = 5) -> str:
+    """Extrae texto de las primeras páginas de un PDF usando PyMuPDF (fitz)."""
+    import fitz
+    try:
+        doc = fitz.open(file_path)
+        text = ""
+        for i in range(min(len(doc), max_pages)):
+            text += doc.load_page(i).get_text("text", sort=True) + "\n"
+        doc.close()
+        return text
+    except Exception as e:
+        print(f"Error al extraer texto de PDF {file_path}: {e}")
+        return ""
+
+def extract_text_from_epub(file_path: str, max_chars: int = 5000) -> str:
+    """Extrae texto de un EPUB usando ebooklib."""
+    import ebooklib
+    from ebooklib import epub
+    try:
+        book = epub.read_epub(file_path)
+        text = ""
+        for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
+            soup = BeautifulSoup(item.get_content(), 'html.parser')
+            text += soup.get_text(separator=' ') + "\n"
+            if len(text) > max_chars:
+                break
+        return text
+    except Exception as e:
+        print(f"Error al extraer texto de EPUB {file_path}: {e}")
+        return ""
+
 # Ejemplo de uso (si se ejecuta este script directamente)
 if __name__ == '__main__':
     # Para probar, necesitarías un archivo .env en la raíz del proyecto

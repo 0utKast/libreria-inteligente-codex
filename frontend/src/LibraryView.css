@@ -35,6 +35,95 @@
   border-color: #88e1fb;
 }
 
+.search-box {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-mode-selector {
+  display: flex;
+  background-color: #3a3f4a;
+  padding: 4px;
+  border-radius: 20px;
+  border: 1px solid #61dafb;
+}
+
+.search-mode-selector button {
+  background: transparent;
+  border: none;
+  color: #a0a0a0;
+  padding: 6px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.search-mode-selector button.active {
+  background-color: #61dafb;
+  color: #282c34;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Skeleton Loading Animation */
+.skeleton {
+  background: linear-gradient(90deg, #3a3f4a 25%, #4a505c 50%, #3a3f4a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-card {
+  height: 400px;
+  width: 100%;
+}
+
+.rag-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  border: 1px solid #ffc107;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #ffc107;
+}
+
+.rag-warning p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.index-btn {
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.index-btn:hover {
+  background-color: #88e1fb;
+  transform: scale(1.05);
+}
+
 .category-filters {
   margin-bottom: 30px;
   display: flex;
@@ -43,7 +132,8 @@
   gap: 10px;
 }
 
-.category-filters > button { /* Estilo para el botón "Todas" */
+.category-filters>button {
+  /* Estilo para el botón "Todas" */
   background-color: #3a3f4a;
   border: 1px solid #61dafb;
   color: #61dafb;
@@ -81,15 +171,18 @@
   line-height: 1;
   color: #ff6b6b;
 }
+
 .category-chip .delete-chip-btn:hover {
   color: #e03131;
 }
 
-.category-filters button:hover, .category-chip button:hover {
+.category-filters button:hover,
+.category-chip button:hover {
   background-color: #4a505c;
 }
 
-.category-filters > button.active, .category-chip button.active {
+.category-filters>button.active,
+.category-chip button.active {
   background-color: #61dafb;
   color: #282c34;
 }
@@ -101,7 +194,8 @@
 }
 
 .book-card {
-  position: relative; /* Para posicionar el botón de eliminar */
+  position: relative;
+  /* Para posicionar el botón de eliminar */
   background-color: #282c34;
   border-radius: 8px;
   overflow: hidden;
@@ -160,7 +254,7 @@
 
 .generic-cover-initial {
   opacity: 0.5;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .book-card-info {
@@ -169,9 +263,27 @@
   flex-grow: 1;
 }
 
-.book-card-info h3 { font-size: 1.1rem; margin: 0 0 5px 0; color: white; }
-.book-card-info p { font-size: 0.9rem; margin: 0 0 10px 0; color: #ccc; }
-.book-card-info span { font-size: 0.8rem; background-color: #61dafb; color: #282c34; padding: 3px 8px; border-radius: 12px; font-weight: bold; transition: background-color 0.2s ease; }
+.book-card-info h3 {
+  font-size: 1.1rem;
+  margin: 0 0 5px 0;
+  color: white;
+}
+
+.book-card-info p {
+  font-size: 0.9rem;
+  margin: 0 0 10px 0;
+  color: #ccc;
+}
+
+.book-card-info span {
+  font-size: 0.8rem;
+  background-color: #61dafb;
+  color: #282c34;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
 
 .download-button {
   display: block;
@@ -187,8 +299,13 @@
   transition: background-color 0.2s;
 }
 
-.download-button:hover { background-color: #45a049; }
-.error-message { color: #ff6b6b; }
+.download-button:hover {
+  background-color: #45a049;
+}
+
+.error-message {
+  color: #ff6b6b;
+}
 
 .clickable-text {
   cursor: pointer;
@@ -196,9 +313,11 @@
 }
 
 .clickable-text:hover {
-  color: #61dafb; /* A color that stands out on hover */
+  color: #61dafb;
+  /* A color that stands out on hover */
 }
 
 .book-card-info span.clickable-text:hover {
-  background-color: #3aa8c8; /* Darker shade for hover */
+  background-color: #3aa8c8;
+  /* Darker shade for hover */
 }
