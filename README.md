@@ -18,6 +18,18 @@ Mi Librería Inteligente es una aplicación web que utiliza la IA multimodal de 
 - **Acceso Directo:** Abre los archivos originales de tus libros directamente desde la aplicación.
 - **Diseño Responsivo:** La interfaz de usuario se adapta automáticamente a diferentes tamaños de pantalla, permitiendo una experiencia fluida tanto en ordenadores de escritorio como en dispositivos móviles (teléfonos y tablets).
 
+## 🚀 Mejoras Recientes (Diciembre 2025)
+
+### ⚡ Optimización de Rendimiento
+- **Compresión de Imágenes:** Las portadas se han optimizado reduciendo el almacenamiento de **488MB a solo 40MB** (una reducción del 92%) sin pérdida perceptible de calidad visual.
+- **Carga Diferida (Lazy Loading):** Las librerías pesadas (`fitz`, `ebooklib`, `weasyprint`, `chromadb`) ahora se cargan solo cuando son necesarias, acelerando el arranque del servidor.
+- **Caché de Activos:** Implementación de cabeceras `Cache-Control` para recursos estáticos.
+
+### 🏠 Portabilidad Total
+- **Rutas Relativas:** La base de datos (`library.db`) ahora almacena rutas relativas al directorio del backend.
+- **Resolución Dinámica:** El sistema resuelve las rutas absolutas en tiempo de ejecución, lo que permite mover la carpeta del proyecto a cualquier ubicación o unidad sin romper los enlaces a los libros o portadas.
+- **Script de Inicio Rápido:** Actualización de `start.bat` para detectar el entorno y lanzar ambos servidores automáticamente con un solo clic.
+
 ## 🛠️ Tecnologías Utilizadas
 
 - **Backend:** Python, FastAPI, SQLAlchemy, Alembic
@@ -26,13 +38,15 @@ Mi Librería Inteligente es una aplicación web que utiliza la IA multimodal de 
 - **Base de Datos:** SQLite
 - **Manejo de Libros:** PyMuPDF (para PDF), EbookLib (para EPUB)
 
-## Building and Running
+## 🚀 Ejecución Rápida (Recomendado)
 
-This is a small change for the documentation PR example.
+Si estás en Windows, simplemente ejecuta el script en la raíz:
+```bash
+./start.bat
+```
+Este script se encargará de verificar el entorno (Python/Node), activar los entornos virtuales e iniciar tanto el backend como el frontend automáticamente.
 
-Testing release drafter action.
-
-Sigue estos pasos para ejecutar el proyecto en tu máquina local.
+## 🛠️ Instalación y Configuración Manual
 
 ### Prerrequisitos
 

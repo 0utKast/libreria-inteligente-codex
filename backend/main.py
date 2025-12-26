@@ -8,17 +8,12 @@ import os
 from pathlib import Path
 import asyncio
 import io
-import fitz
-import ebooklib
-from ebooklib import epub
-from bs4 import BeautifulSoup
-import google.generativeai as genai
 from dotenv import load_dotenv
 import json
 from typing import List, Optional
+from PIL import Image
 
 from . import crud, models, database, schemas, utils
-from . import rag  # Import the new RAG module
 import uuid # For generating unique book IDs
 
 # --- Configuración Inicial ---
@@ -28,13 +23,55 @@ load_dotenv(dotenv_path=base_dir.parent / '.env')
 API_KEY = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
 AI_ENABLED = bool(API_KEY)
 if AI_ENABLED:
+    import google.generativeai as genai
     genai.configure(api_key=API_KEY)
 models.Base.metadata.create_all(bind=database.engine)
+
+# --- Utilidades de Imagen ---
+def save_optimized_image(pix_or_bytes, target_path, is_pixmap=True):
+    """Guarda una imagen optimizada (redimensionada y comprimida)."""
+    if is_pixmap:
+        # pix_or_bytes es un fitz.Pixmap
+        img = Image.frombytes("RGB", [pix_or_bytes.width, pix_or_bytes.height], pix_or_bytes.samples)
+    else:
+        # pix_or_bytes es un objeto bytes (de EPUB)
+        img = Image.open(io.BytesIO(pix_or_bytes))
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+
+    # Redimensionar si es muy grande (máximo 400px de ancho para portadas)
+    MAX_WIDTH = 400
+    if img.width > MAX_WIDTH:
+        ratio = MAX_WIDTH / float(img.width)
+        new_height = int(float(img.height) * ratio)
+        img = img.resize((MAX_WIDTH, new_height), Image.Resampling.LANCZOS)
+    
+    # Guardar como JPEG con calidad optimizada
+    img.save(target_path, "JPEG", quality=80, optimize=True)
+
+# --- Utilidades de Ruta ---
+def get_safe_path(db_path: str) -> str:
+    """Resuelve una ruta de la base de datos a una ruta absoluta en tiempo de ejecución."""
+    if not db_path:
+        return db_path
+    if os.path.isabs(db_path):
+        return db_path
+    # Asumimos que las rutas relativas en la BD son relativas a la carpeta 'backend'
+    return os.path.abspath(os.path.join(str(base_dir), db_path))
+
+def get_relative_path(abs_path: str) -> str:
+    """Convierte una ruta absoluta a una relativa al directorio 'backend'."""
+    try:
+        rel = os.path.relpath(abs_path, base_dir)
+        return rel.replace("\\", "/")
+    except ValueError:
+        return abs_path
 
 # --- Funciones de IA y Procesamiento ---
 async def analyze_with_gemini(text: str) -> dict:
     if os.getenv("DISABLE_AI") == "1" or not AI_ENABLED:
         return {"title": "Desconocido", "author": "Desconocido", "category": "Desconocido"}
+    import google.generativeai as genai
     # Permite configurar el modelo por variable de entorno; por defecto 2.5 (sin alias -latest)
     model_name = os.getenv("GEMINI_MODEL_MAIN", "gemini-2.5-flash")
     model = genai.GenerativeModel(model_name)
@@ -63,6 +100,7 @@ async def analyze_with_gemini(text: str) -> dict:
         return {"title": "Error de IA", "author": "Error de IA", "category": "Error de IA"}
 
 def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
+    import fitz
     doc = fitz.open(file_path)
     text = ""
     for i in range(min(len(doc), 5)):
@@ -73,9 +111,9 @@ def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> d
             xref = img[0]
             pix = fitz.Pixmap(doc, xref)
             if pix.width > 300 and pix.height > 300:
-                cover_filename = f"cover_{os.path.basename(file_path)}.png"
+                cover_filename = f"cover_{os.path.basename(file_path)}.jpg"
                 cover_full_path = os.path.join(covers_dir_fs, cover_filename)
-                pix.save(cover_full_path)
+                save_optimized_image(pix, cover_full_path, is_pixmap=True)
                 cover_path = f"{covers_url_prefix}/{cover_filename}"
                 break
         if cover_path:
@@ -84,6 +122,9 @@ def process_pdf(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> d
 
 def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> dict:
     """ Lógica de procesamiento de EPUB muy mejorada con fallbacks para la portada. """
+    import ebooklib
+    from ebooklib import epub
+    from bs4 import BeautifulSoup
     book = epub.read_epub(file_path)
     text = ""
     for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
@@ -113,9 +154,10 @@ def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> 
     # Si encontramos una portada por cualquiera de los métodos
     if cover_item:
         cover_filename = f"cover_{os.path.basename(file_path)}_{cover_item.get_name()}".replace('/', '_').replace('\\', '_')
+        if not cover_filename.lower().endswith(('.jpg', '.jpeg')):
+            cover_filename = os.path.splitext(cover_filename)[0] + ".jpg"
         cover_full_path = os.path.join(covers_dir_fs, cover_filename)
-        with open(cover_full_path, 'wb') as f:
-            f.write(cover_item.get_content())
+        save_optimized_image(cover_item.get_content(), cover_full_path, is_pixmap=False)
         cover_path = f"{covers_url_prefix}/{cover_filename}"
 
     return {"text": text, "cover_image_url": cover_path}
@@ -137,6 +179,16 @@ os.makedirs(TEMP_BOOKS_DIR_FS, exist_ok=True)
 os.makedirs(BOOKS_DIR_FS, exist_ok=True)
 
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR_FS)), name="static")
+
+# Cache headers for static files (covers and others)
+@app.middleware("http")
+async def add_cache_headers(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        # Cache for 1 day
+        response.headers["Cache-Control"] = "public, max-age=86400"
+    return response
+
 app.mount("/temp_books", StaticFiles(directory=str(TEMP_BOOKS_DIR_FS)), name="temp_books")
 raw_origins = os.getenv("ALLOW_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
 allow_origins = [o.strip() for o in raw_origins if o.strip()]
@@ -197,28 +249,28 @@ async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
     # 5. Guardar el nuevo archivo PDF
     base_filename = os.path.splitext(os.path.basename(original_book.file_path))[0]
     new_filename = f"{base_filename}.pdf"
-    new_filepath = os.path.join(str(BOOKS_DIR_FS), new_filename)
+    new_filepath_abs = os.path.join(str(BOOKS_DIR_FS), new_filename)
 
     # Asegurarse de que el nombre de archivo no exista ya
     counter = 1
-    while os.path.exists(new_filepath):
+    while os.path.exists(new_filepath_abs):
         new_filename = f"{base_filename}_{counter}.pdf"
-        new_filepath = os.path.join(str(BOOKS_DIR_FS), new_filename)
+        new_filepath_abs = os.path.join(str(BOOKS_DIR_FS), new_filename)
         counter += 1
     
-    with open(new_filepath, "wb") as f:
+    with open(new_filepath_abs, "wb") as f:
         f.write(pdf_bytes)
 
     # 6. Procesar el nuevo PDF para añadirlo a la biblioteca (lógica de /upload-book)
     try:
-        book_data = process_pdf(new_filepath, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
+        book_data = process_pdf(new_filepath_abs, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
         gemini_result = await analyze_with_gemini(book_data["text"])
 
         title = gemini_result.get("title", "Desconocido")
         author = gemini_result.get("author", "Desconocido")
 
         if title == "Desconocido" and author == "Desconocido":
-            os.remove(new_filepath)
+            os.remove(new_filepath_abs)
             raise HTTPException(status_code=422, detail="La IA no pudo identificar metadatos del PDF convertido.")
 
         return crud.create_book(
@@ -227,12 +279,12 @@ async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
             author=author,
             category=gemini_result.get("category", original_book.category), # Usar categoría original como fallback
             cover_image_url=book_data.get("cover_image_url"),
-            file_path=new_filepath
+            file_path=get_relative_path(new_filepath_abs)
         )
     except Exception as e:
         # Si algo falla, limpiar el PDF creado
-        if os.path.exists(new_filepath):
-            os.remove(new_filepath)
+        if os.path.exists(new_filepath_abs):
+            os.remove(new_filepath_abs)
         # Re-lanzar la excepción para que FastAPI la maneje
         raise HTTPException(status_code=500, detail=f"Error al procesar el nuevo PDF: {e}")
 
@@ -270,24 +322,24 @@ async def convert_epub_to_pdf_tool(file: UploadFile = File(...)):
 async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = File(...)):
     books_dir = str(BOOKS_DIR_FS)
     safe_name = os.path.basename(book_file.filename)
-    file_path = os.path.abspath(os.path.join(books_dir, safe_name))
+    file_path_abs = os.path.abspath(os.path.join(books_dir, safe_name))
 
-    if crud.get_book_by_path(db, file_path):
+    if crud.get_book_by_path(db, file_path_abs) or crud.get_book_by_path(db, get_relative_path(file_path_abs)):
         raise HTTPException(status_code=409, detail="Este libro ya ha sido añadido.")
 
-    with open(file_path, "wb") as buffer:
+    with open(file_path_abs, "wb") as buffer:
         shutil.copyfileobj(book_file.file, buffer)
 
     file_ext = os.path.splitext(book_file.filename)[1].lower()
     try:
         if file_ext == ".pdf":
-            book_data = process_pdf(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
+            book_data = process_pdf(file_path_abs, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
         elif file_ext == ".epub":
-            book_data = process_epub(file_path, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
+            book_data = process_epub(file_path_abs, str(STATIC_COVERS_DIR_FS), STATIC_COVERS_URL_PREFIX)
         else:
             raise HTTPException(status_code=400, detail="Tipo de archivo no soportado.")
     except HTTPException as e:
-        os.remove(file_path) # Limpiar el archivo subido si el procesamiento falla
+        os.remove(file_path_abs) # Limpiar el archivo subido si el procesamiento falla
         raise e
 
     gemini_result = await analyze_with_gemini(book_data["text"])
@@ -297,7 +349,7 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
     author = gemini_result.get("author", "Desconocido")
 
     if title == "Desconocido" and author == "Desconocido":
-        os.remove(file_path) # Borrar el archivo que no se pudo analizar
+        os.remove(file_path_abs) # Borrar el archivo que no se pudo analizar
         raise HTTPException(status_code=422, detail="La IA no pudo identificar el título ni el autor del libro. No se ha añadido.")
 
     return crud.create_book(
@@ -306,7 +358,7 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
         author=author, 
         category=gemini_result.get("category", "Desconocido"), 
         cover_image_url=book_data.get("cover_image_url"), 
-        file_path=file_path
+        file_path=get_relative_path(file_path_abs)
     )
 
 @app.get("/books/", response_model=List[schemas.Book])
@@ -380,6 +432,7 @@ def read_categories(db: Session = Depends(get_db)):
 def delete_single_book(book_id: int, db: Session = Depends(get_db)):
     # Limpiar índices RAG asociados al libro (usamos el ID de BD como book_id en RAG)
     try:
+        from . import rag
         rag.delete_book_from_rag(str(book_id))
     except Exception as e:
         print(f"Advertencia: fallo al limpiar RAG para book_id={book_id}: {e}")
@@ -407,22 +460,24 @@ def download_book(book_id: int, db: Session = Depends(get_db)):
     book = db.query(models.Book).filter(models.Book.id == book_id).first()
     if not book:
         raise HTTPException(status_code=404, detail="Libro no encontrado.")
-    if not os.path.exists(book.file_path):
+    
+    abs_file_path = get_safe_path(book.file_path)
+    if not os.path.exists(abs_file_path):
         raise HTTPException(status_code=404, detail="Archivo no encontrado en el disco.")
 
-    file_ext = os.path.splitext(book.file_path)[1].lower()
-    filename = os.path.basename(book.file_path)
+    file_ext = os.path.splitext(abs_file_path)[1].lower()
+    filename = os.path.basename(abs_file_path)
     
     if file_ext == ".pdf":
         return FileResponse(
-            path=book.file_path,
+            path=abs_file_path,
             filename=filename,
             media_type='application/pdf',
             content_disposition_type='inline'
         )
     else: # Para EPUB y otros tipos de archivo
         return FileResponse(
-            path=book.file_path,
+            path=abs_file_path,
             filename=filename,
             media_type='application/epub+zip',
             content_disposition_type='attachment'
@@ -436,6 +491,7 @@ async def upload_book_for_rag(file: UploadFile = File(...)):
         f.write(await file.read())
     
     try:
+        from . import rag
         await rag.process_book_for_rag(file_location, book_id)
         return {"book_id": book_id, "message": "Libro procesado para RAG exitosamente."}
     except Exception as e:
@@ -471,10 +527,13 @@ async def index_existing_book_for_rag(book_id: int, force: bool = False, db: Ses
     book = db.query(models.Book).filter(models.Book.id == book_id).first()
     if not book:
         raise HTTPException(status_code=404, detail="Libro no encontrado.")
-    if not os.path.exists(book.file_path):
+    
+    abs_file_path = get_safe_path(book.file_path)
+    if not os.path.exists(abs_file_path):
         raise HTTPException(status_code=404, detail="Archivo no encontrado en el disco.")
     try:
-        await rag.process_book_for_rag(book.file_path, str(book.id), force_reindex=force)
+        from . import rag
+        await rag.process_book_for_rag(abs_file_path, str(book.id), force_reindex=force)
         return {"message": "Libro indexado en RAG", "book_id": str(book.id), "force": force}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al indexar en RAG: {e}")
@@ -484,6 +543,7 @@ async def index_existing_book_for_rag(book_id: int, force: bool = False, db: Ses
 def rag_status(book_id: int):
     """Devuelve si el libro tiene índice RAG y el número de vectores."""
     try:
+        from . import rag
         count = rag.get_index_count(str(book_id))
         return {"book_id": str(book_id), "indexed": count > 0, "vector_count": count}
     except Exception as e:
@@ -499,7 +559,9 @@ async def rag_reindex_category(category_name: str, force: bool = True, db: Sessi
     processed, failed = 0, []
     for b in books:
         try:
-            await rag.process_book_for_rag(b.file_path, str(b.id), force_reindex=force)
+            from . import rag
+            abs_file_path = get_safe_path(b.file_path)
+            await rag.process_book_for_rag(abs_file_path, str(b.id), force_reindex=force)
             processed += 1
         except Exception as e:
             failed.append({"book_id": b.id, "error": str(e)})
@@ -527,7 +589,9 @@ def estimate_rag_for_book(book_id: int, per1k: float | None = None, max_tokens: 
     if not book:
         raise HTTPException(status_code=404, detail="Libro no encontrado.")
     try:
-        est = rag.estimate_embeddings_for_file(book.file_path, max_tokens=max_tokens)
+        from . import rag
+        abs_file_path = get_safe_path(book.file_path)
+        est = rag.estimate_embeddings_for_file(abs_file_path, max_tokens=max_tokens)
         cost = (est["tokens"] / 1000.0) * per1k if per1k else None
         return {"book_id": str(book.id), **est, "per1k": per1k, "estimated_cost": cost}
     except Exception as e:
@@ -540,7 +604,8 @@ def estimate_rag_for_category(category_name: str, per1k: float | None = None, ma
     if not books:
         raise HTTPException(status_code=404, detail=f"Categoría '{category_name}' no encontrada o sin libros.")
     try:
-        file_paths = [b.file_path for b in books]
+        file_paths = [get_safe_path(b.file_path) for b in books]
+        from . import rag
         est = rag.estimate_embeddings_for_files(file_paths, max_tokens=max_tokens)
         cost = (est["tokens"] / 1000.0) * per1k if per1k else None
         return {"category": category_name, **est, "per1k": per1k, "estimated_cost": cost}
@@ -554,7 +619,8 @@ def estimate_rag_for_all(per1k: float | None = None, max_tokens: int = 1000, db:
     if not books:
         return {"tokens": 0, "chunks": 0, "files": 0, "per1k": per1k, "estimated_cost": 0}
     try:
-        file_paths = [b.file_path for b in books]
+        file_paths = [get_safe_path(b.file_path) for b in books]
+        from . import rag
         est = rag.estimate_embeddings_for_files(file_paths, max_tokens=max_tokens)
         cost = (est["tokens"] / 1000.0) * per1k if per1k else None
         return {**est, "per1k": per1k, "estimated_cost": cost}

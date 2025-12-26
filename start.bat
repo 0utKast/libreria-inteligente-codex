@@ -11,8 +11,8 @@ cd backend
 if not exist .venv\Scripts\python.exe (
   echo Creando entorno virtual de Python...
   python -m venv .venv
+  call .venv\Scripts\pip.exe install -r requirements.txt
 )
-call .venv\Scripts\pip.exe install -r requirements.txt
 cd ..
 START "Backend" cmd /c "backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --reload --port 8001 --host 0.0.0.0"
 

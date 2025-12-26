@@ -3,6 +3,15 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc, or_
 from . import models
 import os
+from pathlib import Path
+
+def get_abs_path(db_path: str) -> str:
+    """Helper local para resolver rutas relativas en operaciones CRUD."""
+    if not db_path or os.path.isabs(db_path):
+        return db_path
+    # Asumimos que crud.py está en la carpeta 'backend'
+    base_dir = Path(__file__).resolve().parent
+    return os.path.abspath(os.path.join(str(base_dir), db_path))
 
 def get_book(db: Session, book_id: int):
     """Obtiene un libro por su ID."""
@@ -61,10 +70,14 @@ def delete_book(db: Session, book_id: int):
     book = db.query(models.Book).filter(models.Book.id == book_id).first()
     if book:
         # Eliminar archivos asociados
-        if book.file_path and os.path.exists(book.file_path):
-            os.remove(book.file_path)
-        if book.cover_image_url and os.path.exists(book.cover_image_url):
-            os.remove(book.cover_image_url)
+        abs_file_path = get_abs_path(book.file_path)
+        if abs_file_path and os.path.exists(abs_file_path):
+            os.remove(abs_file_path)
+        
+        # Las portadas suelen empezar por static/covers/, que ya es relativo al backend
+        abs_cover_path = get_abs_path(book.cover_image_url)
+        if abs_cover_path and os.path.exists(abs_cover_path):
+            os.remove(abs_cover_path)
         
         db.delete(book)
         db.commit()
@@ -78,10 +91,13 @@ def delete_books_by_category(db: Session, category: str):
     
     for book in books_to_delete:
         # Eliminar archivos asociados
-        if book.file_path and os.path.exists(book.file_path):
-            os.remove(book.file_path)
-        if book.cover_image_url and os.path.exists(book.cover_image_url):
-            os.remove(book.cover_image_url)
+        abs_file_path = get_abs_path(book.file_path)
+        if abs_file_path and os.path.exists(abs_file_path):
+            os.remove(abs_file_path)
+            
+        abs_cover_path = get_abs_path(book.cover_image_url)
+        if abs_cover_path and os.path.exists(abs_cover_path):
+            os.remove(abs_cover_path)
         db.delete(book)
         
     count = len(books_to_delete)

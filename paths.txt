@@ -1,0 +1,844 @@
+../../libreria/backend/books/A Mind at Play - Jimmy Soni.epub
+../../libreria/backend/books/AA. VV. - Cuentos inolvidables segun Julio Cortazar [15471] (r1.7).pdf
+../../libreria/backend/books/AA. VV. - La Tierra Media [15618] (r1.2).epub
+../../libreria/backend/books/AA. VV. - Lenin reactivado [24190] (r1.1).epub
+../../libreria/backend/books/AA. VV. - [Cancion de hielo y fuego 00] El mundo de hielo y fuego (Trad. Espana) [56106] (r1.3).epub
+../../libreria/backend/books/Adrian Escudero, Jesus - Guia de lectura de Ser y tiempo de Martin Heidegger (Vol. 1) [29107] (r1.0).epub
+../../libreria/backend/books/Akutagawa, Ryunosuke - Vida de un loco. Tres relatos [3628] (r1.2 jugaor).pdf
+../../libreria/backend/books/Al-Khalili, Jim - Cuantica guia de perplejos [74978] (r1.0 UnTalLucas).pdf
+../../libreria/backend/books/Al-Khalili, Jim - El mundo segun la fisica [76304] (r1.0 EPL).pdf
+../../libreria/backend/books/Alcala-Zamora, Niceto - [Los diarios robados del presidente de la Segunda Republica 01] Memorias de un ministro de Alfonso XIII (1877-1930) [47280] (r1.0).epub
+../../libreria/backend/books/Alcala-Zamora, Niceto - [Los diarios robados del presidente de la Segunda Republica 03] Asalto a la Republica (enero - abril de 1936) [47282] (r1.0).pdf
+../../libreria/backend/books/Alonso Burgos, Jesus - Blade Runner lo que Deckard no sabia [22286] (r1.3).epub
+../../libreria/backend/books/Aroca, Ricardo - La historia secreta de Madrid [31068] (r1.3).epub
+../../libreria/backend/books/Aroca, Ricardo - La historia secreta de Madrid [31068] (r1.3).pdf
+../../libreria/backend/books/Asimov, Isaac - La ultima pregunta [7323] (r2.5).epub
+../../libreria/backend/books/Asimov, Isaac - Trilogia del Imperio [69429] (r2.0).epub
+../../libreria/backend/books/Asimov, Isaac - [Historia Universal Asimov 10] La formacion de Francia [8659] (r1.1).epub
+../../libreria/backend/books/Asimov, Isaac - [Nueva guia de la ciencia de Isaac Asimov 01] Introduccion a la ciencia - I. Ciencias Fisicas [1944] (r1.4).pdf
+../../libreria/backend/books/Azana, Manuel - Causas de la guerra de Espana [675] (r1.4).pdf
+../../libreria/backend/books/Azana, Manuel - Diarios completos [51129] (r1.0).epub
+../../libreria/backend/books/Azana, Manuel - Diarios completos [51129] (r1.0).pdf
+../../libreria/backend/books/Azorin - Madrid [74444] (r1.0).epub
+../../libreria/backend/books/Azorin - Madrid [74444] (r1.0).pdf
+../../libreria/backend/books/B106MadridDeLosBorbones.pdf
+../../libreria/backend/books/Balzac, Honore de - [La Comedia Humana (Editorial Lorenzana) 01] La casa del gato que juega a la pelota y otras historias [24493] (r2.2 Piolin).epub
+../../libreria/backend/books/Balzac, Honore de - [La Comedia Humana (Editorial Lorenzana) 02] Modesta Mignon & Una entrada en la vida [24706] (r1.4).epub
+../../libreria/backend/books/Barbery, Muriel - La elegancia del erizo [4899] (r2.3).epub
+../../libreria/backend/books/Baroja, Pio - Las horas solitarias [46777] (r1.0).pdf
+../../libreria/backend/books/Benjamin, Walter - El Paris de Baudelaire [50295] (r1.1).epub
+../../libreria/backend/books/Benjamin, Walter - Historias desde la soledad y otras narraciones [76906] (r1.0).pdf
+../../libreria/backend/books/Benjamin, Walter - [Obra Completa de Walter Benjamin 01] Libro I-Vol. 1 [30107] (r1.2).epub
+../../libreria/backend/books/Benjamin, Walter - [Obra Completa de Walter Benjamin 02] Libro I-Vol. 2 [29574] (r1.4).epub
+../../libreria/backend/books/Blanchot, Maurice - De Kafka a Kafka [35367] (r1.2).pdf
+../../libreria/backend/books/Boecio, Anicio Manlio Torcuato Severino - La consolacion de la filosofia [77028] (r1.1).epub
+../../libreria/backend/books/Borges, Jorge Luis - El Aleph [5970] (r1.6).epub
+../../libreria/backend/books/Borges, Jorge Luis - El Aleph [5970] (r1.6).pdf
+../../libreria/backend/books/Borges, Jorge Luis - La memoria de Shakespeare [3783] (r2.1).pdf
+../../libreria/backend/books/Borges, Jorge Luis - Prologos de la Biblioteca de Babel [35581] (r1.1).epub
+../../libreria/backend/books/Borges, Jorge Luis - Prologos de la Biblioteca de Babel [35581] (r1.1).pdf
+../../libreria/backend/books/Bradbury, Ray - Cronicas marcianas [608] (r3.4).epub
+../../libreria/backend/books/Bukowski, Charles - El capitan salio a comer y los marineros tomaron el barco [13384] (r1.7).epub
+../../libreria/backend/books/Bukowski, Charles - El capitan salio a comer y los marineros tomaron el barco [13384] (r1.7).pdf
+../../libreria/backend/books/Calvo Poyato, Jose - Conjura en Madrid [10812] (r1.1).epub
+../../libreria/backend/books/Camus, Albert - El hombre rebelde [33901] (r1.3).epub
+../../libreria/backend/books/Camus, Albert - La muerte feliz [46097] (r1.0).epub
+../../libreria/backend/books/Capmany y Montpalau, Antonio - Origen historico y etimologico de las calles de Madrid [4936] (r1.1).pdf
+../../libreria/backend/books/Card, Orson Scott - [Saga de Ender 01] El juego de Ender [180] (r2.5).epub
+../../libreria/backend/books/Carroll, Lewis - Alicia en el Pais de las Maravillas (trad. Graciela Montes) [18126] (r1.9) (1).pdf
+../../libreria/backend/books/Carroll, Lewis - Alicia en el pais de las maravillas (trad. Luis Maristany) [30818] (r1.2).epub
+../../libreria/backend/books/Carroll, Lewis - Alicia en el pais de las maravillas (trad. Luis Maristany) [30818] (r1.2).pdf
+../../libreria/backend/books/Cebrian, Eloy M. & Mendoza, Francisco - Madrid, 1616 [30213] (r1.0).epub
+../../libreria/backend/books/Cervantes Saavedra, Miguel de - Don Quijote de la Mancha (Ilustrado por Salvador Tusell) [64375] (r1.0).pdf
+../../libreria/backend/books/Chejov, Anton - [Cuentos completos de Chejov 03] Vol. 3 (1887-1893) [32000] (r1.5).epub
+../../libreria/backend/books/Chejov, Anton - [Cuentos completos de Chejov 03] Vol. 3 (1887-1893) [32000] (r1.5).pdf
+../../libreria/backend/books/Chesterton, G. K. - Herejes [28788] (r2.1).pdf
+../../libreria/backend/books/Chesterton, G. K. - Ortodoxia [28601] (r1.3).pdf
+../../libreria/backend/books/ChoqueDeReyes_Martin.pdf
+../../libreria/backend/books/Cortazar, Julio - Rayuela -4732- (r1.3).pdf
+../../libreria/backend/books/Cortazar, Julio - Rayuela [4732] (r1.3).epub
+../../libreria/backend/books/Cortazar, Julio - Rayuela [4732] (r1.3).pdf
+../../libreria/backend/books/Davies, Paul - Dios y la nueva fisica [60486] (r1.3).pdf
+../../libreria/backend/books/Deutsch, David - La estructura de la realidad [3922] (r1.2 koothrapali).epub
+../../libreria/backend/books/Dick, Philip K. - Suenan los androides con ovejas electricas [70445] (r1.0).epub
+../../libreria/backend/books/Dick, Philip K. - [Philip K. Dick - Cuentos completos 01] Cuentos completos I [367] (r1.6).pdf
+../../libreria/backend/books/Dostoyevski, Fiodor - El idiota [6044] (r2.3).pdf
+../../libreria/backend/books/Ebook_El_Madrid_contemporaneo_Galdos_Manuel_Valenzuela_2020.pdf
+../../libreria/backend/books/El Hachmi, Najat - El lunes nos querran [59565] (r1.0).pdf
+../../libreria/backend/books/El Madrid de Galdós. Español.pdf
+../../libreria/backend/books/ElMundoClasico.pdf
+../../libreria/backend/books/Erasmus, Desiderius - Elogio de la locura o Encomio de la estulticia [2587] (r1.2).epub
+../../libreria/backend/books/Estabilidad. Philip K. Dick.pdf
+../../libreria/backend/books/Follett, Ken - [Trilogia The Century 01] La caida de los gigantes [2399] (r1.7).epub
+../../libreria/backend/books/Follett, Ken - [Trilogia The Century 02] El invierno del mundo [236] (r1.5).epub
+../../libreria/backend/books/Frabetti, Carlo - El diablillo de Einstein y otros enigmas perturbadores [74460] (r1.0).epub
+../../libreria/backend/books/Garcia Lorca, Federico - Mariana Pineda [32323] (r1.0).pdf
+../../libreria/backend/books/Garcia Lorca, Federico - Obras completas I [31468] (r1.2).pdf
+../../libreria/backend/books/Garcia Lorca, Federico - Obras completas II [31469] (r1.1).epub
+../../libreria/backend/books/Garcia Lorca, Federico - Obras completas II [31469] (r1.1).pdf
+../../libreria/backend/books/Garcia Lorca, Federico - Poesia completa [23163] (r1.1) (1).pdf
+../../libreria/backend/books/Garcia Lorca, Federico - Poesia completa [23163] (r1.1).pdf
+../../libreria/backend/books/Garcia Marquez, Gabriel - Cien anos de soledad [431] (r1.5).epub
+../../libreria/backend/books/Gibson, Ian - Dali joven, Dali genial [38344] (r1.0 EPL).pdf
+../../libreria/backend/books/Gibson, Ian - El hombre que delato a Garcia Lorca Ramon Ruiz Alonso y el asesinato de Garcia Lorca [71348] (r1.0).epub
+../../libreria/backend/books/Gibson, Ian - Federico Garcia Lorca [18649] (r1.0).epub
+../../libreria/backend/books/Gibson, Ian - Federico Garcia Lorca [18649] (r1.0).pdf
+../../libreria/backend/books/Gibson, Ian - La berlina de Prim [12943] (r1.0).pdf
+../../libreria/backend/books/Gibson, Ian - Luis Bunuel. La forja de un cineasta universal (1900-1938) [21864] (r1.0).epub
+../../libreria/backend/books/Gibson, Ian - Un carmen en Granada [70340] (r1.0 EPL).epub
+../../libreria/backend/books/Gibson, Ian - Vida, pasion y muerte de Federico Garcia Lorca (1898 - 1936) [47055] (r1.0).epub
+../../libreria/backend/books/Gibson, Ian - Yo, Ruben Dario. [34818] (r1.0).epub
+../../libreria/backend/books/Gleick, James - La informacion historia y realidad [3518] (r1.3).pdf
+../../libreria/backend/books/Gomez Rufo, Antonio - Madrid. La novela [30473] (r1.0).epub
+../../libreria/backend/books/Harari, Yuval Noah - Sapiens [22852] (r2.5).pdf
+../../libreria/backend/books/Hard, Robin - El gran libro de la mitologia griega [40938] (r1.0).epub
+../../libreria/backend/books/Hard, Robin - El gran libro de la mitologia griega [40938] (r1.0).pdf
+../../libreria/backend/books/Hardy, G. H. - Apologia de un matematico [28899] (r1.2).pdf
+../../libreria/backend/books/Hemingway, Ernest - Paris era una fiesta [27425] (r1.2).epub
+../../libreria/backend/books/Hernandez, Miguel - El rayo que no cesa [10447] (r1.3).epub
+../../libreria/backend/books/Hernandez, Miguel - Poemas de amor [25317] (r1.1).epub
+../../libreria/backend/books/Hernandez, Miguel - Poemas de amor [25317] (r1.1).pdf
+../../libreria/backend/books/Hesse, Hermann - El juego de los abalorios (Trad. Mariano S. Luque) [23339] (r1.0).pdf
+../../libreria/backend/books/Hesse, Hermann - El lobo estepario [1378] (r1.7).epub
+../../libreria/backend/books/Hesse, Hermann - El lobo estepario [1378] (r1.7).pdf
+../../libreria/backend/books/Hesse, Hermann - Siddhartha [1833] (r1.6).epub
+../../libreria/backend/books/Historias-y-leyendas-de-Madrid.pdf
+../../libreria/backend/books/Holderlin, Friedrich - Empedocles y escritos sobre la locura [56741] (r1.1).epub
+../../libreria/backend/books/Holderlin, Friedrich - Fiesta de la paz [24415] (r1.2).epub
+../../libreria/backend/books/Holderlin, Friedrich - Hiperion o el eremita en Grecia [42003] (r1.1).epub
+../../libreria/backend/books/Holderlin, Friedrich - Hiperion o el eremita en Grecia [42003] (r1.1).pdf
+../../libreria/backend/books/Howey, Hugh - [Silo 01] Espejismo [9767] (r2.3).epub
+../../libreria/backend/books/Howey, Hugh - [Silo 02] Desolacion [13705] (r1.4).epub
+../../libreria/backend/books/Howey, Hugh - [Silo 03] Vestigios [23146] (r1.3).epub
+../../libreria/backend/books/Hugo, Victor - Noventa y tres [38751] (r1.0).pdf
+../../libreria/backend/books/Jameson, Fredric - Arqueologias del futuro [22950] (r1.0).epub
+../../libreria/backend/books/Jameson, Fredric - Teoria de la postmodernidad [9528] (r1.1).pdf
+../../libreria/backend/books/Janouch, Gustav - Conversaciones con Kafka [35767] (r1.4).epub
+../../libreria/backend/books/Jordan, Robert & Sanderson, Brandon - La rueda del tiempo [10092] (r2.8).epub
+../../libreria/backend/books/Juan-de-Mairena.pdf
+../../libreria/backend/books/JuegoDeTronos_Martin.pdf
+../../libreria/backend/books/Kafka, Franz - El proceso (trad. Miguel Saenz) [63670] (r1.2).pdf
+../../libreria/backend/books/Kafka, Franz - La metamorfosis y otros relatos [12364] (r1.1).pdf
+../../libreria/backend/books/Krasznahorkai, Laszlo - Tango satanico [50108] (r1.0).epub
+../../libreria/backend/books/Krasznahorkai, Laszlo - Tango satanico [50108] (r1.0).pdf
+../../libreria/backend/books/Lady Sings the Blues - Billie Holiday.pdf
+../../libreria/backend/books/Lautreamont, Conde de - Los Cantos de Maldoror [20158] (r1.6).epub
+../../libreria/backend/books/Lederman, Leon M. & Teresi, Dick - La particula divina [1911] (r1.5).epub
+../../libreria/backend/books/Lederman, Leon M. & Teresi, Dick - La particula divina [1911] (r1.5).pdf
+../../libreria/backend/books/Livio, Mario - Es Dios un matematico [14865] (r1.1).pdf
+../../libreria/backend/books/Livio, Mario - La proporcion aurea [46039] (r1.0).pdf
+../../libreria/backend/books/Lobsang Rampa, T. - [El tercer ojo 01] El tercer ojo [12783] (r2.0).epub
+../../libreria/backend/books/Lobsang Rampa, T. - [El tercer ojo 04] La caverna de los antepasados [23141] (r1.0).epub
+../../libreria/backend/books/Lobsang Rampa, T. - [El tercer ojo 2] El medico de Lhasa [19618] (r1.1 XcUiDi).epub
+../../libreria/backend/books/Lobsang Rampa, T. - [El tercer ojo 3] Historia de Rampa [19619] (r1.1 XcUiDi).epub
+../../libreria/backend/books/Lovecraft, H. P. - Obras Maestras de H. P. Lovecraft [68878] (r1.1).epub
+../../libreria/backend/books/Lovecraft, H. P. - Obras Maestras de H. P. Lovecraft [68878] (r1.1).pdf
+../../libreria/backend/books/Luca de Tena, Torcuato - Los renglones torcidos de Dios [1231] (r2.8).epub
+../../libreria/backend/books/Maceiras Fafian, Manuel - Schopenhauer y Kierkegaard Sentimiento y pasion [40182] (r1.0).epub
+../../libreria/backend/books/Machado, Antonio - Juan de Mairena [41238] (r1.0).epub
+../../libreria/backend/books/Machado, Antonio - Poesias completas [6176] (r1.5).epub
+../../libreria/backend/books/Machado, Antonio - Poesias completas [6176] (r1.5).pdf
+../../libreria/backend/books/Mailer, Norman - El fantasma de Harlot [24179] (r1.0).epub
+../../libreria/backend/books/Mailer, Norman - El fantasma de Harlot [24179] (r1.0).pdf
+../../libreria/backend/books/Mann, Thomas - Schopenhauer, Nietzsche, Freud [49965] (r1.0).epub
+../../libreria/backend/books/Marti Gilabert, Francisco - La Primera Republica Espanola 1873-1874 [21223] (r1.3).epub
+../../libreria/backend/books/Martin, George R. R. - Y la muerte, su legado [55584] (r1.0 diegoan).epub
+../../libreria/backend/books/Martin, George R. R. - [Autobiografia literaria 03] Un corazon atribulado [29546] (r1.1).epub
+../../libreria/backend/books/Martin, George R. R. - [Cancion de hielo y fuego 04.5] Festin de dragones [1688] (r3.7).epub
+../../libreria/backend/books/Martin, George R. R. - [Cancion de hielo y fuego 04] Festin de cuervos [3141] (r2.8).epub
+../../libreria/backend/books/Martin, George R. R. - [Cancion de hielo y fuego 05] Danza de dragones [3143] (r3.5).epub
+../../libreria/backend/books/Martin, George R. R. - [Wild Cards 05] Juego sucio [35301] (r1.3).epub
+../../libreria/backend/books/Maupassant, Guy de - Buen Amigo (Bel-Ami) [72330] (r1.0).epub
+../../libreria/backend/books/Mensaje_pessoa.pdf
+../../libreria/backend/books/Mesonero Romanos, Ramon de - El antiguo Madrid [39983] (r1.0).epub
+../../libreria/backend/books/Mesonero Romanos, Ramon de - El antiguo Madrid [39983] (r1.0).pdf
+../../libreria/backend/books/Mesquida, Evelyn - La Nueve [14547] (r1.2).pdf
+../../libreria/backend/books/Millas, Juan Jose - El jardin vacio [44307] (r1.0).pdf
+../../libreria/backend/books/Miller_tropico_cancer.pdf
+../../libreria/backend/books/Munoz Molina, Antonio - Los misterios de Madrid [1559] (r1.1).epub
+../../libreria/backend/books/Munoz Molina, Antonio - Los misterios de Madrid [1559] (r1.1).pdf
+../../libreria/backend/books/Neff, Kristin - Se amable contigo mismo [64435] (r1.0 XcUiDi).epub
+../../libreria/backend/books/Nemirovsky, Irene - Suite francesa [9119] (r1.1).epub
+../../libreria/backend/books/Nuno Montes, Juan Antonio - La filosofia de Borges [77613] (r1.0).epub
+../../libreria/backend/books/OBrien, Edna - James Joyce [80507] (r1.0).epub
+../../libreria/backend/books/Onetti, Juan Carlos - Cuentos completos [29118] (r1.0).epub
+../../libreria/backend/books/Onetti, Juan Carlos - Cuentos completos [29118] (r1.0).pdf
+../../libreria/backend/books/Onetti, Juan Carlos - La vida breve [25895] (r1.0).epub
+../../libreria/backend/books/Onetti, Juan Carlos - La vida breve [25895] (r1.0).pdf
+../../libreria/backend/books/Onetti, Juan Carlos - Novelas breves [25052] (r1.2).epub
+../../libreria/backend/books/Onetti, Juan Carlos - Novelas breves [25052] (r1.2).pdf
+../../libreria/backend/books/Orwell, George - Rebelion en la granja [1678] (r1.8).epub
+../../libreria/backend/books/Perez Galdos, Benito - Angel Guerra [22797] (r1.1).pdf
+../../libreria/backend/books/Perez Galdos, Benito - Dona Perfecta [4345] (r2.2 Piolin).epub
+../../libreria/backend/books/Perez Galdos, Benito - Gloria [23592] (r1.1).epub
+../../libreria/backend/books/Perez Galdos, Benito - La Fontana de Oro [20869] (r1.3).pdf
+../../libreria/backend/books/Pessoa, Fernando - Cartas a Ophelia [50495] (r1.2).epub
+../../libreria/backend/books/Pessoa, Fernando - Diarios [36273] (r1.0).epub
+../../libreria/backend/books/Pessoa, Fernando - El banquero anarquista (trad. Jorge Gimeno) [13210] (r1.0).epub
+../../libreria/backend/books/Pessoa, Fernando - El mendigo y otros cuentos [70857] (r1.0).epub
+../../libreria/backend/books/Pessoa, Fernando - Escritos sobre ocultismo y masoneria [19958] (r1.0).epub
+../../libreria/backend/books/Pessoa, Fernando - La educacion del estoico [18415] (r2.1).epub
+../../libreria/backend/books/Pessoa, Fernando - La hora del diablo [26522] (r1.2).epub
+../../libreria/backend/books/Pessoa, Fernando - Libro del desasosiego (trad. Manuel Moya) [33323] (r1.1).epub
+../../libreria/backend/books/Pessoa, Fernando - Odas de Ricardo Reis (r1.0).epub
+../../libreria/backend/books/Pessoa, Fernando - Plural de nadie. Aforismos. [30749] (r1.0).epub
+../../libreria/backend/books/Pessoa, Fernando - Poemas de Alberto Caeiro [36688] (r1.2).epub
+../../libreria/backend/books/Pessoa, Fernando - Rubaiyat [74910] (r1.0).epub
+../../libreria/backend/books/Pinker, Steven - El instinto del lenguaje [15428] (r1.3 oronet).epub
+../../libreria/backend/books/Pinker, Steven - El instinto del lenguaje [15428] (r1.3 oronet).pdf
+../../libreria/backend/books/Pinker, Steven - El mundo de las palabras [44013] (r1.0 oronet).pdf
+../../libreria/backend/books/Pinker, Steven - En defensa de la Ilustracion [45123] (r1.2).epub
+../../libreria/backend/books/Pinker, Steven - En defensa de la Ilustracion [45123] (r1.2).pdf
+../../libreria/backend/books/Posteguillo, Santiago - [Escipion el Africano 03] La traicion de Roma [336] (r2.1).epub
+../../libreria/backend/books/Proust, Marcel - Maximas y pensamientos [78679] (r1.0).epub
+../../libreria/backend/books/Proust, Marcel - [En busca del tiempo perdido 03] El mundo de Guermantes [5662] (r3.4).epub
+../../libreria/backend/books/Proust, Marcel - [En busca del tiempo perdido 07] El tiempo recobrado [7318] (r3.2).epub
+../../libreria/backend/books/Quevedo, Francisco de - El Buscon [50152] (r1.1).pdf
+../../libreria/backend/books/Reza, Yasmina - En el trineo de Schopenhauer [18767] (r1.0).epub
+../../libreria/backend/books/Rilke, Rainer Maria - Serpientes de plata y otros cuentos [80278] (r1.0).epub
+../../libreria/backend/books/Robert Crumb - Cesar Martin.pdf
+../../libreria/backend/books/Rodriguez Aramayo, Roberto - Schopenhauer la lucidez del pesimismo [54827] (r1.0).epub
+../../libreria/backend/books/Rojo, Alberto - Borges y la fisica cuantica [49919] (r1.0).pdf
+../../libreria/backend/books/Rothfuss, Patrick - [Cronica del asesino de reyes 01] El nombre del viento [1828] (r3.0).epub
+../../libreria/backend/books/Rothfuss, Patrick - [Cronica del asesino de reyes 01] El nombre del viento [1828] (r3.0).pdf
+../../libreria/backend/books/Russell, Bertrand - Autoridad e individuo [64713] (r1.0).epub
+../../libreria/backend/books/Russell, Bertrand - Autoridad e individuo [64713] (r1.0).pdf
+../../libreria/backend/books/Russell, Bertrand - Fundamentos de filosofia [29108] (r1.0 Un_Tal_Lucas).epub
+../../libreria/backend/books/Russell, Bertrand - Fundamentos de filosofia [29108] (r1.0 Un_Tal_Lucas).pdf
+../../libreria/backend/books/Russell, Bertrand - La perspectiva cientifica [7564] (r1.2 koothrapali).epub
+../../libreria/backend/books/Russell, Bertrand - Por que no soy cristiano [7435] (r2.0 Piolin).epub
+../../libreria/backend/books/Russell, Bertrand - Tiene el hombre futuro [64479] (r1.1).epub
+../../libreria/backend/books/Safe C++ Partnership The C++ Alliance.pdf
+../../libreria/backend/books/Safe C++.pdf
+../../libreria/backend/books/Saint-Exupery, Antoine de - El principito (Trad. Bonifacio del Carril) [4780] (r1.7).pdf
+../../libreria/backend/books/Sanchez Meca, Diego - El itinerario intelectual de Nietzsche [79464] (r1.0).epub
+../../libreria/backend/books/Sand, George - Historia de mi vida [34720] (r1.0).epub
+../../libreria/backend/books/Sapkowski, Andrzej - [Geralt de Rivia 04] Tiempo de odio [1602] (r3.5).epub
+../../libreria/backend/books/Sautoy, Marcus du - La musica de los numeros primos [18843] (r1.4).pdf
+../../libreria/backend/books/Savater, Fernando - La musica de las letras [80051] (r1.0).epub
+../../libreria/backend/books/Savater, Fernando - Platon y Aristoteles [25834] (r1.2).pdf
+../../libreria/backend/books/Schopenhauer, Arthur - El arte de envejecer [8165] (r1.0).epub
+../../libreria/backend/books/Schopenhauer, Arthur - El arte de hacerse respetar [8166] (r1.0).epub
+../../libreria/backend/books/Schopenhauer, Arthur - El arte de ser feliz [30937] (r1.1).epub
+../../libreria/backend/books/Scurati, Antonio - [M. 02] M. El hombre de la Providencia [77158] (r1.0).epub
+../../libreria/backend/books/Shakespeare, William - Ricardo II [68520] (r1.0).epub
+../../libreria/backend/books/Spinoza, Baruch - Obras completas y biografias [52958] (r1.1).epub
+../../libreria/backend/books/Stach, Reiner - Este es Kafka 99 hallazgos [62008] (r1.0).pdf
+../../libreria/backend/books/Stein, Gertrude - Autobiografia de Alice B. Toklas [40141] (r1.0).epub
+../../libreria/backend/books/Steinbeck, John - El autobus perdido [22411] (r1.2).epub
+../../libreria/backend/books/Strathern, Paul - [Filosofos en 90 minutos 20] Schopenhauer en 90 minutos [27190] (r1.3).epub
+../../libreria/backend/books/Strathern, Paul - [Filosofos en 90 minutos 20] Schopenhauer en 90 minutos [27190] (r1.3).pdf
+../../libreria/backend/books/Tabucchi, Antonio - Suenos de suenos y Los tres ultimos dias de Fernando Pessoa [17221] (r1.2 EPL).epub
+../../libreria/backend/books/Taibo, Carlos - Como si no pisase el suelo trece ensayos sobre las vidas de Fernando Pessoa [40553] (r1.0).epub
+../../libreria/backend/books/The Streets of Paris, A Guide to the City of Light - Susan Cahill.epub
+../../libreria/backend/books/Thomas, Dylan - Poemas completos [26341] (r1.4).epub
+../../libreria/backend/books/Toole, John Kennedy - La conjura de los necios [313] (r3.2).pdf
+../../libreria/backend/books/Trapiello, Andres - Madrid [57695] (r1.1).pdf
+../../libreria/backend/books/UnaCenaOriginal_Pessoa.pdf
+../../libreria/backend/books/Valle-Inclan, Ramon Maria del - Luces de bohemia [7599] (r1.3).epub
+../../libreria/backend/books/Vargas Llosa, Mario - El viaje a la ficcion [29097] (r1.1).epub
+../../libreria/backend/books/Vargas Llosa, Mario - El viaje a la ficcion [29097] (r1.1).pdf
+../../libreria/backend/books/Vila-Matas, Enrique - Paris no se acaba nunca [15297] (r1.0).epub
+../../libreria/backend/books/Wardhaugh, Benjamin - Las infinitas vidas de Euclides historia del libro que forjo nuestro mundo [69867] (r1.0).epub
+../../libreria/backend/books/Weinberg, Steven - Explicar el mundo [29325] (r1.0 Un_Tal_Lucas).epub
+../../libreria/backend/books/Whitman, Walt - Canto a mi mismo [3925] (r1.3).epub
+../../libreria/backend/books/Whitman, Walt - Hojas de hierba [9307] (r1.3).epub
+../../libreria/backend/books/Whitman, Walt - Hojas de hierba [9307] (r1.3).pdf
+../../libreria/backend/books/Wickham, Chris - Europa en la Edad Media [43794] (r1.3).epub
+../../libreria/backend/books/Wickham, Chris - Europa en la Edad Media [43794] (r1.3).pdf
+../../libreria/backend/books/Woolf, Virginia - El cuarto de Jacob (trad. Guillermo Tirelli) [78678] (r1.0).epub
+../../libreria/backend/books/Woolf, Virginia - Entre actos [33503] (r1.1).epub
+../../libreria/backend/books/Woolf, Virginia - Fin de viaje [15290] (r1.0).epub
+../../libreria/backend/books/Woolf, Virginia - Horas en una biblioteca [31952] (r1.0).epub
+../../libreria/backend/books/Woolf, Virginia - Kew gardens (Ilustrado) [31552] (r1.1).epub
+../../libreria/backend/books/Woolf, Virginia - La senora Dalloway [4549] (r2.2).epub
+../../libreria/backend/books/Woolf, Virginia - Paseos por Londres [80208] (r1.0).epub
+../../libreria/backend/books/Woolf_lunes.pdf
+../../libreria/backend/books/Yalom, Irvin D. - La cura Schopenhauer [69803] (r1.0).epub
+../../libreria/backend/books/Yalom, Irvin David - Un ano con Schopenhauer [2841] (r1.1).epub
+../../libreria/backend/books/YoRobot_Asimov.pdf
+../../libreria/backend/books/[50 cosas 00] Baker, Joanne - 50 cosas que hay que saber sobre fisica [2365] (r1.5).epub
+../../libreria/backend/books/[Biblioteca Clasica Gredos 155] Euclides - Elementos Libros I-IV [34490] (r2.1).epub
+../../libreria/backend/books/[Biblioteca Clasica Gredos 228] Euclides - Elementos Libros X-XIII [34627] (r1.0).epub
+../../libreria/backend/books/[Cancion de hielo y fuego] [Historia de los Targaryen 01] Martin, George R. R. - Fuego y sangre [52320] (r1.4).epub
+../../libreria/backend/books/[Cancion de hielo y fuego] [Los cuentos de Dunk y Egg 02] Martin, George R. R. - La espada leal [13921] (r1.7).epub
+../../libreria/backend/books/[Clasicos a medida 03] Cervantes Saavedra, Miguel de - Novelas ejemplares [70884] (r1.0).pdf
+../../libreria/backend/books/[Coleccion Reno 30] Woolf, Virginia - Noche y dia [70821] (r1.0).epub
+../../libreria/backend/books/[Cuentos completos 01] Mann, Thomas - Cuentos tempranos 1893-1912 [79847] (r1.0).epub
+../../libreria/backend/books/[Cuentos completos 02] Mann, Thomas - Cuentos tardios 1919-1953 [79846] (r1.0).epub
+../../libreria/backend/books/[Descubrir la filosofia 01] Dal Maschio, E. A. - Platon. La verdad esta en otra parte [27570] (r1.1).epub
+../../libreria/backend/books/[Descubrir la filosofia 20] Sole, Joan - Spinoza. La filosofia al modo geometrico [34641] (r1.2).pdf
+../../libreria/backend/books/[Descubrir la filosofia 29] Roldan, Concha - Leibniz. En el mejor de los mundos posibles [34960] (r1.2).epub
+../../libreria/backend/books/[Descubrir la filosofia 32] Rodriguez Garcia, J. L. - Sartre [35164] (r1.3).epub
+../../libreria/backend/books/[Descubrir la filosofia 90] Giardini, Anna - Jung [73701] (r1.1).epub
+../../libreria/backend/books/[El tercer ojo 06] Lobsang Rampa, T. - El ermitano [71704] (r1.0).pdf
+../../libreria/backend/books/[Episodios nacionales] [Serie I La Guerra de la Independencia 02] Perez Galdos, Benito - La Corte de Carlos IV [2048] (r2.3).epub
+../../libreria/backend/books/[Episodios nacionales] [Serie I La Guerra de la Independencia 03] Perez Galdos, Benito - El 19 de marzo y el 2 de mayo [2049] (r2.1).epub
+../../libreria/backend/books/[Episodios nacionales] [Serie I La Guerra de la Independencia 03] Perez Galdos, Benito - El 19 de marzo y el 2 de mayo [2049] (r2.1).pdf
+../../libreria/backend/books/[Episodios nacionales] [Serie I La Guerra de la Independencia 04] Perez Galdos, Benito - Bailen [2050] (r2.1).epub
+../../libreria/backend/books/[Episodios nacionales] [Serie I La Guerra de la Independencia 05] Perez Galdos, Benito - Napoleon en Chamartin [2051] (r2.1).epub
+../../libreria/backend/books/[Episodios nacionales] [Serie I La Guerra de la Independencia 05] Perez Galdos, Benito - Napoleon en Chamartin [2051] (r2.1).pdf
+../../libreria/backend/books/[Episodios nacionales] [Serie II La Espana de Fernando VII 01] Perez Galdos, Benito - El equipaje del rey Jose [2027] (r2.2).epub
+../../libreria/backend/books/[Episodios nacionales] [Serie II La Espana de Fernando VII 01] Perez Galdos, Benito - El equipaje del rey Jose [2027] (r2.2).pdf
+../../libreria/backend/books/[Episodios nacionales] [Serie II La Espana de Fernando VII 02] Perez Galdos, Benito - Memorias de un cortesano de 1815 [2028] (r1.3).pdf
+../../libreria/backend/books/[Gran Super Ficcion 14] AA. VV. - Los premios Hugo 1973-1975 [51062] (r1.0).epub
+../../libreria/backend/books/[Grandes ideas de la ciencia 24] Corcho Orrit, Roger - Rutherford. El nucleo atomico [73775] (r1.1 Budapest).epub
+../../libreria/backend/books/[La ciencia para todos 178] Torre, Alberto Clemente de la - Fisica cuantica para filo-sofos [4299] (r2.1).pdf
+../../libreria/backend/books/[La ciencia para todos 190] Altshuler, Jose - A proposito de Galileo [75355] (r1.1).epub
+../../libreria/backend/books/[Maestros de la Literatura Japonesa 19] Akutagawa, Ryunosuke - Rashomon y otros relatos historicos [28691] (r1.1).epub
+../../libreria/backend/books/[Metatemas 138] von Baeyer, Hans Christian - La fisica cuantica del futuro [76297] (r1.0).pdf
+../../libreria/backend/books/[Metatemas 86] Ghiglieri, Michael P. - El lado oscuro del hombre [13693] (r1.2).epub
+../../libreria/backend/books/[Mitos Poesia 02] Pessoa, Fernando - 42 poemas [37794] (r1.0).epub
+../../libreria/backend/books/[Nebulae - Primera Epoca 20] Asimov, Isaac - Rebelion en la galaxia [69174] (r1.0).epub
+../../libreria/backend/books/[Nova 61] AA. VV. - Lo mejor de los premios Nebula [47922] (r1.3).epub
+../../libreria/backend/books/[Obras Completas de Platon] [La Republica 1] Platon - La Republica [8507] (r1.0 Un_Tal_Lucas).pdf
+../../libreria/backend/books/[Obras completas de Platon] [Dialogos socraticos 2] Platon - Apologia de Socrates [4227] (r2.1).epub
+../../libreria/backend/books/[Penguin Clasicos] AA. VV. - Teatro breve del Siglo de Oro [30027] (r1.1).epub
+../../libreria/backend/books/[Saga de Rama 01] Clarke, Arthur C. - Cita con Rama [2620] (r1.8).epub
+../../libreria/backend/books/[Saga de Rama 01] Clarke, Arthur C. - Cita con Rama [2620] (r1.8).pdf
+../../libreria/backend/books/[Saga de la Fundacion] [Ciclo de Trantor 03] Asimov, Isaac - Fundacion [2172] (r1.5).epub
+../../libreria/backend/books/[Saga de la Fundacion] [Ciclo de Trantor 03] Asimov, Isaac - Fundacion [62371] (r1.2).epub
+../../libreria/backend/books/[Saga de la Fundacion] [Ciclo de Trantor 04] Asimov, Isaac - Fundacion e Imperio [2212] (r1.4).epub
+../../libreria/backend/books/[Saga de la Fundacion] [Ciclo de Trantor 04] Asimov, Isaac - Fundacion e Imperio [62372] (r1.1).epub
+../../libreria/backend/books/[Saga de la Fundacion] [Trilogia del Imperio 01] Asimov, Isaac - En la arena estelar [3263] (r3.8).epub
+../../libreria/backend/books/[Saga de la Fundacion] [Trilogia del Imperio 02] Asimov, Isaac - Las corrientes del espacio [2160] (r1.8).epub
+../../libreria/backend/books/[Saga de la Fundacion] [Trilogia del Imperio 03] Asimov, Isaac - Un guijarro en el cielo [4854] (r2.3).epub
+../../libreria/backend/books/[Super Ficcion 61] Asimov, Isaac - A lo marciano [2145] (r1.1).epub
+../../libreria/backend/books/[Valdemar] [El Club Diogenes 51] Poe, Edgar Allan - Los crimenes de la calle Morgue y otras historias de misterio [79338] (r1.0).epub
+../../libreria/backend/books/[Valdemar] [Gotica 89] AA. VV. - Paisajes del Apocalipsis [35988] (r1.5).epub
+../../libreria/backend/books/baudelaire_flores.pdf
+../../libreria/backend/books/cantares_pessoa.pdf
+../../libreria/backend/books/heidegger-martin-holderlin-y-la-esencia-de-la-poesia.pdf
+../../libreria/backend/books/le Carre, John - El espia que surgio del frio [10250] (r1.5).pdf
+../../libreria/backend/books/luces_de_bohemia.pdf
+../../libreria/backend/books/matematicasdelavida.pdf
+../../libreria/backend/books/orwell_sin_blanca_en_paris.pdf
+../../libreria/backend/books/sonetos del amor oscuro.pdf
+books/2403.14606v3.pdf
+books/AA. VV. - Las historias del mago Setne [70872] (r1.0).epub
+books/AA. VV. - Las historias del mago Setne [70872] (r1.0).pdf
+books/AA. VV. - Morir de miedo [52001] (r1.0).epub
+books/AA. VV. - Relatos de musica y musicos. De Voltaire a Ishiguro (1766-2013) [51266] (r1.0).epub
+books/AA. VV. - Relatos de musica y musicos. De Voltaire a Ishiguro (1766-2013) [51266] (r1.0).pdf
+books/Adrian Escudero, Jesus - El lenguaje de Heidegger [24563] (r1.2).epub
+books/Adrian Escudero, Jesus - Guia de lectura de Ser y tiempo de Martin Heidegger (Vol. 1) [29107] (r1.0).pdf
+books/Adrian Escudero, Jesus - Heidegger y la genealogia de la pregunta por el ser [29103] (r1.0).epub
+books/Alighieri, Dante - La divina comedia [3331] (r1.5).epub
+books/Alighieri, Dante - La divina comedia [3331] (r1.5).pdf
+books/Alonso Burgos, Jesus - Blade Runner lo que Deckard no sabia [22286] (r1.3).pdf
+books/Anonimo - Majjhima Nikaya. Los sermones medios del Buddha [37479] (r1.1).epub
+books/Anonimo - Majjhima Nikaya. Los sermones medios del Buddha [37479] (r1.1).pdf
+books/Asimov, Isaac - Vida y tiempo [25227] (r1.3).epub
+books/Asimov, Isaac - Vida y tiempo [25227] (r1.3).pdf
+books/Asimov, Isaac - [Historia Universal Asimov 10] La formacion de Francia [8659] (r1.1).pdf
+books/Auster, Paul - La trilogia de Nueva York [595] (r2.7).epub
+books/Auster, Paul - La trilogia de Nueva York [595] (r2.7).pdf
+books/Balzac, Honore de - [La Comedia Humana (Editorial Lorenzana) 01] La casa del gato que juega a la pelota y otras historias [24493] (r2.2 Piolin).pdf
+books/Baroja, Pio - [La Raza 03] El arbol de la ciencia [2517] (r1.7).epub
+books/Baroja, Pio - [La Raza 03] El arbol de la ciencia [2517] (r1.7).pdf
+books/Benedetti, Mario - Gracias por el fuego [40225] (r1.0).epub
+books/Benedetti, Mario - Gracias por el fuego [40225] (r1.0).pdf
+books/Benedetti, Mario - La tregua [3717] (r2.0).epub
+books/Benedetti, Mario - La tregua [3717] (r2.0).pdf
+books/Benedetti, Mario - Poemas de la oficina - Poemas del hoyporhoy [19733] (r1.0).epub
+books/Benedetti, Mario - Poemas de la oficina - Poemas del hoyporhoy [19733] (r1.0).pdf
+books/Benjamin, Walter - Brecht Ensayos y conversaciones [46194] (r1.1).epub
+books/Benjamin, Walter - Brecht Ensayos y conversaciones [46194] (r1.1).pdf
+books/Benjamin, Walter - El Paris de Baudelaire [50295] (r1.1).pdf
+books/Benjamin, Walter - [Obra Completa de Walter Benjamin 03] Libro II-Vol. 1 [30171] (r1.2).epub
+books/Benjamin, Walter - [Obra Completa de Walter Benjamin 03] Libro II-Vol. 1 [30171] (r1.2).pdf
+books/Bioy Casares, Adolfo - La invencion de Morel [519] (r3.1).epub
+books/Bioy Casares, Adolfo - La invencion de Morel [519] (r3.1).pdf
+books/Bradbury, Ray - Cronicas marcianas [608] (r3.4).pdf
+books/Brecht, Bertolt - Antigona [21811] (r1.3).epub
+books/Brecht, Bertolt - Antigona [21811] (r1.3).pdf
+books/Brecht, Bertolt - Galileo Galilei [53140] (r1.0).epub
+books/Brecht, Bertolt - Galileo Galilei [53140] (r1.0).pdf
+books/Brecht, Bertolt - Historias de almanaque [3113] (r1.1).epub
+books/Brecht, Bertolt - Historias de almanaque [3113] (r1.1).pdf
+books/Brecht, Bertolt - Historias del senor Keuner [61581] (r1.2).epub
+books/Brecht, Bertolt - La Judith de Shimoda [38150] (r1.0).epub
+books/Brecht, Bertolt - La Judith de Shimoda [38150] (r1.0).pdf
+books/Brecht, Bertolt - La novela de cuatro cuartos [56481] (r1.1).epub
+books/Brecht, Bertolt - La novela de cuatro cuartos [56481] (r1.1).pdf
+books/Brecht, Bertolt - La resistible ascension de Arturo Ui [53463] (r1.0).epub
+books/Brecht, Bertolt - Las cinco dificultades para decir la verdad [58675] (r1.2).epub
+books/Brecht, Bertolt - Las cinco dificultades para decir la verdad [58675] (r1.2).pdf
+books/Brecht, Bertolt - Los negocios del senor Julio Cesar [5873] (r1.1).epub
+books/Brecht, Bertolt - Los negocios del senor Julio Cesar [5873] (r1.1).pdf
+books/Brecht, Bertolt - Los siete pecados capitales del pequeno burgues [74345] (r1.0).epub
+books/Brecht, Bertolt - Los siete pecados capitales del pequeno burgues [74345] (r1.0).pdf
+books/Brecht, Bertolt - Madre coraje y sus hijos [38148] (r1.1).epub
+books/Brecht, Bertolt - Madre coraje y sus hijos [38148] (r1.1).pdf
+books/Brecht, Bertolt - Poemas y canciones [10484] (r1.2).epub
+books/Brecht, Bertolt - Terror y miseria del Tercer Reich [14079] (r1.3).epub
+books/Brecht, Bertolt - [Brecht Narrativa completa 01] Relatos 1913-1927 [3083] (r1.1)_016e0b24-877c-446f-8808-7a53ef927c38.pdf
+books/Brecht, Bertolt - [Brecht Narrativa completa 02] Relatos 1927-1949 [3084] (r1.1).epub
+books/Bronte, Emily - Cumbres borrascosas [2801] (r1.6).epub
+books/Bronte, Emily - Cumbres borrascosas [2801] (r1.6).pdf
+books/Buenaventura, Ramon - Arthur Rimbaud. Esbozo biografico [27456] (r1.2).epub
+books/Camus, Albert - Caligula [8131] (r1.1).epub
+books/Camus, Albert - Caligula [8131] (r1.1).pdf
+books/Camus, Albert - El exilio y el reino [34749] (r1.0).epub
+books/Camus, Albert - El exilio y el reino [34749] (r1.0).pdf
+books/Camus, Albert - El extranjero [14092] (r2.3).epub
+books/Camus, Albert - El extranjero [14092] (r2.3).pdf
+books/Camus, Albert - El malentendido [36763] (r1.0).epub
+books/Camus, Albert - El malentendido [36763] (r1.0).pdf
+books/Camus, Albert - El primer hombre [7850] (r1.1 Piolin).epub
+books/Camus, Albert - El primer hombre [7850] (r1.1 Piolin).pdf
+books/Camus, Albert - El reves y el derecho. Discurso de Suecia [37226] (r1.0).epub
+books/Camus, Albert - El reves y el derecho. Discurso de Suecia [37226] (r1.0).pdf
+books/Camus, Albert - El verano [35028] (r1.0).epub
+books/Camus, Albert - Escritos libertarios [36246] (r1.2)_c62f5295-469e-482a-91cc-9e190b2c4f05.pdf
+books/Camus, Albert - La peste [14088] (r1.5).epub
+books/Camus, Albert - La peste [14088] (r1.5).pdf
+books/Camus, Albert - Lete [76032] (r1.0) [FR].epub
+books/Camus, Albert - Los justos [10215] (r2.1).epub
+books/Camus, Albert - Los justos [10215] (r2.1).pdf
+books/Cela, Camilo Jose - Cuentos escogidos [80254] (r1.0).epub
+books/Cela, Camilo Jose - La familia de Pascual Duarte [6611] (r1.8).epub
+books/Cela, Camilo Jose - La familia de Pascual Duarte [6611] (r1.8).pdf
+books/Cervantes Saavedra, Miguel de - Sobre el amor [18139] (r1.0).epub
+books/Cervantes Saavedra, Miguel de - Sobre el amor [18139] (r1.0).pdf
+books/Clarke, Arthur C. & Lee, Gentry - The Complete Rama Omnibus [36625] (r1.2) [EN].epub
+books/Clarke, Arthur C. & Lee, Gentry - The Complete Rama Omnibus [36625] (r1.2) [EN].pdf
+books/Clarke, Arthur C. - [Odisea espacial 01] 2001 Una odisea espacial [2925] (r3.5).epub
+books/Clarke, Arthur C. - [Odisea espacial 02] 2010 Odisea dos [2529] (r2.1).epub
+books/Cocteau, Jean - La dificultad de ser [56353] (r1.1).epub
+books/Cocteau, Jean - La dificultad de ser [56353] (r1.1).pdf
+books/Colette, Sidonie Gabrielle - Claudine en la escuela [45391] (r1.2).epub
+books/Colette, Sidonie Gabrielle - Gigi [45390] (r1.3).epub
+books/Copleston, Frederick - [Historia de la filosofia 06] De Wolff a Kant [25333] (r1.1).epub
+books/Copleston, Frederick - [Historia de la filosofia 06] De Wolff a Kant [25333] (r1.1).pdf
+books/Corey, James S. A. - [The Expanse 01] El despertar del Leviatan [34730] (r1.4).epub
+books/Corey, James S. A. - [The Expanse 01] El despertar del Leviatan [34730] (r1.4).pdf
+books/Corey, James S. A. - [The Expanse 02] La guerra de Caliban [38339] (r1.4).epub
+books/Corey, James S. A. - [The Expanse 02] La guerra de Caliban [38339] (r1.4).pdf
+books/Corey, James S. A. - [The Expanse 03] La puerta de Abadon [45922] (r1.2).epub
+books/Corey, James S. A. - [The Expanse 03] La puerta de Abadon [45922] (r1.2).pdf
+books/Corey, James S. A. - [The Expanse 04] La quema de Cibola [49776] (r1.5).epub
+books/Corey, James S. A. - [The Expanse 04] La quema de Cibola [49776] (r1.5).pdf
+books/Corey, James S. A. - [The Expanse 05] Los juegos de Nemesis [52356] (r1.3).epub
+books/Corey, James S. A. - [The Expanse 06] Las cenizas de Babilonia [59471] (r1.2 diegoan).epub
+books/Corey, James S. A. - [The Expanse 07] El alzamiento de Persepolis [63486] (r1.1).epub
+books/Corey, James S. A. - [The Expanse 08] La colera de Tiamat [68303] (r1.0).epub
+books/Corey, James S. A. - [The Expanse 09] La caida del Leviatan [73193] (r1.0).epub
+books/Corey, James S. A. - [The Expanse 09] Leviathan Falls [66284] (r1.0) [EN].epub
+books/Corey, James S. A. - [The Expanse 10] Memorys Legion [66286] (r1.0) [EN].epub
+books/Corey, James S. A. - [The Expanse 8.5] Auberon [55682] (r1.0) [EN].epub
+books/Corey, James S. A. - [The Expanse 9.5] The Sins of Our Fathers [66285] (r1.0) [EN].epub
+books/Cunqueiro, Alvaro - Fabulas y leyendas de la mar [38863] (r1.1).epub
+books/Cunqueiro, Alvaro - Fabulas y leyendas de la mar [38863] (r1.1).pdf
+books/Dennett, Daniel C. - La evolucion de la libertad [5278] (r1.5).epub
+books/Dennett, Daniel C. - La evolucion de la libertad [5278] (r1.5).pdf
+books/Dennett, Daniel C. - La evolucion de la libertad [5278] (r1.5)_1.pdf
+books/Dick, Philip K. - El hombre en el castillo [6411] (r1.4 jugaor).epub
+books/Dick, Philip K. - El hombre en el castillo [6411] (r1.4 jugaor).pdf
+books/Dick, Philip K. - Ubik [2327] (r2.0).epub
+books/Dick, Philip K. - Ubik [2327] (r2.0).pdf
+books/Dilthey, Wilhelm - Hegel y el idealismo [23560] (r1.0 SebastianArena).epub
+books/Dilthey, Wilhelm - Hegel y el idealismo [23560] (r1.0 SebastianArena).pdf
+books/Dostoyevski, Fiodor - Crimen y castigo [4646] (r3.6).epub
+books/Dostoyevski, Fiodor - El jugador (ilustrado) [51149] (r1.1).epub
+books/Dostoyevski, Fiodor - El jugador (ilustrado) [51149] (r1.1).pdf
+books/Dostoyevski, Fiodor - Humillados y ofendidos (trad. F. Otero) [42153] (r1.1).epub
+books/Dostoyevski, Fiodor - Humillados y ofendidos (trad. F. Otero) [42153] (r1.1).pdf
+books/Dostoyevski, Fiodor - Los hermanos Karamazov [2675] (r1.5).epub
+books/Dostoyevski, Fiodor - Los hermanos Karamazov [2675] (r1.5).pdf
+books/Dumas, Alexandre - [Trilogia Guerras de Religion 01] La Reina Margot [1968] (r1.6 Piolin).epub
+books/Eco, Umberto - A hombros de gigantes [78115] (r1.1).epub
+books/Eco, Umberto - A hombros de gigantes [78115] (r1.1).pdf
+books/Eco, Umberto - Apocalipticos e integrados [24366] (r1.0).epub
+books/Eco, Umberto - Apocalipticos e integrados [24366] (r1.0).pdf
+books/Eco, Umberto - De los espejos y otros ensayos [32024] (r1.0).epub
+books/Eco, Umberto - De los espejos y otros ensayos [32024] (r1.0).pdf
+books/Eco, Umberto - Kant y el ornitorrinco [31353] (r1.0).epub
+books/Eliot, George - Daniel Deronda [78938] (r1.0).epub
+books/Eliot, George - Middlemarch [20428] (r1.2).epub
+books/Eliot, T. S. - Asesinato en la Catedral [39108] (r1.2).epub
+books/Eliot, T. S. - Asesinato en la Catedral [39108] (r1.2).pdf
+books/Eliot, T. S. - Cuatro cuartetos [54053] (r2.0).epub
+books/Eliot, T. S. - Cuatro cuartetos [54053] (r2.0).pdf
+books/Eliot, T. S. - La tierra baldia & Prufrock y otras observaciones [25651] (r1.3).epub
+books/Eliot, T. S. - Poemas [44708] (r1.1).epub
+books/Ende, Michael - La historia interminable [8042] (r1.7).epub
+books/Erasmus, Desiderius - Elogio de la locura o Encomio de la estulticia [2587] (r1.2).pdf
+books/Esquilo - Orestiada [4351] (r1.1 Piolin).epub
+books/Esquilo - Orestiada [4351] (r1.1 Piolin).pdf
+books/Euripides - Las troyanas [13902] (r1.1).epub
+books/Euripides - Las troyanas [13902] (r1.1).pdf
+books/Faulkner, William - Los invictos [34809] (r1.1).epub
+books/Faulkner, William - Los invictos [34809] (r1.1).pdf
+books/Flaubert, Gustave & Sand, George - Correspondencia [31966] (r1.1)_9477bfb2-c1ca-4310-a509-1f01d0efb50e.pdf
+books/Flaubert, Gustave - Cartas a Louise Colet [64635] (r1.1).epub
+books/Flaubert, Gustave - Diccionario de los lugares comunes [49037] (r1.2).epub
+books/Flaubert, Gustave - Madame Bovary (trad. Mauro Armino) [32042] (r1.2).epub
+books/Flaubert, Gustave - Memorias de un loco y otros textos de juventud [64613] (r1.2).epub
+books/Flaubert, Gustave - Memorias de un loco y otros textos de juventud [64613] (r1.2).pdf
+books/Follett, Ken - [Trilogia The Century 01] La caida de los gigantes [2399] (r1.7).pdf
+books/Follett, Ken - [Trilogia The Century 02] El invierno del mundo [236] (r1.5).pdf
+books/Foucault, Michel - Historia de la locura en la epoca clasica [21903] (r1.2).epub
+books/Francisco, Papa - Esperanza. La autobiografia [79564] (r1.0).epub
+books/Fromm, Erich - Tener o ser [13831] (r1.4)_c5f1b5ea-119b-4a4f-88cc-9507e658ed1d.pdf
+books/Gaarder, Jostein - El mundo de Sofia [4168] (r1.4).epub
+books/Gaarder, Jostein - El mundo de Sofia [4168] (r1.4).pdf
+books/Gamerro, Carlos - Borges y los clasicos [72331] (r1.0).epub
+books/Goethe, Johann Wolfgang von - Los anos de aprendizaje de Wilhelm Meister [31973] (r1.0).epub
+books/Goethe, Johann Wolfgang von - Los anos de aprendizaje de Wilhelm Meister [31973] (r1.0).pdf
+books/Gonzalez Duro, Enrique - Historia de la locura en Espana [70310] (r1.0 EPL)_ce86454d-1331-41f1-b361-078d28f7b81a.pdf
+books/Grass, Gunter - La estatua [78274] (r1.0).epub
+books/Gray, John - Las dos caras del liberalismo [80677] (r1.0 diegoan).epub
+books/Han, Byung-Chul - Hegel y el poder [63545] (r1.1 diegoan).epub
+books/Han, Byung-Chul - Hegel y el poder [63545] (r1.1 diegoan).pdf
+books/Hauser, Arnold - Historia social de la literatura y del arte [14986] (r1.2).epub
+books/Hawking, Stephen - Breves respuestas a las grandes preguntas [46807] (r1.1 UnTalLucas).epub
+books/Hawking, Stephen - Breves respuestas a las grandes preguntas [46807] (r1.1 UnTalLucas).pdf
+books/Hawking, Stephen - Historia del tiempo [4634] (r1.7).epub
+books/Heidegger, Martin - El arte y el espacio [24229] (r1.0).epub
+books/Heidegger, Martin - El concepto de tiempo [34058] (r1.0).epub
+books/Heidegger, Martin - Hegel [30684] (r1.1)_248e9715-e37f-4f99-b43e-2b24021a0371.pdf
+books/Heidegger, Martin - Kant y el problema de la metafisica [24422] (r1.0).epub
+books/Heidegger, Martin - Kant y el problema de la metafisica [24422] (r1.0).pdf
+books/Heidegger, Martin - Que es la filosofia [22132] (r1.3).epub
+books/Heidegger, Martin - Ser y tiempo [23392] (r1.4).epub
+books/Hemleben, Johannes - Galileo [37310] (r1.1 baloocan).epub
+books/Hemleben, Johannes - Galileo [37310] (r1.1 baloocan).pdf
+books/Herbert, Frank - [Dune 01] Dune [325] (r3.4).epub
+books/Herbert, Frank - [Dune 01] Dune [325] (r3.4).pdf
+books/Herbert, Frank - [Dune 02] Mesias de Dune [62376] (r1.1).epub
+books/Herbert, Frank - [Dune 02] Mesias de Dune [62376] (r1.1).pdf
+books/Hesse, Hermann - Cuentos, 4 [18871] (r1.2).epub
+books/Hesse, Hermann - Elogio de la vejez [4228] (r1.1 Piolin).epub
+books/Hesse, Hermann - Elogio de la vejez [4228] (r1.1 Piolin).pdf
+books/Hesse, Hermann - Escritos sobre literatura, 2 [12148] (r1.0).epub
+books/Hesse, Hermann - Gertrudis [23177] (r1.0).epub
+books/Hesse, Hermann - Lecturas para minutos, 2 [21136] (r1.0).epub
+books/Hesse, Hermann - Leyendas Medievales [11235] (r1.0).epub
+books/Holderlin, Friedrich - Poemas de la locura [22605] (r1.0).epub
+books/Holderlin, Friedrich - Poemas de la locura [22605] (r1.0).pdf
+books/Hugo, Victor - Claude Gueux [25995] (r1.0 jugaor).epub
+books/Hugo, Victor - Dios [51285] (r1.1).epub
+books/Hugo, Victor - El rey se divierte [26284] (r1.0 jugaor).epub
+books/Hugo, Victor - El ultimo dia de un condenado a muerte & Claude Geaux [79392] (r1.1).epub
+books/Hugo, Victor - El ultimo dia de un condenado a muerte & Claude Geaux [79392] (r1.1).pdf
+books/Hugo, Victor - Hernani [26112] (r1.0 jugaor).epub
+books/Hugo, Victor - Los miserables (trad. A. Ruiz y E. Sandoval) [70285] (r1.1).epub
+books/Hugo, Victor - Napoleon El Pequeno [61669] (r1.0).epub
+books/Hugo, Victor - Nuestra senora de Paris (trad. Andres Merino) [79365] (r1.1).epub
+books/Hugo_manifiesto.pdf
+books/Hume, David - Tratado de la Naturaleza Humana [34959] (r1.0).epub
+books/Hume, David - Tratado de la Naturaleza Humana [34959] (r1.0).pdf
+books/Husserl, Edmund - La idea de la fenomenologia [19949] (r1.0).epub
+books/Husserl, Edmund - La idea de la fenomenologia [19949] (r1.0).pdf
+books/Huxley, Aldous - La filosofia perenne [29062] (r2.3).epub
+books/Huxley, Aldous - La filosofia perenne [29062] (r2.3).pdf
+books/Huxley, Aldous - Un mundo feliz (trad. Ramon Hernandez) [461] (r2.1).epub
+books/Huxley, Aldous - Un mundo feliz (trad. Ramon Hernandez) [461] (r2.1).pdf
+books/Ibsen, Henrik - Emperador y Galileo [53109] (r1.0).epub
+books/Ibsen, Henrik - Emperador y Galileo [53109] (r1.0).pdf
+books/James, Henry - La locura del arte [33588] (r1.0).epub
+books/James, Henry - La locura del arte [33588] (r1.0).pdf
+books/Jaspers, Karl - Nietzsche [66647] (r1.0).epub
+books/Jaspers, Karl - Nietzsche [66647] (r1.0).pdf
+books/Jimenez, Juan Ramon - Platero y yo [1438] (r1.4).epub
+books/Jimenez, Juan Ramon - Platero y yo [1438] (r1.4).pdf
+books/Joyce, James - Ulises (trad. Venegas & Garcia Tortosa) [72166] (r1.0).epub
+books/Joyce, James - Ulises (trad. Venegas & Garcia Tortosa) [72166] (r1.0).pdf
+books/Jung, Carl Gustav & Wilhelm, Richard - El secreto de la Flor de Oro [30294] (r1.1).epub
+books/Jung, Carl Gustav & Wilhelm, Richard - El secreto de la Flor de Oro [30294] (r1.1).pdf
+books/Jung, Carl Gustav - Quien es Ulises [6742] (r1.1).epub
+books/Jung, Carl Gustav - Quien es Ulises [6742] (r1.1).pdf
+books/Kant, Immanuel - Kant Antologia [40984] (r1.0).epub
+books/Kerouac, Jack - La ciudad pequena, la gran ciudad [78353] (r1.0).epub
+books/Le Bon, Gustave - Psicologia de las masas [27803] (r1.1).epub
+books/Le Bon, Gustave - Psicologia de las masas [27803] (r1.1).pdf
+books/Lobsang Rampa, T. - [El tercer ojo 01] El tercer ojo [12783] (r2.0).pdf
+books/London, Jack - Los mejores cuentos de Jack London [33173] (r1.1).epub
+books/London, Jack - Los mejores cuentos de Jack London [33173] (r1.1).pdf
+books/MARGUERITE DE NAVARRE.pdf
+books/Maeterlinck, Maurice - Pelleas et Melisande [76028] (r1.0) [FR].epub
+books/Maeterlinck, Maurice - Pelleas et Melisande [76028] (r1.0) [FR].pdf
+books/Malcolm, Janet - Dos vidas. Gertrude y Alice [66081] (r1.0).epub
+books/Mann, Thomas - Confesiones del estafador Felix Krull [26311] (r1.0).epub
+books/Mann, Thomas - Confesiones del estafador Felix Krull [26311] (r1.0).pdf
+books/Mann, Thomas - Consideraciones de un apolitico [62012] (r1.0).epub
+books/Mann, Thomas - Consideraciones de un apolitico [62012] (r1.0).pdf
+books/Mann, Thomas - Diarios de entreguerras 1918-1939 [77590] (r1.1).epub
+books/Mann, Thomas - Doktor Faustus [4486] (r1.2).epub
+books/Mann, Thomas - Doktor Faustus [4486] (r1.2).pdf
+books/Mann, Thomas - El elegido [25478] (r1.2).epub
+books/Mann, Thomas - Ensayos sobre musica, teatro y literatura [21044] (r1.0).epub
+books/Mann, Thomas - Ensayos sobre musica, teatro y literatura [21044] (r1.0).pdf
+books/Mann, Thomas - Escucha, Alemania [22955] (r1.0).epub
+books/Mann, Thomas - Escucha, Alemania [22955] (r1.0).pdf
+books/Mann, Thomas - Fiorenza [26671] (r1.0).epub
+books/Mann, Thomas - Fiorenza [26671] (r1.0).pdf
+books/Mann, Thomas - La Enganada [54661] (r1.0).epub
+books/Mann, Thomas - La Enganada [54661] (r1.0).pdf
+books/Mann, Thomas - La caida [38777] (r1.1).epub
+books/Mann, Thomas - La montana magica [2778] (r1.1).epub
+books/Mann, Thomas - La montana magica [2778] (r1.1).pdf
+books/Mann, Thomas - La muerte en Venecia [2775] (r1.9).epub
+books/Mann, Thomas - La muerte en Venecia [2775] (r1.9).pdf
+books/Mann, Thomas - Las Tablas de la Ley [7359] (r1.1).epub
+books/Mann, Thomas - Las Tablas de la Ley [7359] (r1.1).pdf
+books/Mann, Thomas - Los Buddenbrook (trad. F. Payarols) [49892] (r1.3).epub
+books/Mann, Thomas - Los Buddenbrook (trad. F. Payarols) [49892] (r1.3).pdf
+books/Mann, Thomas - Mario y el mago [2780] (r1.2).epub
+books/Mann, Thomas - Mario y el mago [2780] (r1.2).pdf
+books/Mann, Thomas - Richard Wagner y la musica [30986] (r1.0).epub
+books/Mann, Thomas - Richard Wagner y la musica [30986] (r1.0).pdf
+books/Mann, Thomas - Tristan [21266] (r2.0)_db046b1e-5ed1-46d2-be7b-38e7f59281d9.pdf
+books/Mann, Thomas - Viaje por mar con Don Quijote [74109] (r1.0 UnTalLucas).epub
+books/Mann, Thomas - Viaje por mar con Don Quijote [74109] (r1.0 UnTalLucas).pdf
+books/Mann, Thomas - [Jose y sus hermanos 1] Las historias de Jaacob [6604] (r1.1).epub
+books/Mann, Thomas - [Jose y sus hermanos 2] El joven Jose [6603] (r1.1).epub
+books/Mann, Thomas - [Jose y sus hermanos 3] Jose en Egipto [6602] (r1.1).epub
+books/Mann, Thomas - [Jose y sus hermanos 4] Jose el proveedor [6601] (r1.1).epub
+books/Maquiavelo, Nicolas - El Principe [2395] (r1.5).epub
+books/Maquiavelo, Nicolas - El Principe [2395] (r1.5).pdf
+books/Marlowe, Christopher - La tragica historia del doctor Fausto [2786] (r1.2).epub
+books/Marlowe, Christopher - La tragica historia del doctor Fausto [2786] (r1.2).pdf
+books/Martinez Marzoa, Felipe - De Kant a Holderlin [37932] (r1.0).epub
+books/Martinez Marzoa, Felipe - De Kant a Holderlin [37932] (r1.0).pdf
+books/Martinez Marzoa, Felipe - Releer a Kant [36609] (r1.1).epub
+books/Marx, Groucho - Las cartas de Groucho [53535] (r1.0).epub
+books/Marx, Groucho - Las cartas de Groucho [53535] (r1.0).pdf
+books/Marx, Karl - Critica de la Filosofia del Estado de Hegel [32130] (r1.0).epub
+books/Marx, Karl - Critica de la Filosofia del Estado de Hegel [32130] (r1.0).pdf
+books/Miller_tropico_cancer.pdf
+books/Moliere - El Misantropo [54662] (r1.0).epub
+books/Munch, Edvard - El friso de la vida [24231] (r1.0).epub
+books/Murakami, Haruki - 1Q84 - (Libros 1 y 2) [1810] (r1.8).epub
+books/Murakami, Haruki - Kafka en la orilla [1913] (r2.1).epub
+books/Murakami, Haruki - Kafka en la orilla [1913] (r2.1).pdf
+books/Nemirovsky, Irene - Suite francesa [9119] (r1.1).epub
+books/Ness, Patrick - Un monstruo viene a verme [16373] (r1.5).epub
+books/Ness, Patrick - Un monstruo viene a verme [16373] (r1.5).pdf
+books/Newton, Isaac - El sistema del mundo [48613] (r1.1).epub
+books/Newton, Isaac - El sistema del mundo [48613] (r1.1).pdf
+books/Nhat Hanh, Thich - El corazon de las ensenanzas de Buda [29434] (r1.2).epub
+books/Nhat Hanh, Thich - El corazon de las ensenanzas de Buda [29434] (r1.2).pdf
+books/Nietzsche, Friedrich - El caminante y su sombra [32251] (r1.0).epub
+books/Nietzsche, Friedrich - El caminante y su sombra [32251] (r1.0).pdf
+books/Niffenegger, Audrey - La mujer del viajero en el tiempo [2659] (r1.3).epub
+books/Niffenegger, Audrey - La mujer del viajero en el tiempo [2659] (r1.3).pdf
+books/Nothomb, Amelie - Primera sangre [69376] (r1.1).epub
+books/OBrien, Edna - James Joyce [80507] (r1.0).pdf
+books/Orwell, George - Rebelion en la granja [1678] (r1.8).pdf
+books/Pardo Bazan, Emilia - La cuestion palpitante [14855] (r1.1).epub
+books/Pardo Bazan, Emilia - La cuestion palpitante [14855] (r1.1).pdf
+books/Pasajes de París_ Historia y Benjamin.pdf
+books/Peradejordi, Julio - Los refranes esotericos del Quijote [41324] (r1.0).epub
+books/Peradejordi, Julio - Los refranes esotericos del Quijote [41324] (r1.0).pdf
+books/Perez-Reverte, Arturo - Cabo Trafalgar [2285] (r1.1).epub
+books/Perez-Reverte, Arturo - Cabo Trafalgar [2285] (r1.1).pdf
+books/Perez-Reverte, Arturo - La sombra del aguila [1184] (r1.5).epub
+books/Perez-Reverte, Arturo - La sombra del aguila [1184] (r1.5).pdf
+books/Pessoa, Fernando - La hora del diablo [26522] (r1.2).pdf
+books/Pirandello, Luigi - Uno, ninguno y cien mil [48151] (r1.2).epub
+books/Pirandello, Luigi - Uno, ninguno y cien mil [48151] (r1.2).pdf
+books/Popper, Karl R. - Conjeturas y refutaciones [49929] (r1.2).epub
+books/Popper, Karl R. - Conjeturas y refutaciones [49929] (r1.2).pdf
+books/Puzo, Mario - El ultimo Don [120] (r2.2).epub
+books/Puzo, Mario - Omerta [1092] (r2.1).epub
+books/Racine, Jean - Fedra [21256] (r1.2).epub
+books/Revel, Jean-Francois - Para que filosofos [35069] (r1.1).epub
+books/Revel, Jean-Francois - Para que filosofos [35069] (r1.1).pdf
+books/Rimbaud El Hijo.pdf
+books/Rimbaud, Arthur - Cartas abisinias [34031] (r1.0).epub
+books/Rimbaud, Arthur - Cartas abisinias [34031] (r1.0).pdf
+books/Rimbaud, Arthur - Poesias completas [27038] (r1.3).epub
+books/Rimbaud, Arthur - Una temporada en el infierno [5064] (r1.6).epub
+books/Rimbaud_Temporada_infierno.pdf
+books/Rivera, Jorge Eduardo & Stuven, Maria Teresa - [Comentario a Ser y tiempo de Martin Heidegger 01] Comentario a Ser y tiempo. Vol. 1 Introduccion [25593] (r1.0).epub
+books/Rossi, Claudio - [Quintilio vida entre Republica e Imperio 10] Carthago Nova [80501] (r1.0).epub
+books/Roth, Veronica - [Divergente 01] Divergente [5143] (r2.0).epub
+books/Roth, Veronica - [Divergente 01] Divergente [5143] (r2.0).pdf
+books/Roth, Veronica - [Divergente 02] Insurgente [9865] (r1.5).epub
+books/Rulfo, Juan - Pedro Paramo [7246] (r2.3).epub
+books/Russell, Bertrand - La perspectiva cientifica [7564] (r1.2 koothrapali).pdf
+books/Sampedro, Jose Luis - La sonrisa etrusca [4153] (r2.3).epub
+books/Sampedro, Jose Luis - La sonrisa etrusca [4153] (r2.3).pdf
+books/Saramago, Jose - El Evangelio segun Jesucristo [2361] (r1.3).epub
+books/Saramago, Jose - El Evangelio segun Jesucristo [2361] (r1.3).pdf
+books/Saramago, Jose - In Nomine Dei [39299] (r1.0).epub
+books/Saramago, Jose - In Nomine Dei [39299] (r1.0).pdf
+books/Savater, Fernando - La musica de las letras [80051] (r1.0).pdf
+books/Schelling, Friedrich - Propedeutica de la filosofia [78154] (r1.0).epub
+books/Schelling, Friedrich - Propedeutica de la filosofia [78154] (r1.0).pdf
+books/Schiller, Friedrich - Don Carlos, Infante de Espana [36366] (r1.0).epub
+books/Schiller, Friedrich - Don Carlos, Infante de Espana [36366] (r1.0).pdf
+books/Schiller, Friedrich - Guillermo Tell [36042] (r1.0).epub
+books/Schiller, Friedrich - Guillermo Tell [36042] (r1.0).pdf
+books/Schiller, Friedrich - Maria Estuardo [54852] (r1.0).epub
+books/Schiller, Friedrich - Maria Estuardo [54852] (r1.0).pdf
+books/Schiller, Friedrich - Narraciones completas [12325] (r1.1).epub
+books/Schiller, Friedrich - Narraciones completas [12325] (r1.1).pdf
+books/Schopenhauer, Arthur - Sobre la voluntad en la naturaleza [8169] (r1.0).epub
+books/Shakespeare, William - Hamlet (eu) [3441] (r1.2) [EU].epub
+books/Shakespeare, William - Hamlet (eu) [3441] (r1.2) [EU].pdf
+books/Shelley, Mary - Cervantes y Lope [42480] (r1.0).epub
+books/Smith, Adam - La mano invisible [30943] (r1.0).epub
+books/Smith, Adam - La riqueza de las naciones [21207] (r1.0).epub
+books/Smith, Adam - La riqueza de las naciones [21207] (r1.0).pdf
+books/Smith, Adam - La teoria de los sentimientos morales [6181] (r1.1).epub
+books/Sofocles - Ayax [5218] (r1.2 Piolin).epub
+books/Sofocles - Ayax [5218] (r1.2 Piolin).pdf
+books/Sofocles - [Serie Edipo 01] Edipo Rey [5215] (r1.3 Piolin).epub
+books/Sofocles - [Serie Edipo 01] Edipo Rey [5215] (r1.3 Piolin).pdf
+books/Steinbeck, John - Las uvas de la ira [3394] (r1.8).epub
+books/Steinbeck, John - Las uvas de la ira [3394] (r1.8).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 01] Aristoteles en 90 minutos [13780] (r2.4)_6c0e4f97-87ae-4dcb-bbff-b9a525208d0c.pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 02] Berkeley en 90 minutos [26998] (r2.0)_fb9ab031-76d9-4db7-b357-13806cf03565.pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 03] Confucio en 90 minutos [13777] (r2.1).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 03] Confucio en 90 minutos [13777] (r2.1).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 04] Derrida en 90 minutos [13710] (r1.2).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 04] Derrida en 90 minutos [13710] (r1.2).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 05] Descartes en 90 minutos [26743] (r1.2).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 05] Descartes en 90 minutos [26743] (r1.2).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 08] Hume en 90 minutos [13207] (r1.4).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 13] Maquiavelo en 90 minutos [26892] (r1.8).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 13] Maquiavelo en 90 minutos [26892] (r1.8).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 17] Russell en 90 minutos [13645] (r1.4).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 17] Russell en 90 minutos [13645] (r1.4).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 22] Spinoza en 90 minutos [13776] (r2.3).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 22] Spinoza en 90 minutos [13776] (r2.3).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 23] Tomas de Aquino en 90 minutos [26893] (r1.5).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 23] Tomas de Aquino en 90 minutos [26893] (r1.5).pdf
+books/Strathern, Paul - [Filosofos en 90 minutos 24] Wittgenstein en 90 minutos [11764] (r1.5).epub
+books/Strathern, Paul - [Filosofos en 90 minutos 24] Wittgenstein en 90 minutos [11764] (r1.5).pdf
+books/Strathern, Paul - [Literatos en 90 minutos 00] Nabokov en 90 minutos [81050] (r1.0).epub
+books/Strathern, Paul - [Literatos en 90 minutos 00] Nabokov en 90 minutos [81050] (r1.0).pdf
+books/Taibo, Carlos - Como si no pisase el suelo trece ensayos sobre las vidas de Fernando Pessoa [40553] (r1.0).pdf
+books/The Leftovers.pdf
+books/Tolstoi, Lev Nikolaievich - Guerra y paz [1763] (r2.0).epub
+books/Tolstoi, Lev Nikolaievich - Guerra y paz [1763] (r2.0).pdf
+books/Tolstoi, Lev Nikolaievich - Hadji Murat [17388] (r1.2).epub
+books/Tolstoi, Lev Nikolaievich - Hadji Murat [17388] (r1.2).pdf
+books/Torretti, Roberto - Manuel Kant [23783] (r1.1).epub
+books/Torretti, Roberto - Manuel Kant [23783] (r1.1).pdf
+books/Turguenev, Ivan Sergueevich - Del album de un cazador [8359] (r1.2).epub
+books/Turguenev, Ivan Sergueevich - Del album de un cazador [8359] (r1.2).pdf
+books/Tzu, Sun - El arte de la guerra [449] (r1.7).epub
+books/Unamuno, Miguel de - Como se hace una novela [60982] (r1.1).epub
+books/Valle-Inclan, Ramon Maria del - Jardin umbrio [28321] (r1.1).epub
+books/Valle-Inclan, Ramon Maria del - Jardin umbrio [28321] (r1.1).pdf
+books/Vargas Llosa, Mario - El loco de los balcones [19923] (r1.1).epub
+books/Vargas Llosa, Mario - El loco de los balcones [19923] (r1.1).pdf
+books/Vargas Llosa, Mario - La ciudad y los perros [521] (r2.5).epub
+books/Vargas Llosa, Mario - La ciudad y los perros [521] (r2.5).pdf
+books/Vargas Llosa, Mario - La orgia perpetua. Flaubert y Madame Bovary [29426] (r1.2).epub
+books/Vargas Llosa, Mario - La orgia perpetua. Flaubert y Madame Bovary [29426] (r1.2).pdf
+books/Vargas Llosa, Mario - La verdad de las mentiras [10509] (r1.4).epub
+books/Vargas Llosa, Mario - La verdad de las mentiras [10509] (r1.4).pdf
+books/Vazquez Montalban, Manuel - [Pepe Carvalho 20.1] La muchacha que pudo ser Emmanuelle [32264] (r2.1).epub
+books/Verlaine, Paul - Mis hospitales & Mis prisiones [18291] (r1.3).epub
+books/Verlaine, Paul - Mis hospitales & Mis prisiones [18291] (r1.3).pdf
+books/Verlaine, Paul - Poesias [68194] (r1.0).epub
+books/Verlaine, Paul - Treinta y seis sonetos [44552] (r1.1).epub
+books/Voltaire - Cartas filosoficas [50307] (r1.0).epub
+books/Voltaire - Cartas filosoficas [50307] (r1.0).pdf
+books/Weil, Simone - A la espera de Dios [73637] (r1.0).epub
+books/Weil, Simone - La condicion obrera [69988] (r1.0).epub
+books/Weil, Simone - La fuente griega [29030] (r1.1).epub
+books/Weil, Simone - La persona y lo sagrado [56915] (r1.0).epub
+books/Weil, Simone - La persona y lo sagrado [56915] (r1.0).pdf
+books/Weil, Simone - Reflexiones sobre las causas de la libertad y de la opresion social [27826] (r1.0).epub
+books/Wilde, Oscar - De profundis [9097] (r1.2).epub
+books/Wilde, Oscar - La balada de la carcel de Reading [13901] (r1.4).epub
+books/Woolf_lunes.pdf
+books/Yalom, Irvin D. - La cura Schopenhauer [69803] (r1.0).pdf
+books/Yourcenar, Marguerite - Memorias de Adriano [2749] (r1.9).epub
+books/Yourcenar, Marguerite - Memorias de Adriano [2749] (r1.9).pdf
+books/Zhuang Zi - Zhuang Zi [40774] (r1.2).epub
+books/Zhuang Zi - Zhuang Zi [40774] (r1.2).pdf
+books/Zizek, Slavoj - Hegel en un cerebro conectado [80771] (r1.0 diegoan).epub
+books/Zola, Emile - [Los Rougon-Macquart 15] La Tierra [49266] (r1.2).epub
+books/Zola, Emile - [Los Rougon-Macquart 15] La Tierra [49266] (r1.2).pdf
+books/Zweig, Stefan - Carta de una desconocida [1846] (r1.7).epub
+books/Zweig, Stefan - Carta de una desconocida [1846] (r1.7).pdf
+books/[Ancora & Delfin 558] Sender, Ramon J. - Album de radiografias secretas [78936] (r1.0).epub
+books/[Ancora & Delfin 558] Sender, Ramon J. - Album de radiografias secretas [78936] (r1.0).pdf
+books/[Cancion de hielo y fuego] [Historia de los Targaryen 01] Martin, George R. R. - Fuego y sangre [52320] (r1.4).pdf
+books/[Cancion de hielo y fuego] [Los cuentos de Dunk y Egg 00] Martin, George R. R. - El caballero de los Siete Reinos [22469] (r1.8).epub
+books/[Cancion de hielo y fuego] [Los cuentos de Dunk y Egg 00] Martin, George R. R. - El caballero de los Siete Reinos [22469] (r1.8).pdf
+books/[Catedra] [Letras Universales 493] Anonimo - El poema de Gilgamesh (Trad. Rafael Jimenez Zamudio) [79187] (r1.3).epub
+books/[Catedra] [Letras Universales 493] Anonimo - El poema de Gilgamesh (Trad. Rafael Jimenez Zamudio) [79187] (r1.3).pdf
+books/[Clasicos Modernos 13] Mann, Thomas - La voluntad de ser feliz y otros relatos [9395] (r1.2).epub
+books/[Clasicos Modernos 13] Mann, Thomas - La voluntad de ser feliz y otros relatos [9395] (r1.2).pdf
+books/[Coleccion Reno 627] Mann, Thomas - Carlota en Weimar [19208] (r1.2).epub
+books/[Descubrir la filosofia 03] Sole, Joan - Kant. El giro copernicano en la filosofia [27948] (r1.4).epub
+books/[Descubrir la filosofia 03] Sole, Joan - Kant. El giro copernicano en la filosofia [27948] (r1.4).pdf
+books/[Descubrir la filosofia 19] Gomez Pin, Victor - Hegel [34580] (r1.3)_26bf4142-4029-44a3-b78a-492537367f4e.pdf
+books/[Descubrir la filosofia 24] Leyte, Arturo - Heidegger. El fracaso del ser [28874] (r1.5)_1735d8f2-4e10-4cbb-b901-613427a9d729.pdf
+books/[Dune 03] Herbert, Frank - Hijos de Dune [468] (r2.3).epub
+books/[Dune 03] Herbert, Frank - Hijos de Dune [468] (r2.3).pdf
+books/[Dune 04] Herbert, Frank - Dios Emperador de Dune [3153] (r2.3).epub
+books/[Dune 04] Herbert, Frank - Dios Emperador de Dune [3153] (r2.3).pdf
+books/[Dune 05] Herbert, Frank - Herejes de Dune [3155] (r1.8).epub
+books/[Dune 07] Herbert, Brian & Anderson, Kevin J. - Cazadores de Dune [465] (r1.8).epub
+books/[Dune 08] Herbert, Brian & Anderson, Kevin J. - Gusanos de arena de Dune [466] (r1.6).epub
+books/[En 50 minutos] [Arte y literatura 00] Franceschetto, Coline - Amedeo Modigliani [53716] (r1.2).epub
+books/[En 50 minutos] [Arte y literatura 00] Reynold de Seresin, Eliane - Vincent van Gogh [53941] (r1.1).epub
+books/[En 50 minutos] [Arte y literatura 00] Schalenbourg, Elodie - Victor Hugo [53940] (r1.1).epub
+books/[En 50 minutos] [Arte y literatura 00] Schalenbourg, Elodie - Victor Hugo [53940] (r1.1).pdf
+books/[En 50 minutos] [Arte y literatura 00] Tiberghien, Eve - Albert Camus [53715] (r1.3).epub
+books/[En 50 minutos] [Arte y literatura 00] Tiberghien, Eve - Albert Camus [53715] (r1.3).pdf
+books/[En 50 minutos] [Historia 00] Ducastel, Justine - Charles de Gaulle [53720] (r1.1).epub
+books/[Episodios nacionales] [Serie I La Guerra de la Independencia 06] Perez Galdos, Benito - Zaragoza [2052] (r2.0).epub
+books/[Episodios nacionales] [Serie I La Guerra de la Independencia 08] Perez Galdos, Benito - Cadiz [2054] (r2.2).epub
+books/[Episodios nacionales] [Serie I La Guerra de la Independencia 09] Perez Galdos, Benito - Juan Martin el Empecinado [338] (r2.1).epub
+books/[Episodios nacionales] [Serie I La Guerra de la Independencia 09] Perez Galdos, Benito - Juan Martin el Empecinado [338] (r2.1).pdf
+books/[Episodios nacionales] [Serie II La Espana de Fernando VII 02] Perez Galdos, Benito - Memorias de un cortesano de 1815 [2028] (r2.0).epub
+books/[Grandes ideas de la ciencia 10] Corcho Orrit, Roger - Galileo. El metodo cientifico [48386] (r1.1 Skynet)_15e887d7-c87b-404e-931e-096cf6fd9dc7.pdf
+books/[La ciencia para todos 190] Altshuler, Jose - A proposito de Galileo [75355] (r1.1).pdf
+books/[Penguin Clasicos 00] Leon, Fray Luis de - Poesia [30224] (r1.3).epub
+books/[Penguin Clasicos 00] Leon, Fray Luis de - Poesia [30224] (r1.3).pdf
+books/[Penguin Clasicos] Espronceda, Jose de - El estudiante de Salamanca y otros poemas [32803] (r1.0).epub
+books/[Penguin Clasicos] Espronceda, Jose de - El estudiante de Salamanca y otros poemas [32803] (r1.0).pdf
+books/[Saga de la Fundacion] [Ciclo de Trantor 01] Asimov, Isaac - Preludio a la Fundacion [2667] (r2.0).epub
+books/[Saga de la Fundacion] [Ciclo de Trantor 01] Asimov, Isaac - Preludio a la Fundacion [2667] (r2.0).pdf
+books/[Saga de la Fundacion] [Ciclo de Trantor 02] Asimov, Isaac - Hacia la Fundacion [2668] (r1.7).epub
+books/[Saga de la Fundacion] [Ciclo de Trantor 02] Asimov, Isaac - Hacia la Fundacion [2668] (r1.7).pdf
+books/[Saga de la Fundacion] [Ciclo de Trantor 03] Asimov, Isaac - Fundacion [62371] (r1.2).pdf
+books/[Saga de la Fundacion] [Ciclo de Trantor 04] Asimov, Isaac - Fundacion e Imperio [2212] (r1.4).pdf
+books/[Saga de la Fundacion] [Ciclo de Trantor 05] Asimov, Isaac - Segunda Fundacion [2237] (r1.5).epub
+books/[Saga de la Fundacion] [Ciclo de Trantor 05] Asimov, Isaac - Segunda Fundacion [2237] (r1.5).pdf
+books/[Saga de la Fundacion] [Ciclo de Trantor 06] Asimov, Isaac - Los limites de la Fundacion [2272] (r1.9).epub
+books/[Saga de la Fundacion] [Ciclo de Trantor 06] Asimov, Isaac - Los limites de la Fundacion [2272] (r1.9).pdf
+books/[Saga de la Fundacion] [Ciclo de Trantor 07] Asimov, Isaac - Fundacion y Tierra [2304] (r1.9).epub
+books/[Saga de la Fundacion] [Ciclo de Trantor 07] Asimov, Isaac - Fundacion y Tierra [2304] (r1.9).pdf
+books/[Saga de la Fundacion] [Serie de los Robots 02] Asimov, Isaac - Bovedas de acero [3309] (r1.8).epub
+books/[Saga de la Fundacion] [Serie de los Robots 02] Asimov, Isaac - Bovedas de acero [3309] (r1.8).pdf
+books/[Saga de la Fundacion] [Serie de los Robots 03] Asimov, Isaac - El sol desnudo [2158] (r3.5).epub
+books/[Saga de la Fundacion] [Serie de los Robots 03] Asimov, Isaac - El sol desnudo [2158] (r3.5).pdf
+books/[Saga de la Fundacion] [Serie de los Robots 04] Asimov, Isaac - Los robots del amanecer [7816] (r2.6).epub
+books/[Saga de la Fundacion] [Serie de los Robots 04] Asimov, Isaac - Los robots del amanecer [7816] (r2.6).pdf
+books/[Saga de la Fundacion] [Serie de los Robots 05] Asimov, Isaac - Robots e Imperio [7817] (r2.6).epub
+books/[Saga de la Fundacion] [Serie de los Robots 05] Asimov, Isaac - Robots e Imperio [7817] (r2.6).pdf
+books/[Saga de la Fundacion] [Trilogia del Imperio 01] Asimov, Isaac - En la arena estelar [3263] (r3.9).epub
+books/[Saga de la Fundacion] [Trilogia del Imperio 01] Asimov, Isaac - En la arena estelar [3263] (r3.9).pdf
+books/[Star Wars] [Canon 6.95] Rucka, Greg - Antes del despertar [42507] (r1.0).epub
+books/[Star Wars] [Canon 6.95] Rucka, Greg - Antes del despertar [42507] (r1.0).pdf
+books/[Star Wars] [Nuevo Canon] Gidwitz, Adam - Asi que quieres ser un jedi [48514] (r1.1).epub
+books/[Star Wars] [Nuevo Canon] Gidwitz, Adam - Asi que quieres ser un jedi [48514] (r1.1).pdf
+books/[Tus Libros 21] Saint-Exupery, Antoine de - Vuelo nocturno (ilustrado Tus Libros) [52272] (r1.1 XcUiDi).epub
+books/[Tus Libros 21] Saint-Exupery, Antoine de - Vuelo nocturno (ilustrado Tus Libros) [52272] (r1.1 XcUiDi).pdf
+books/[Tus libros 18] Wells, H. G. - La maquina del tiempo [18528] (r2.2).epub
+books/[Tus libros 18] Wells, H. G. - La maquina del tiempo [18528] (r2.2).pdf
+books/[Tus libros 27] Polo, Marco - Libro de las Maravillas (ilustrado) [54988] (r1.0).epub
+books/[Tus libros 27] Polo, Marco - Libro de las Maravillas (ilustrado) [54988] (r1.0).pdf
+books/[Tus libros 31] Perez Galdos, Benito - Trafalgar (ilustrado) [53086] (r1.1).epub
+books/baudelaire_flores.pdf
+books/de Quincey, Thomas - Los ultimos dias de Immanuel Kant [32425] (r1.0).epub
+books/dumas_medicis.pdf
+books/epdf.mx_the-leftovers.epub
+books/hegel.pdf
+books/misterios_paris.pdf
+books/orwell_sin_blanca_en_paris.pdf
+books/spinoza.pdf
+books/verlaine_malditos.pdf
+books/virginia.pdf
+books/wilde.pdf
