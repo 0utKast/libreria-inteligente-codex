@@ -115,7 +115,12 @@ Error: Process completed with exit code 2.
 
 ## Recent Improvements (Dec 2025)
 
-### Performance Optimization
+### Async & Responsiveness (0.3.0-alpha)
+*   **Fully Async RAG**: AI calls and embedding generation are now 100% non-blocking.
+*   **Background Processing**: Heavy indexing tasks moved to `FastAPI.BackgroundTasks`.
+*   **Batch Embeddings**: Parallel generation of chunks embeddings reduces index time.
+
+### Performance Optimization (0.2.0)
 *   **Image Compression**: Reduced cover images from **488MB to 40MB** (92% reduction) using `optimize_covers.py`.
 *   **Lazy Loading**: Heavy libraries (`fitz`, `ebooklib`, `weasyprint`, `chromadb`) are now imported only when needed.
 *   **Caching**: Added `Cache-Control` headers (1 day) for static assets.

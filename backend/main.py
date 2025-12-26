@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Form
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Form, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -164,7 +164,7 @@ def process_epub(file_path: str, covers_dir_fs: str, covers_url_prefix: str) -> 
 
 # --- Configuración de la App FastAPI ---
 # Test comment
-app = FastAPI()
+app = FastAPI(title="Mi Librería Inteligente Codex", version="0.3.0-alpha")
 
 # Rutas robustas basadas en este archivo
 STATIC_DIR_FS = (base_dir / "static").resolve()
@@ -219,8 +219,22 @@ def get_db():
 
 # --- Rutas de la API ---
 
+async def background_index_book(book_id: int, file_path: str):
+    """Tarea en segundo plano para indexar un libro en RAG."""
+    try:
+        from . import rag
+        await rag.process_book_for_rag(file_path, str(book_id))
+    except Exception as e:
+        print(f"Error en indexación de fondo para book_id={book_id}: {e}")
+
+async def background_convert_and_index(book_id: int, original_path: str, db_session_factory):
+    """Tarea compleja en segundo plano: convertir, analizar e indexar."""
+    # Nota: Aquí necesitaríamos manejar nuestra propia sesión si quisiéramos actualizar la BD
+    # Pero para simplificar en esta fase, nos enfocaremos en la indexación RAG automática.
+    pass
+
 @app.post("/api/books/{book_id}/convert", response_model=schemas.Book)
-async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
+async def convert_book_to_pdf(book_id: int, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     """
     Convierte un libro EPUB existente a PDF y lo añade a la biblioteca como un nuevo libro.
     """
@@ -234,13 +248,15 @@ async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="La conversión solo es posible para libros en formato EPUB.")
 
     # 3. Leer el contenido del archivo EPUB
+    abs_epub_path = get_safe_path(original_book.file_path)
     try:
-        with open(original_book.file_path, "rb") as f:
+        with open(abs_epub_path, "rb") as f:
             epub_content = f.read()
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Archivo EPUB no encontrado en el disco.")
 
-    # 4. Convertir a PDF
+    # 4. Convertir a PDF (Esto sigue siendo una tarea pesada, pero la mantenemos aquí para devolver el libro)
+    # En una versión futura podríamos devolver 202 Accepted y notificar por WebSocket.
     try:
         pdf_bytes = await asyncio.to_thread(utils.convert_epub_bytes_to_pdf_bytes, epub_content)
     except Exception as e:
@@ -273,7 +289,7 @@ async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
             os.remove(new_filepath_abs)
             raise HTTPException(status_code=422, detail="La IA no pudo identificar metadatos del PDF convertido.")
 
-        return crud.create_book(
+        new_book = crud.create_book(
             db=db,
             title=title,
             author=author,
@@ -281,6 +297,11 @@ async def convert_book_to_pdf(book_id: int, db: Session = Depends(get_db)):
             cover_image_url=book_data.get("cover_image_url"),
             file_path=get_relative_path(new_filepath_abs)
         )
+        
+        # Disparar indexación RAG en segundo plano
+        background_tasks.add_task(background_index_book, new_book.id, new_filepath_abs)
+        
+        return new_book
     except Exception as e:
         # Si algo falla, limpiar el PDF creado
         if os.path.exists(new_filepath_abs):
@@ -319,7 +340,7 @@ async def convert_epub_to_pdf_tool(file: UploadFile = File(...)):
 
 
 @app.post("/upload-book/", response_model=schemas.Book)
-async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = File(...)):
+async def upload_book(background_tasks: BackgroundTasks, db: Session = Depends(get_db), book_file: UploadFile = File(...)):
     books_dir = str(BOOKS_DIR_FS)
     safe_name = os.path.basename(book_file.filename)
     file_path_abs = os.path.abspath(os.path.join(books_dir, safe_name))
@@ -352,7 +373,7 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
         os.remove(file_path_abs) # Borrar el archivo que no se pudo analizar
         raise HTTPException(status_code=422, detail="La IA no pudo identificar el título ni el autor del libro. No se ha añadido.")
 
-    return crud.create_book(
+    new_book = crud.create_book(
         db=db, 
         title=title, 
         author=author, 
@@ -360,6 +381,11 @@ async def upload_book(db: Session = Depends(get_db), book_file: UploadFile = Fil
         cover_image_url=book_data.get("cover_image_url"), 
         file_path=get_relative_path(file_path_abs)
     )
+
+    # Disparar indexación RAG en segundo plano
+    background_tasks.add_task(background_index_book, new_book.id, file_path_abs)
+
+    return new_book
 
 @app.get("/books/", response_model=List[schemas.Book])
 def read_books(category: str | None = None, search: str | None = None, author: str | None = None, db: Session = Depends(get_db), skip: int = 0, limit: int = 20):

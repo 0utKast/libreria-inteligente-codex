@@ -1,4 +1,5 @@
 import os
+import asyncio
 import google.generativeai as genai
 from dotenv import load_dotenv
 import chromadb
@@ -36,15 +37,22 @@ def _ensure_init():
     _collection = client.get_or_create_collection(name="book_rag_collection")
     _initialized = True
 
-def get_embedding(text: str, task_type: str = "RETRIEVAL_DOCUMENT"):
-    """Generates an embedding for the given text."""
+async def get_embedding(text: str, task_type: str = "RETRIEVAL_DOCUMENT"):
+    """Generates an embedding for the given text asynchronously."""
     _ensure_init()
     if not text.strip():
         return []  # empty
     if os.getenv("DISABLE_AI") == "1" or not _ai_enabled:
         # Simple deterministic dummy embedding (not for production)
         return [0.0] * 10
-    return genai.embed_content(model=EMBEDDING_MODEL, content=text, task_type=task_type)["embedding"]
+    
+    # Using async embedding call
+    response = await genai.embed_content_async(
+        model=EMBEDDING_MODEL,
+        content=text,
+        task_type=task_type
+    )
+    return response["embedding"]
 
 def extract_text_from_pdf(file_path: str) -> str:
     """Extracts text from a PDF file."""
@@ -157,8 +165,11 @@ async def process_book_for_rag(file_path: str, book_id: str, force_reindex: bool
     if not chunks:
         raise ValueError("Could not chunk text from the book.")
 
-    for i, chunk in enumerate(chunks):
-        embedding = get_embedding(chunk) # No await here
+    # Batch process embeddings for efficiency
+    tasks = [get_embedding(chunk) for chunk in chunks]
+    embeddings = await asyncio.gather(*tasks)
+
+    for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
         if embedding:  # Only add if embedding is not empty
             _collection.add(
                 embeddings=[embedding],
@@ -207,7 +218,7 @@ async def query_rag(query: str, book_id: str, mode: str = "balanced", metadata: 
     library: opcional, ejemplo {author_other_books: [..]}
     """
     _ensure_init()
-    query_embedding = get_embedding(query, task_type="RETRIEVAL_QUERY") # No await here
+    query_embedding = await get_embedding(query, task_type="RETRIEVAL_QUERY")
     if not query_embedding:
         return "I cannot process an empty query."
 
@@ -265,5 +276,5 @@ Respuesta:"""
     if os.getenv("DISABLE_AI") == "1" or not _ai_enabled:
         return "[IA deshabilitada] Resumen no disponible. Contexto recuperado:\n" + context[:500]
     model = genai.GenerativeModel(GENERATION_MODEL)
-    response = model.generate_content(prompt)  # No await here
+    response = await model.generate_content_async(prompt)
     return response.text

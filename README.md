@@ -1,4 +1,4 @@
-# 📚 Mi Librería Inteligente
+# 📚 Mi Librería Inteligente `v0.3.0-alpha`
 
 Mi Librería Inteligente es una aplicación web que utiliza la IA multimodal de Google Gemini para analizar y catalogar automáticamente tu colección de libros digitales (PDF y EPUB). Simplemente sube un libro, y la aplicación extraerá su portada, título, autor y le asignará una categoría, guardándolo todo en una base de datos local para que puedas explorar tu biblioteca fácilmente.
 
@@ -222,6 +222,23 @@ git push -u origin main
 
 Devuelve tokens totales estimados, número de chunks (tamaño base 1000 tokens) y coste estimado (`tokens/1000 * per1k`).
 Nota: el conteo usa `tiktoken` como aproximación a los tokens de Gemini, por lo que es una estimación.
+
+## 📜 Historial de Cambios (Changelog)
+
+### [0.3.0-alpha] - 2025-12-26
+#### ✨ Mejoras Estratégicas
+- **Optimización Asíncrona**: Módulo RAG rediseñado para usar llamadas a la IA totalmente no bloqueantes.
+- **Background Tasks**: La indexación de libros ahora se realiza en segundo plano, mejorando drásticamente la respuesta del servidor tras la subida.
+- **Batch Processing**: Implementación de procesamiento por lotes para embeddings, reduciendo el tiempo de indexación de libros grandes.
+- **Sistema de Versiones**: Introducción de numeración de versiones semántica (SemVer) para un mejor seguimiento.
+
+#### 🐛 Correcciones
+- **Shortcuts**: Corregido error de codificación en el acceso directo de Windows y mejora de la resolución del icono.
+- **Imports**: Corregidas dependencias faltantes (`BackgroundTasks`, `asyncio`).
+
+### [0.2.0] - Diciembre 2025
+- **Portabilidad**: Transición a rutas relativas en la base de datos para facilitar el movimiento del proyecto entre carpetas.
+- **Rendimiento**: Compresión masiva de portadas (reducción del 92%) y carga diferida (lazy loading) de librerías.
 
 ## 📄 Licencia
 
